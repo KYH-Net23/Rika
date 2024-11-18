@@ -37,9 +37,10 @@ export const PaymentProvider = ({ children }) => {
             if (data.status === 'complete') {
                 sessionStorage.setItem(`emailSent-${sessionId}`, 'true');
                 console.log("Email sent successfully!");
+                console.log(data);
                 setStatus(data.status);
                 setCustomerEmail(data.customer_email);
-                return data; // Return the fetched data for further use
+                return data;
             } else {
                 console.warn("Session status not complete:", data.status);
                 setStatus("abort");
@@ -49,14 +50,14 @@ export const PaymentProvider = ({ children }) => {
         } finally {
             setLoading(false);
         }
-        setStatus("fail")
-        return null; // Return null if no valid data was fetched
+        setStatus("fail");
+        return null; 
     };
 
 
     const createStripeSession = async (orderDetails) => {
         try {
-            const response = await fetch(`https://rika-payment.azurewebsites.net/create-checkout-session`, {
+            const response = await fetch(`https://localhost:7127/create-checkout-session`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
