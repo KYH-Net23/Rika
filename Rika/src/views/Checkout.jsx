@@ -1,6 +1,4 @@
 import { useEffect, useState } from "react";
-import ArrowBack from "../common/ArrowBack";
-
 import YourCart from "./sections/products/checkout/YourCart";
 import Shipping from "./sections/products/checkout/Shipping";
 
@@ -51,7 +49,6 @@ const Checkout = () => {
         </div>
       </header>
       <div className="flex flex-col gap-5 max-w-xl">
-        <ArrowBack goBackTo={"/products"} />
         {slide === 1 ? (
           <YourCart
             data={data}
@@ -65,6 +62,8 @@ const Checkout = () => {
             clickNextFunc={handleNext}
             clickPrevFunc={handlePrev}
           />
+        ) : slide === 3 ? (
+          <h1 className="font-mont font-bold">{slide}</h1>
         ) : null}
       </div>
     </section>

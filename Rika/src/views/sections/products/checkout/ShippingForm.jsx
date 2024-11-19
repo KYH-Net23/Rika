@@ -1,10 +1,8 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { useShippingContext } from "../../../../lib/ShippingOptionsProvider";
 import InputField from "../../fields/InputField";
 
-const ShippingForm = () => {
-  const navigate = useNavigate();
+const ShippingForm = ({ clickFunc }) => {
   const { getServicePoints, getTransitTimes, setSelectedShippingDetails } =
     useShippingContext();
   const [errors, setErrors] = useState({});
@@ -113,11 +111,6 @@ const ShippingForm = () => {
         servicePointSelected.options[0].text = `${selectedLocation.name}, ${selectedDeliveryOption.serviceInformation.name}`;
       }
     }
-  };
-
-  //Make sure this one is updated to correct page later when others have fixed their pages
-  const navigateToPayment = () => {
-    navigate("/paymentform");
   };
 
   return (
@@ -376,11 +369,11 @@ const ShippingForm = () => {
         {isConfirmed && (
           <button
             id="proceedToPaymentButton"
-            onClick={navigateToPayment}
+            onClick={clickFunc}
             className="w-full bg-black text-white p-2 rounded hover:bg-gray-800 mt-4"
             disabled={!isConfirmed || loading}
           >
-            {loading ? "Loading..." : "Proceed to Payment"}
+            {loading ? "Loading..." : "Payment Options"}
           </button>
         )}
       </div>

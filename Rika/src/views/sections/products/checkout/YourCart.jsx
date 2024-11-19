@@ -1,5 +1,6 @@
-import CartCard from "./cart/CartCard";
 import { useState } from "react";
+import ArrowBack from "../../../../common/ArrowBack";
+import CartCard from "./cart/CartCard";
 
 const YourCart = ({ data, totalPrice, slideNumber, clickFunc }) => {
   const [formData, setFormData] = useState({
@@ -82,145 +83,176 @@ const YourCart = ({ data, totalPrice, slideNumber, clickFunc }) => {
   };
 
   return (
-    <section className="flex flex-col min-w-[355px] md:min-w-[562px]">
-      <h3 className="font-mont font-semibold">
-        <span className="bg-[#CCC] py-1 px-[10px] rounded-full mr-2">{slideNumber}</span>
-        Order Details
-      </h3>
-      <div className="my-4 flex flex-col gap-3">
-        {data.map((cartItem) => (
-          <CartCard key={cartItem.id} data={cartItem} />
-        ))}
+    <>
+      <ArrowBack goBackTo={"/products"} />
+      <section className="flex flex-col min-w-[355px] md:min-w-[562px]">
+        <h3 className="font-mont font-semibold">
+          <span className="bg-[#CCC] py-1 px-[10px] rounded-full mr-2">
+            {slideNumber}
+          </span>
+          Order Details
+        </h3>
+        <div className="my-4 flex flex-col gap-3">
+          {data.map((cartItem) => (
+            <CartCard key={cartItem.id} data={cartItem} />
+          ))}
+          <div className="w-full border-t border-[#CCC] my-4" />
+        </div>
+        <div className="flex flex-col gap-1">
+          <h3 className="flex font-mont font-semibold justify-between">
+            <span>Total:</span>
+            <span>
+              $
+              {totalPrice.toLocaleString("en-US", {
+                minimumFractionDigits: 2,
+              })}
+            </span>
+          </h3>
+          <h3 className="flex font-mont justify-between">
+            <span>VAT:</span>
+            <span>
+              $
+              {(totalPrice * 0.25).toLocaleString("en-US", {
+                minimumFractionDigits: 2,
+              })}
+            </span>
+          </h3>
+        </div>
         <div className="w-full border-t border-[#CCC] my-4" />
-      </div>
-      <div className="flex flex-col gap-1">
-        <h3 className="flex font-mont font-semibold justify-between">
-          <span>Total:</span>
-          <span>
-            $
-            {totalPrice.toLocaleString("en-US", {
-              minimumFractionDigits: 2,
-            })}
-          </span>
-        </h3>
-        <h3 className="flex font-mont justify-between">
-          <span>VAT:</span>
-          <span>
-            $
-            {(totalPrice * 0.25).toLocaleString("en-US", {
-              minimumFractionDigits: 2,
-            })}
-          </span>
-        </h3>
-      </div>
-      <div className="w-full border-t border-[#CCC] my-4" />
-      <form className="flex flex-col gap-4 mt-3">
-        <div className="flex gap-3">
-          <div className="flex-1">
+        <form className="flex flex-col gap-4 mt-3">
+          <div className="flex gap-3">
+            <div className="flex-1">
+              <input
+                type="text"
+                name="firstName"
+                placeholder="First Name"
+                value={formData.firstName}
+                onChange={handleChange}
+                className="font-mont w-full border p-2 rounded"
+              />
+              {errors.firstName && (
+                <p className="font-mont text-red-500 text-sm">
+                  {errors.firstName}
+                </p>
+              )}
+            </div>
+            <div className="flex-1">
+              <input
+                type="text"
+                name="lastName"
+                placeholder="Last Name"
+                value={formData.lastName}
+                onChange={handleChange}
+                className="font-mont w-full border p-2 rounded"
+              />
+              {errors.lastName && (
+                <p className="font-mont text-red-500 text-sm">
+                  {errors.lastName}
+                </p>
+              )}
+            </div>
+          </div>
+          <div className="flex gap-3">
+            <div className="flex-1">
+              <input
+                type="email"
+                name="email"
+                placeholder="Email"
+                value={formData.email}
+                onChange={handleChange}
+                className="font-mont w-full border p-2 rounded"
+              />
+              {errors.email && (
+                <p className="font-mont text-red-500 text-sm">{errors.email}</p>
+              )}
+            </div>
+            <div className="flex-1">
+              <input
+                type="tel"
+                name="telephone"
+                placeholder="Telephone"
+                value={formData.telephone}
+                onChange={handleChange}
+                className="font-mont w-full border p-2 rounded"
+              />
+              {errors.telephone && (
+                <p className="font-mont text-red-500 text-sm">
+                  {errors.telephone}
+                </p>
+              )}
+            </div>
+          </div>
+          <div>
             <input
               type="text"
-              name="firstName"
-              placeholder="First Name"
-              value={formData.firstName}
+              name="streetAddress"
+              placeholder="Street Address"
+              value={formData.streetAddress}
               onChange={handleChange}
               className="font-mont w-full border p-2 rounded"
             />
-            {errors.firstName && <p className="font-mont text-red-500 text-sm">{errors.firstName}</p>}
+            {errors.streetAddress && (
+              <p className="font-mont text-red-500 text-sm">
+                {errors.streetAddress}
+              </p>
+            )}
           </div>
-          <div className="flex-1">
+          <div className="flex gap-3">
+            <div className="flex-1">
+              <input
+                type="text"
+                name="zipCode"
+                placeholder="Zip Code"
+                value={formData.zipCode}
+                onChange={handleChange}
+                className="font-mont w-full border p-2 rounded"
+              />
+              {errors.zipCode && (
+                <p className="font-mont text-red-500 text-sm">
+                  {errors.zipCode}
+                </p>
+              )}
+            </div>
+            <div className="flex-1">
+              <input
+                type="text"
+                name="city"
+                placeholder="City"
+                value={formData.city}
+                onChange={handleChange}
+                className="font-mont w-full border p-2 rounded"
+              />
+              {errors.city && (
+                <p className="font-mont text-red-500 text-sm">{errors.city}</p>
+              )}
+            </div>
+          </div>
+          <div>
             <input
               type="text"
-              name="lastName"
-              placeholder="Last Name"
-              value={formData.lastName}
+              name="country"
+              placeholder="Country"
+              value={formData.country}
               onChange={handleChange}
               className="font-mont w-full border p-2 rounded"
             />
-            {errors.lastName && <p className="font-mont text-red-500 text-sm">{errors.lastName}</p>}
+            {errors.country && (
+              <p className="font-mont text-red-500 text-sm">{errors.country}</p>
+            )}
           </div>
+        </form>
+        <div className="flex w-full justify-end mt-6">
+          <button
+            onClick={handleSaveToLocalStorage}
+            className="flex gap-5 justify-center px-4 py-2.5 w-full max-w-[325px] bg-black rounded-xl leading-[33.28px] text-white"
+          >
+            <span className="font-mont font-medium text-base">
+              Shipping Options
+            </span>
+          </button>
         </div>
-        <div className="flex gap-3">
-          <div className="flex-1">
-            <input
-              type="email"
-              name="email"
-              placeholder="Email"
-              value={formData.email}
-              onChange={handleChange}
-              className="font-mont w-full border p-2 rounded"
-            />
-            {errors.email && <p className="font-mont text-red-500 text-sm">{errors.email}</p>}
-          </div>
-          <div className="flex-1">
-            <input
-              type="tel"
-              name="telephone"
-              placeholder="Telephone"
-              value={formData.telephone}
-              onChange={handleChange}
-              className="font-mont w-full border p-2 rounded"
-            />
-            {errors.telephone && <p className="font-mont text-red-500 text-sm">{errors.telephone}</p>}
-          </div>
-        </div>
-        <div>
-          <input
-            type="text"
-            name="streetAddress"
-            placeholder="Street Address"
-            value={formData.streetAddress}
-            onChange={handleChange}
-            className="font-mont w-full border p-2 rounded"
-          />
-          {errors.streetAddress && <p className="font-mont text-red-500 text-sm">{errors.streetAddress}</p>}
-        </div>
-        <div className="flex gap-3">
-          <div className="flex-1">
-            <input
-              type="text"
-              name="zipCode"
-              placeholder="Zip Code"
-              value={formData.zipCode}
-              onChange={handleChange}
-              className="font-mont w-full border p-2 rounded"
-            />
-            {errors.zipCode && <p className="font-mont text-red-500 text-sm">{errors.zipCode}</p>}
-          </div>
-          <div className="flex-1">
-            <input
-              type="text"
-              name="city"
-              placeholder="City"
-              value={formData.city}
-              onChange={handleChange}
-              className="font-mont w-full border p-2 rounded"
-            />
-            {errors.city && <p className="font-mont text-red-500 text-sm">{errors.city}</p>}
-          </div>
-        </div>
-        <div>
-          <input
-            type="text"
-            name="country"
-            placeholder="Country"
-            value={formData.country}
-            onChange={handleChange}
-            className="font-mont w-full border p-2 rounded"
-          />
-          {errors.country && <p className="font-mont text-red-500 text-sm">{errors.country}</p>}
-        </div>
-      </form>
-      <div className="flex w-full justify-end mt-6">
-        <button
-          onClick={handleSaveToLocalStorage}
-          className="flex gap-5 justify-center px-4 py-2.5 w-full max-w-[325px] bg-black rounded-xl leading-[33.28px] text-white"
-        >
-          <span className="font-mont font-medium text-base">
-            Proceed to Shipping
-          </span>
-        </button>
-      </div>
-    </section>
+      </section>
+    </>
   );
 };
 
