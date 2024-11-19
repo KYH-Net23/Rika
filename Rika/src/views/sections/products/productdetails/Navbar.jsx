@@ -5,7 +5,7 @@ import { AuthContext } from "../../../../lib/AuthProvider";
 import { useProductContext } from "../../../../lib/ProductProvider";
 
 import ArrowBack from "../../../../common/ArrowBack";
-import ShoppingCart from "../checkout/ShoppingCart";
+import ShoppingCart from "../checkout/cart/ShoppingCart";
 import EditButton from "../../../../common/EditButton";
 import DeleteModal from "../../../../common/delete/DeleteModal";
 import DeleteButton from "../../../../common/delete/DeleteButton";

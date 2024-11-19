@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import XIcon from "../../../../assets/icons/XIcon";
+import XIcon from "../../../../../assets/icons/XIcon";
 import CartCard from "./CartCard";
 import { useNavigate } from "react-router-dom";
 

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import ShoppingCartIcon from "../../../../assets/icons/ShoppingCartIcon";
+import ShoppingCartIcon from "../../../../../assets/icons/ShoppingCartIcon";
 import ShoppingCartModal from "./ShoppingCartModal";
 
 const ShoppingCart = () => {
