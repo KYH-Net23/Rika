@@ -22,8 +22,7 @@ import CreateProduct from "./views/CreateProduct";
 import Users from "./views/Users";
 import RedirectToPaymentForm from "./views/payment/RedirectToPaymentForm.jsx";
 import Register from "./views/Register.jsx";
-import AllInvoices from "./views/AllInvoices";
-
+import AllInvoices from "./views/Invoice/AllInvoices.jsx";
 import ShippingOptions from "./views/Checkout/ShippingOptions.jsx";
 
 createRoot(document.getElementById("root")).render(
@@ -46,6 +45,8 @@ createRoot(document.getElementById("root")).render(
                 <Route path="/paymentformtest" element={<RedirectToPaymentForm />} />
                 <Route path="/shipping" element={<ShippingOptions />} />
                 <Route path="/return" element={<ReturnFromPayment />} />
+                <Route path="/edit-invoice/:id" element={<EditInvoice />} />
+
                 <Route
                   path="/customer"
                   element={

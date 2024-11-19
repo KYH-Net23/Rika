@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import ArrowBack from "../common/ArrowBack";
-import SearchIcon from "../assets/icons/SearchIcon";
+import ArrowBack from "../../common/ArrowBack";
+import SearchIcon from "../../assets/icons/SearchIcon";
 
 const AllInvoices = () => {
     const [invoices, setInvoices] = useState([]); // Håller alla fakturor
@@ -107,6 +107,13 @@ const AllInvoices = () => {
                                         >
                                             View Details
                                         </button>
+                                        <button
+                                            onClick={() => navigate(`/edit-invoice/${invoice.invoiceId}`)}
+                                             className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
+                                        >
+                                            Edit
+                                        </button>
+
                                     </td>
                                 </tr>
                             ))}
