@@ -5,7 +5,7 @@ import { AuthContext } from "../../../../lib/AuthProvider";
 import { useProductContext } from "../../../../lib/ProductProvider";
 
 import ArrowBack from "../../../../common/ArrowBack";
-import ShoppingCartIcon from "../../../../assets/icons/ShoppingCartIcon";
+import ShoppingCart from "../checkout/ShoppingCart";
 import EditButton from "../../../../common/EditButton";
 import DeleteModal from "../../../../common/delete/DeleteModal";
 import DeleteButton from "../../../../common/delete/DeleteButton";
@@ -67,11 +67,7 @@ const Navbar = () => {
             />
           </div>
         ) : (
-          <div className="flex-none">
-            <button>
-              <ShoppingCartIcon />
-            </button>
-          </div>
+          <ShoppingCart />
         )}
       </div>
     </div>

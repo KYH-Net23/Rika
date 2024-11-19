@@ -1,10 +1,9 @@
 import React, { useRef } from 'react'
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { usePaymentContext } from '../../lib/PaymentProvider';
 const ReturnFromPayment = () => {
-    const [status, setStatus] = useState(null);
-    const [customerEmail, setCustomerEmail] = useState('');
-    const [loading, setLoading] = useState(true);
+    const { fetchSessionStatus, status, customerEmail, loading } = usePaymentContext();
     const hasFetched = useRef(false);
     const navigate = useNavigate();
 
@@ -15,33 +14,12 @@ const ReturnFromPayment = () => {
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString);
         const sessionId = urlParams.get('session_id');
-
-        if (sessionStorage.getItem(`emailSent-${sessionId}`)) {
-            console.log("email already sent")
-            setLoading(false);
-            redirectToHome();
-            return;
-        }
-        fetch(`https://rika-payment.azurewebsites.net/session-status?session_id=${sessionId}`)
-            .then((res) => res.json())
-            .then((data) => {
-                console.log(data);
-                if (data.status === 'complete') {
-                    sessionStorage.setItem(`emailSent-${sessionId}`, 'true');
-                    console.log("Email sent successfully!");
-                    setStatus(data.status);
-                    setCustomerEmail(data.customer_email);
-                }
-            })
-            .catch((error) => {
-                console.error("Error sending email:", error);
-                redirectToHome();
-            })
-            .finally(() => setLoading(false));
+        fetchSessionStatus(sessionId);
     }, []);
 
-    if (status === 'open') {
-        navigate('/checkout');
+    if (status === 'open' || status === 'abort') {
+        // navigate('/checkout');
+        redirectToHome();
     }
 
     if (loading) {

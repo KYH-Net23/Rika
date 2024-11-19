@@ -94,48 +94,68 @@ const ShippingOptions = () => {
       };
       setSelectedShippingDetails(shippingDetails);
       console.log("saved shipping details to context", shippingDetails);
+      const dropdownIds = ["postnord-select", "dhl-select", "instabox-select"];
+      dropdownIds.forEach((id) => {
+        if (id !== `${filterIndex.toLowerCase()}-select`) {
+          const dropdown = document.getElementById(id);
+          if (dropdown) {
+            dropdown.selectedIndex = 0;
+            dropdown.options[0].text = "-- Select a service point --";
+          }
+        }
+      });
       setSelectedLocation(null);
       setSelectedDeliveryOption(null);
       setIsConfirmed(true);
+      const servicePointSelected = document.getElementById(
+        `${filterIndex.toLowerCase()}-select`
+      );
+      if (servicePointSelected) {
+        servicePointSelected.options[0].text = `${selectedLocation.name}, ${selectedDeliveryOption.serviceInformation.name}`;
+      }
     }
   };
 
-  //Implement real navigation here
+  //Make sure this one is updated to correct page later when others have fixed their pages
   const navigateToPayment = () => {
     navigate("/paymentform");
   };
 
   return (
     <div className="min-h-screen bg-gray-300 p-4 flex flex-col items-center">
-      {/* Form Section */}
-      <form onSubmit={handleSubmit} className="w-full max-w-md mb-6">
-        <div className="flex items-center justify-between mb-6">
-          <ArrowBack goBackTo="/admin" />
-          <h2 className="text-xl sm:text-2xl text-center flex-grow text-gray-800">
-            Shipping Options
-          </h2>
-          <div className="sm:w-6"></div>
+      <div className="w-full max-w-md flex items-center mb-6">
+        <div className="mr-4">
+          <ArrowBack goBackTo="/products" />
         </div>
-        {/* Postal Code Input */}
-        <InputField
-          label="Postal Code"
-          name="postalCode"
-          value={formData.postalCode}
-          onChange={handleChange}
-          type="text"
-          error={errors.postalCode}
-        />
+        <h2 className="text-xl sm:text-2xl text-gray-800 flex-grow text-center mr-14 mb-2">
+          Shipping Options
+        </h2>
+      </div>
 
-        {/* Submit Button */}
-        <button
-          id="createButton"
-          type="submit"
-          className="w-full bg-black text-white p-2 rounded hover:bg-gray-800 mt-4"
-          disabled={loading}
-        >
-          {loading ? "Loading..." : "Show Service Points"}
-        </button>
-      </form>
+      {/* Form Section */}
+      <div className="w-full max-w-md">
+        <form onSubmit={handleSubmit} className="w-full">
+          {/* Postal Code Input */}
+          <InputField
+            label="Postal Code"
+            name="postalCode"
+            value={formData.postalCode}
+            onChange={handleChange}
+            type="text"
+            error={errors.postalCode}
+          />
+
+          {/* Submit Button */}
+          <button
+            id="showServicePoints"
+            type="submit"
+            className="w-full bg-black text-white p-2 rounded hover:bg-gray-800 mt-4"
+            disabled={loading}
+          >
+            {loading ? "Loading..." : "Show Service Points"}
+          </button>
+        </form>
+      </div>
 
       {/* Service Points PostNord Section */}
       {servicePoints.length > 0 && (
@@ -295,19 +315,15 @@ const ShippingOptions = () => {
                   {transitTime
                     .filter((_, index) => {
                       if (filterIndex === "PostNord") {
-                        // Use explicit indices for PostNord
                         return [3, 5, 9].includes(index);
                       } else if (filterIndex === "DHL") {
-                        // DHL allows only index 8
                         return index === 8;
                       } else if (filterIndex === "Instabox") {
-                        // Instabox allows only index 8
                         return index === 8;
                       }
                       return false;
                     })
                     .map((time, index) => {
-                      // Explicitly assign fake prices based on the index
                       const prices = {
                         0: 349,
                         1: 249,
@@ -315,7 +331,7 @@ const ShippingOptions = () => {
                         3: 119,
                       };
 
-                      const price = prices[index] || 0; // Default to 0 kr if index not found
+                      const price = prices[index] || 0;
 
                       return (
                         <li
@@ -323,7 +339,7 @@ const ShippingOptions = () => {
                           onClick={() =>
                             handleDeliveryOption({
                               ...time,
-                              price, // Include price in the selected delivery option
+                              price,
                             })
                           }
                           className={`p-2 border rounded cursor-pointer shadow hover:bg-green-200 ${
