@@ -87,14 +87,14 @@ const ShoppingCartModal = ({ isOpen, onClose, cartData }) => {
           {unavailable ? (
             <button
               onClick={handleClick}
-              className="flex gap-5 justify-center px-4 py-2.5 w-full max-w-[325px] bg-black rounded-xl leading-[33.28px] text-white"
+              className="flex gap-5 justify-center px-4 py-2.5 w-full max-w-[325px] bg-black rounded leading-[33.28px] text-white"
             >
               <span className="font-mont font-medium text-base">
                 Proceed to Checkout
               </span>
             </button>
           ) : (
-            <button className="cursor-not-allowed flex gap-5 justify-center px-4 py-2.5 w-full max-w-[325px] bg-[#CCC] rounded-xl leading-[33.28px] text-white">
+            <button className="cursor-not-allowed flex gap-5 justify-center px-4 py-2.5 w-full max-w-[325px] bg-[#CCC] rounded leading-[33.28px] text-white">
               <span className="font-mont font-medium text-base">
                 Proceed to Checkout
               </span>
