@@ -2,7 +2,7 @@
 import { useNavigate } from "react-router-dom";
 import LoginButton from "../common/LoginButton.jsx";
 import authApi from "../lib/authApi.js";
-import {AuthContext} from "../lib/AuthProvider.jsx";
+import {UserContext} from "../lib/AuthProvider.jsx";
 
 
 const Login = () => {
@@ -13,7 +13,7 @@ const Login = () => {
 
     const navigate = useNavigate();
 
-    const {userRole, isAuthenticated, checkAuth, loading} = useContext(AuthContext);
+    const {userRole, isAuthenticated, checkAuth, loading, setUser} = useContext(UserContext);
 
     const validateEmail = (email) => {
         const emailRegex = /^[^\s@]+@[^\s@]+.[^\s@]+$/;
@@ -49,6 +49,10 @@ const Login = () => {
         try {
             const response = await authApi.post(endPoint, {email, password}, {withCredentials:true});
             if(response.status === 200){
+                const userData = response.data;
+                setUser({
+                    ...userData,
+                });
                 await checkAuth();
             }
         } catch (error) {

@@ -3,12 +3,12 @@ import { useNavigate, useParams } from 'react-router-dom';
 import InputField from './sections/fields/InputField.jsx'
 import SelectField from './sections/fields/SelectField.jsx';
 import ArrowBack from './../common/ArrowBack.jsx'
-import { AuthContext } from '../lib/AuthProvider.jsx';
+import { UserContext } from '../lib/AuthProvider.jsx';
 import { useProductContext } from '../lib/ProductProvider.jsx';
 
 const EditProduct = () => {
     const { id } = useParams();
-    const { userRole, isAuthenticated, checkAuth, loading } = useContext(AuthContext);
+    const { userRole, isAuthenticated, checkAuth, loading } = useContext(UserContext);
     const { getProductData, updateProduct, notFound } = useProductContext();
     const navigate = useNavigate();
     const [errors, setErrors] = useState({});
