@@ -26,6 +26,7 @@ import Register from "./views/Register.jsx";
 import AllInvoices from "./views/AllInvoices";
 import ShippingOptions from "./views/shipping/ShippingOptions.jsx";
 import Checkout from "./views/Checkout.jsx";
+import ProductReturnPage from "./views/customerpages/Orders/Returns/ReturnPage.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -37,6 +38,10 @@ createRoot(document.getElementById("root")).render(
               <Header />
               <div className="px-4 pt-10 pb-[86px]">
                 <Routes>
+                  <Route
+                    path="/productReturn"
+                    element={<ProductReturnPage />}
+                  />
                   <Route path="/" element={<Home />} />
                   <Route path="/products" element={<Products />} />
                   <Route

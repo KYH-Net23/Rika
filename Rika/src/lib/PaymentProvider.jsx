@@ -32,14 +32,12 @@ export const PaymentProvider = ({ children }) => {
             }
 
             const data = await response.json();
-            console.log(data);
-
             if (data.status === 'complete') {
                 sessionStorage.setItem(`emailSent-${sessionId}`, 'true');
-                console.log("Email sent successfully!");
+                console.log(`Email sent successfully! to ${data.customer_email}`);
                 setStatus(data.status);
                 setCustomerEmail(data.customer_email);
-                return data; // Return the fetched data for further use
+                return data;
             } else {
                 console.warn("Session status not complete:", data.status);
                 setStatus("abort");
@@ -49,8 +47,8 @@ export const PaymentProvider = ({ children }) => {
         } finally {
             setLoading(false);
         }
-        setStatus("fail")
-        return null; // Return null if no valid data was fetched
+        setStatus("fail");
+        return null;
     };
 
 
