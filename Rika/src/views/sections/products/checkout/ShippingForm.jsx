@@ -132,7 +132,7 @@ const ShippingForm = ({ clickFunc }) => {
           <button
             id="showServicePoints"
             type="submit"
-            className="w-full bg-black text-white p-2 rounded hover:bg-gray-800 mt-4"
+            className="flex gap-5 justify-center px-4 py-1.5 w-full bg-black rounded-xl leading-[33.28px] text-white transition-transform duration-200 transform hover:scale-105 hover:bg-gray-700"
             disabled={loading}
           >
             {loading ? "Loading..." : "Show Service Points"}
@@ -370,7 +370,7 @@ const ShippingForm = ({ clickFunc }) => {
           <button
             id="proceedToPaymentButton"
             onClick={clickFunc}
-            className="w-full bg-black text-white p-2 rounded hover:bg-gray-800 mt-4"
+            className="flex gap-5 justify-center px-4 py-1.5 w-full bg-black rounded-xl leading-[33.28px] text-white transition-transform duration-200 transform hover:scale-105 hover:bg-gray-700"
             disabled={!isConfirmed || loading}
           >
             {loading ? "Loading..." : "Payment Options"}

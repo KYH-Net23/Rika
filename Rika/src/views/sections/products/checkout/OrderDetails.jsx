@@ -244,7 +244,7 @@ const YourCart = ({ data, totalPrice, slideNumber, clickFunc }) => {
         <div className="flex w-full justify-end mt-6">
           <button
             onClick={handleSaveToLocalStorage}
-            className="flex gap-5 justify-center px-4 py-2.5 w-full max-w-[325px] bg-black rounded-xl leading-[33.28px] text-white"
+            className="flex gap-5 justify-center px-4 py-2.5 w-full max-w-[325px] bg-black rounded-xl leading-[33.28px] text-white transition-transform duration-200 transform hover:scale-105 hover:bg-gray-700"
           >
             <span className="font-mont font-medium text-base">
               Shipping Options
