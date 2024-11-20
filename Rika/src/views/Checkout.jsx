@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import YourCart from "./sections/products/checkout/YourCart";
+import YourCart from "./sections/products/checkout/OrderDetails";
 import Shipping from "./sections/products/checkout/Shipping";
+import PaymentOptions from "./sections/products/checkout/PaymentOptions";
 
 const Checkout = () => {
   const [data, setData] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
-  const [slide, setSlide] = useState(1);
+  const [slide, setSlide] = useState(3);
 
   const getCartData = () => {
     const cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
@@ -63,7 +64,7 @@ const Checkout = () => {
             clickPrevFunc={handlePrev}
           />
         ) : slide === 3 ? (
-          <h1 className="font-mont font-bold">{slide}</h1>
+          <PaymentOptions slideNumber={slide} clickFunc={handlePrev} />
         ) : null}
       </div>
     </section>

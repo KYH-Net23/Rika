@@ -10,7 +10,7 @@ const Shipping = ({ slideNumber, clickNextFunc, clickPrevFunc }) => {
           <span className="bg-[#CCC] py-1 px-[10px] rounded-full mr-2">
             {slideNumber}
           </span>
-          Shipping
+          Shipping Options
         </h3>
         <ShippingForm clickFunc={clickNextFunc} />
       </section>
