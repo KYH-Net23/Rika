@@ -23,9 +23,9 @@ const PaymentOptions = ({ slideNumber, clickFunc }) => {
                 className="border border-black checked:border-black mb-8"
               />
               <h3 className="font-mont font-semibold flex flex-col">
-                Pay with Stripe.
+                Pay With Stripe.
                 <span className="text-[#CCC] text-sm">
-                  Safe and smooth as Kimmo's head
+                  Safe & Smooth as Kimmo's Head
                 </span>
               </h3>
             </div>
@@ -34,21 +34,26 @@ const PaymentOptions = ({ slideNumber, clickFunc }) => {
           <div className="w-full border-t border-[#CCC] my-4" />
           <div className="flex justify-between">
             <h3 className="font-mont font-semibold flex flex-col text-gray-400">
-              Pay with Klarna.
-              <span className="text-[#CCC] text-sm">For the broke people</span>
+              Pay With Klarna.
+              <span className="text-[#CCC] text-sm">For The People</span>
             </h3>
             <KlarnaIcon />
           </div>
           <div className="w-full border-t border-[#CCC] my-4" />
           <div className="flex justify-between">
             <h3 className="font-mont font-semibold flex flex-col text-gray-400">
-              Pay with Swish.
-              <span className="text-[#CCC] text-sm ">
-                Simplifying everyday
-              </span>
+              Pay With Swish.
+              <span className="text-[#CCC] text-sm ">Simplifying Everyday</span>
             </h3>
             <SwishIcon />
           </div>
+        </div>
+        <div className="flex w-full justify-end mt-6">
+          <button className="flex gap-5 justify-center px-4 py-2.5 w-full max-w-[325px] bg-black rounded-xl leading-[33.28px] text-white">
+            <span className="font-mont font-medium text-base">
+              Order Summary
+            </span>
+          </button>
         </div>
       </section>
     </>
