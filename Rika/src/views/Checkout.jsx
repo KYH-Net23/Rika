@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import YourCart from "./sections/products/checkout/OrderDetails";
 import Shipping from "./sections/products/checkout/Shipping";
 import PaymentOptions from "./sections/products/checkout/PaymentOptions";
+import OrderSummary from "./sections/products/checkout/OrderSummary";
 
 const Checkout = () => {
   const [data, setData] = useState([]);
@@ -30,7 +31,7 @@ const Checkout = () => {
   }, []);
 
   const handleNext = () => {
-    if (slide < 3) {
+    if (slide < 4) {
       setSlide(slide + 1);
     }
   };
@@ -64,7 +65,9 @@ const Checkout = () => {
             clickPrevFunc={handlePrev}
           />
         ) : slide === 3 ? (
-          <PaymentOptions slideNumber={slide} clickFunc={handlePrev} />
+          <PaymentOptions slideNumber={slide} clickNextFunc={handleNext} clickPrevFunc={handlePrev} />
+        ) : slide === 4 ? (
+          <OrderSummary slideNumber={slide} clickNextFunc={handleNext} clickPrevFunc={handlePrev} />
         ) : null}
       </div>
     </section>

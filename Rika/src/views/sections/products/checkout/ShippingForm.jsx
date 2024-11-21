@@ -91,6 +91,9 @@ const ShippingForm = ({ clickFunc }) => {
       };
       setSelectedShippingDetails(shippingDetails);
       console.log("saved shipping details to context", shippingDetails);
+
+      localStorage.setItem("shippingInformation", JSON.stringify(shippingDetails))
+
       const dropdownIds = ["postnord-select", "dhl-select", "instabox-select"];
       dropdownIds.forEach((id) => {
         if (id !== `${filterIndex.toLowerCase()}-select`) {

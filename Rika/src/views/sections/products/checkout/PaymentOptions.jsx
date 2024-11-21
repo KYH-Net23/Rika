@@ -3,10 +3,10 @@ import StripeIcon from "../../../../assets/icons/StripeIcon";
 import SwishIcon from "../../../../assets/icons/SwishIcon";
 import KlarnaIcon from "../../../../assets/icons/KlarnaIcon";
 
-const PaymentOptions = ({ slideNumber, clickFunc }) => {
+const PaymentOptions = ({ slideNumber, clickPrevFunc, clickNextFunc }) => {
   return (
     <>
-      <ArrowBack clickFunc={clickFunc} />
+      <ArrowBack clickFunc={clickPrevFunc} />
       <section className="flex flex-col min-w-[355px] md:min-w-[562px]">
         <h3 className="font-mont font-semibold">
           <span className="bg-[#CCC] py-1 px-[10px] rounded-full mr-2">
@@ -17,11 +17,13 @@ const PaymentOptions = ({ slideNumber, clickFunc }) => {
         <div className="mt-4 p-4 border rounded-lg border-black">
           <div className="flex justify-between">
             <div className="flex gap-2">
-              <input
-                type="radio"
-                checked
-                className="border border-black checked:border-black mb-8"
-              />
+              <label class="flex items-center space-x-2">
+                <input
+                  type="radio"
+                  checked
+                  class="w-5 h-5 border-gray-300 checked:bg-gray-500 checked:ring-gray-500 focus:ring-gray-500"
+                />
+              </label>
               <h3 className="font-mont font-semibold flex flex-col">
                 Pay With Stripe.
                 <span className="text-[#CCC] text-sm">
@@ -49,7 +51,7 @@ const PaymentOptions = ({ slideNumber, clickFunc }) => {
           </div>
         </div>
         <div className="flex w-full justify-end mt-6">
-          <button className="flex gap-5 justify-center px-4 py-2.5 w-full max-w-[325px] bg-black rounded-xl leading-[33.28px] text-white transition-transform duration-200 transform hover:scale-105 hover:bg-gray-700">
+          <button onClick={clickNextFunc} className="flex gap-5 justify-center px-4 py-2.5 w-full max-w-[325px] bg-black rounded-xl leading-[33.28px] text-white transition-transform duration-200 transform hover:scale-105 hover:bg-gray-700">
             <span className="font-mont font-medium text-base">
               Order Summary
             </span>

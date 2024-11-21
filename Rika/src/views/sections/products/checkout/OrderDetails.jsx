@@ -77,7 +77,7 @@ const YourCart = ({ data, totalPrice, slideNumber, clickFunc }) => {
 
   const handleSaveToLocalStorage = () => {
     if (validate()) {
-      localStorage.setItem("shippingInfo", JSON.stringify(formData));
+      localStorage.setItem("customerInfo", JSON.stringify(formData));
       clickFunc();
     }
   };
