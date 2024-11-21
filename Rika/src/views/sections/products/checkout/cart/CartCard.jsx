@@ -1,5 +1,5 @@
 import { useState } from "react";
-import TrashBinIcon from "../../../../assets/icons/TrashBinIcon";
+import TrashBinIcon from "../../../../../assets/icons/TrashBinIcon";
 
 const CartCard = ({ data }) => {
   const { id, brand, model, price, size, image, quantity } = data;

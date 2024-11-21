@@ -1,11 +1,14 @@
-import React from "react";
 import { useNavigate } from "react-router-dom";
 
-const ArrowBack = ({ goBackTo }) => {
+const ArrowBack = ({ goBackTo, clickFunc }) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate(goBackTo);
+    if (goBackTo) {
+      navigate(goBackTo);
+    } else if (clickFunc) {
+      clickFunc();
+    }
   };
 
   return (
