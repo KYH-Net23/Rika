@@ -2,12 +2,13 @@ import { createContext, useEffect, useState } from 'react';
 import PropTypes from "prop-types";
 import authApi from "./authApi.js";
 
-export const AuthContext = createContext();
+export const UserContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [userRole, setUserRole] = useState("");
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [user, setUser] = useState(null);
 
     const checkAuth = async () => {
         try{
@@ -27,9 +28,9 @@ export const AuthProvider = ({ children }) => {
     }, []);
 
     return (
-        <AuthContext.Provider value={{ userRole, isAuthenticated, setIsAuthenticated, setUserRole, checkAuth, loading }}>
+        <UserContext.Provider value={{ userRole, isAuthenticated, setIsAuthenticated, setUserRole, user, setUser, checkAuth, loading }}>
             {children}
-        </AuthContext.Provider>
+        </UserContext.Provider>
     );
 };
 

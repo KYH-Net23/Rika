@@ -7,6 +7,7 @@ import HeartIcon from "../../../../assets/icons/HeartIcon";
 import BagWhite from "../../../../assets/icons/BagWhite";
 
 import SuccessAlert from "../../../../common/SuccessAlert";
+import log from "eslint-plugin-react/lib/util/log.js";
 
 const Detailssection = () => {
   const { id } = useParams();
@@ -137,19 +138,21 @@ const Detailssection = () => {
       </div>
 
       <div className="flex-col gap-4 px-4 py-6">
-        {["S", "M", "L", "XL", "XXL"].map((sizeOption) => (
-          <button
-            key={sizeOption}
-            onClick={() => handleSizeClick(sizeOption)}
-            className={`${
-              size === sizeOption
-                ? "bg-black text-white"
-                : "bg-white text-black"
-            } border-2 hover:bg-black hover:text-white font-bold py-2 px-4 rounded-full`}
-          >
-            {sizeOption}
-          </button>
-        ))}
+        {productDetails.category === "Clothing" || productDetails.category === "Shoes" ? (
+            <select className="p-4 rounded-xl font-mont">
+              {productDetails.sizes.map((sizeOption) => (
+                  <option key={sizeOption} value={sizeOption}>
+                    {sizeOption}
+                  </option>
+              ))}
+            </select>)
+            :
+            (
+                <div>
+                  {/*Leave empty for Electronics*/}
+                </div>
+            )
+        }
       </div>
       <div>{sizeError && <p className="text-red-500">{sizeError}</p>}</div>
 

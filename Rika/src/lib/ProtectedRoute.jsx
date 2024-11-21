@@ -1,14 +1,16 @@
 ﻿// TODO implement this
 
 import React, { useContext } from "react";
-import { Navigate } from "react-router-dom";
-import { AuthContext } from "./AuthProvider.jsx";
+import {useNavigate} from "react-router-dom";
+import { UserContext } from "./AuthProvider.jsx";
 
 const ProtectedRoute = ({ children, requiredRole }) => {
-    const { userRole, isAuthenticated } = useContext(AuthContext);
+    const { userRole, isAuthenticated } = useContext(UserContext);
+    const navigate = useNavigate();
 
     if (!isAuthenticated) {
-        return <Navigate to="/login" />;
+        navigate("/login")
+        return null
     }
 
     return children;
