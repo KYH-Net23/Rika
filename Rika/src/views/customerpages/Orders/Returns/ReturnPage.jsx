@@ -1,16 +1,44 @@
 import { useState } from "react";
 
 const ProductReturnPage = () => {
+  // Mock products for testing
+  const mockProducts = [
+    {
+      id: 1,
+      name: "Nike Shoes",
+      price: 55,
+      orderId: "33333333-3333-3333-3333-333333333333",
+      date: "24-11-18",
+    },
+    {
+      id: 2,
+      name: "Nike Shirt",
+      price: 45,
+      orderId: "33333333-3333-3333-3333-333333333333",
+      date: "24-11-18",
+    },
+    {
+      id: 3,
+      name: "Nike Pants",
+      price: 60,
+      orderId: "33333333-3333-3333-3333-333333333333",
+      date: "24-11-18",
+    },
+    {
+      id: 4,
+      name: "Nike Hat",
+      price: 30,
+      orderId: "33333333-3333-3333-3333-333333333333",
+      date: "24-11-18",
+    },
+  ];
+
+  const [products] = useState(mockProducts); // Initialize with mock products
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
   const [returnReason, setReturnReason] = useState("");
-
-  const products = [
-    { id: 1, name: "Nike Shoes", price: 55, date: "24-11-18" },
-    { id: 2, name: "Nike Shirt", price: 45, date: "24-11-18" },
-    { id: 3, name: "Nike Pants", price: 60, date: "24-11-18" },
-    { id: 4, name: "Nike Hat", price: 30, date: "24-11-18" },
-  ];
+  const [resolutionType, setResolutionType] = useState(""); // New state for resolutionType
+  const [returnId, setReturnId] = useState(null);
 
   const handleProductSelection = (id) => {
     setSelectedProducts((prev) =>
@@ -33,7 +61,11 @@ const ProductReturnPage = () => {
     setReturnReason(e.target.value);
   };
 
-  const handleSubmit = () => {
+  const handleResolutionTypeChange = (e) => {
+    setResolutionType(e.target.value);
+  };
+
+  const handleSubmit = async () => {
     if (!selectedProducts.length) {
       alert("Please select at least one product to return.");
       return;
@@ -44,10 +76,99 @@ const ProductReturnPage = () => {
       return;
     }
 
-    // Submit logic here
-    console.log("Selected Products:", selectedProducts);
-    console.log("Return Reason:", returnReason);
-    alert("Return submitted successfully!");
+    if (!resolutionType) {
+      alert("Please select a resolution type (Refund or Exchange).");
+      return;
+    }
+
+    // Create a return request payload
+    const returnRequest = {
+      orderId: products.find((product) => product.id === selectedProducts[0])
+        .orderId, // Use the orderId of the first selected product
+      userId: "11111111-1111-1111-1111-111111111111", // Example UserId
+      returnReason: returnReason,
+      resolutionType: resolutionType,
+    };
+
+    console.log("Submitting return request:", returnRequest);
+
+    try {
+      const response = await fetch(
+        `https://localhost:44379/api/returns/submit`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(returnRequest),
+        }
+      );
+
+      if (!response.ok) {
+        const errorMessage = await response.text();
+        console.error("Error submitting return request:", errorMessage);
+        alert(`Failed to submit return request: ${errorMessage}`);
+        return;
+      }
+
+      const data = await response.json();
+      console.log("Return request submitted successfully. Response:", data);
+
+      // Set the real returnId from the API response
+      setReturnId(data.returnId);
+      console.log("Updated returnId state:", data.returnId);
+      alert("Return submitted successfully!");
+    } catch (error) {
+      console.error("Error while submitting return request:", error);
+      alert("An error occurred while submitting the return request.");
+    }
+  };
+
+  const handleDownloadLabel = async () => {
+    if (!returnId) {
+      alert("No return label available. Submit a return request first.");
+      return;
+    }
+
+    console.log("Initiating label download for Return ID:", returnId);
+
+    try {
+      const response = await fetch(
+        `https://localhost:44379/api/returns/label/${returnId}`,
+        {
+          method: "GET",
+          headers: {
+            Accept: "application/pdf",
+          },
+        }
+      );
+
+      console.log("API Response Status:", response.status);
+
+      if (!response.ok) {
+        console.error("Failed to fetch the return label:", response.statusText);
+        alert("Failed to download return label. Please try again.");
+        return;
+      }
+
+      const blob = await response.blob();
+      console.log("Blob received:", blob);
+
+      const url = window.URL.createObjectURL(blob);
+      console.log("Generated URL for download:", url);
+
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "ReturnLabel.pdf");
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+
+      console.log("Return label downloaded successfully.");
+    } catch (error) {
+      console.error("Error while downloading return label:", error);
+      alert("An error occurred while downloading the return label.");
+    }
   };
 
   return (
@@ -131,6 +252,22 @@ const ProductReturnPage = () => {
         </select>
       </div>
 
+      <div className="w-full max-w-md mt-4">
+        <label htmlFor="resolutionType" className="block mb-2 font-medium">
+          Select a resolution type:
+        </label>
+        <select
+          id="resolutionType"
+          className="w-full border border-gray-300 rounded p-2"
+          value={resolutionType}
+          onChange={handleResolutionTypeChange}
+        >
+          <option value="">-- Select Resolution --</option>
+          <option value="Refund">Refund</option>
+          <option value="Exchange">Exchange</option>
+        </select>
+      </div>
+
       <div className="w-full max-w-md">
         <button
           type="button"
@@ -140,6 +277,18 @@ const ProductReturnPage = () => {
           Confirm Return
         </button>
       </div>
+
+      {returnId && (
+        <div className="w-full max-w-md mt-4">
+          <button
+            type="button"
+            className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-700"
+            onClick={handleDownloadLabel}
+          >
+            Download Return Label
+          </button>
+        </div>
+      )}
     </div>
   );
 };
