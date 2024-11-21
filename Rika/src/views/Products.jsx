@@ -12,6 +12,7 @@ import SortIcon from "../assets/icons/SortIcon"
 const Products = () => {
   const { getProductsData } = useProductContext();
   const location = useLocation();
+
   const [products, setProducts] = useState([]);
   const [searchInput, setSearchInput] = useState("");
   const [filteredProducts, setFilteredProducts] = useState([]);
@@ -19,10 +20,12 @@ const Products = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [sortOption, setSortOption] = useState("default");
   const [isSortDropdownOpen, setIsSortDropdownOpen] = useState(false);
+  const [loadedCount, setLoadedCount] = useState(20);
 
   const queryParams = new URLSearchParams(location.search);
   const updateSuccess = queryParams.get("update") === "success";
   const deleteSuccess = queryParams.get("delete") === "success";
+
   const getProducts = async () => {
     const data = await getProductsData();
     setProducts(data);
@@ -47,12 +50,6 @@ const Products = () => {
     setFilteredProducts(sortedProducts);
   }, [sortOption, products]);
 
-  const handleSortChange = (option) => {
-    setSortOption(option);
-    setIsSortDropdownOpen(false);
-  };
-
-
   useEffect(() => {
     const trimmedInput = searchInput.trim();
 
@@ -72,6 +69,15 @@ const Products = () => {
       }
     }
   }, [searchInput, products]);
+
+  const handleSortChange = (option) => {
+    setSortOption(option);
+    setIsSortDropdownOpen(false);
+  };
+
+  const handleLoadMore = () => {
+    setLoadedCount((prevCount) => prevCount + 10);
+  }
 
   const handleSearchKeyDown = (e) => {
     if (e.key === "Enter") {
@@ -105,7 +111,6 @@ const Products = () => {
             <SuccessAlert message={"Product was successfully updated!"} />
           </div>
         )}
-
 
         <div className="flex justify-center w-full py-4">
           <div className="relative w-full max-w-xs">
@@ -206,11 +211,29 @@ const Products = () => {
             </div>
           ) : (
             <div className="flex justify-center gap-[15px] flex-wrap mb-[9px]">
-              {filteredProducts.map((product) => (
+              {filteredProducts.slice(0, loadedCount).map((product) => (
                 <ProductCard key={product.id} data={product} />
               ))}
             </div>
           )}
+
+          {filteredProducts.length > 0 && (
+            <div className="text-center text-gray-600 font-mont mt-2" >
+              {Math.min(loadedCount, filteredProducts.length)} of {filteredProducts.length} products showing
+            </div>
+          )}
+
+          {loadedCount < filteredProducts.length && (
+            <div className="flex justify-center">
+              <button
+                onClick={handleLoadMore}
+                className="font-mont bg-black text-white px-6 py-3 rounded-md mt-4"
+              >
+                Load More
+              </button>
+            </div>
+          )}
+
         </div>
       </div>
     </section>

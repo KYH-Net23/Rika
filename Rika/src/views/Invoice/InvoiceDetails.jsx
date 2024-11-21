@@ -9,14 +9,14 @@ const InvoiceDetails = () => {
     useEffect(() => {
         const fetchInvoice = async () => {
             try {
-                const response = await fetch(`/api/invoices/${id}`); 
+                const response = await fetch(`http://localhost:5000/api/getoneinvoice/${id}`);
                 if (!response.ok) {
-                    throw new Error("Failed to fetch invoice");
+                    throw new Error(`Invoice with ID ${id} not found.`);
                 }
                 const data = await response.json();
                 setInvoice(data);
             } catch (err) {
-                setError("Invoice not found");
+                setError(err.message);
             }
         };
 
@@ -24,21 +24,18 @@ const InvoiceDetails = () => {
     }, [id]);
 
     return (
-        <div>
+        <div className="container mx-auto px-4 py-6">
             {error && <p className="text-red-500">{error}</p>}
             {invoice ? (
                 <div>
                     <h1 className="text-2xl font-bold mb-4">Invoice Details</h1>
-                    <p><strong>Invoice ID:</strong> {invoice.id}</p>
-                    <p><strong>Customer:</strong> {invoice.customerName}</p>
+                    <p><strong>Invoice ID:</strong> {invoice.invoiceId}</p>
+                    <p><strong>Customer ID:</strong> {invoice.customerId}</p>
+                    <p><strong>Order ID:</strong> {invoice.orderId}</p>
                     <p><strong>Date:</strong> {invoice.date}</p>
-                    <p><strong>Total:</strong> ${invoice.total}</p>
-                    <p><strong>Items:</strong></p>
-                    <ul>
-                        {invoice.items.map((item, index) => (
-                            <li key={index}>{item.name} - ${item.price}</li>
-                        ))}
-                    </ul>
+                    <p><strong>Due Date:</strong> {invoice.dueDate}</p>
+                    <p><strong>Status:</strong> {invoice.status}</p>
+                    <p><strong>Total:</strong> {invoice.amount} kr</p>
                 </div>
             ) : (
                 <p>Loading...</p>

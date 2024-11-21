@@ -1,11 +1,11 @@
 
 import {useContext, useEffect} from "react";
-import {AuthContext} from "../../lib/AuthProvider.jsx";
+import {UserContext} from "../../lib/AuthProvider.jsx";
 import LogoutButton from "../../common/LogoutButton.jsx";
 import { useNavigate } from 'react-router-dom';
 
 const AdminLandingPage = () => {
-    const {userRole, isAuthenticated, checkAuth} = useContext(AuthContext);
+    const {userRole, isAuthenticated, checkAuth} = useContext(UserContext);
     const navigate = useNavigate();
     
     const toCreateProduct = () => {
@@ -42,14 +42,11 @@ const AdminLandingPage = () => {
                     className="w-[130px] bg-green-500 text-white p-2 rounded hover:bg-green-800 mt-4">
                     Create Product
                 </button>
-                <button
-                onClick={toAllInvoices}
-                id="invoicesButton"
-                type="button"
-                className="w-[130px] bg-blue-500 text-white p-2 rounded hover:bg-blue-800 mt-4"
-            >
-                All Invoices
-            </button>
+                <button onClick={() => navigate('/all-invoices')}
+    className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+>
+    All Invoices
+</button>
         </div>
     );
 };

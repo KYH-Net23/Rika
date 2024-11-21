@@ -13,25 +13,38 @@ const ProductDetails = () => {
     brand: "",
     model: "",
     description: "",
-    price: "",
-    image: ""
+    price: 0,
+    image: "",
+    size: []
   });
-  
+
+  const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
     const fetchProductDetails = async () => {
+      setIsLoading(true);
       const data = await getProductData(id);
       setProductDetails(data);
+      setIsLoading(false);
     };
-    fetchProductDetails();
-  }, [id]);
+    if (!productDetails.brand) {
+      fetchProductDetails();
+    }
+  }, [id, productDetails.brand, getProductData]);
 
-    return (
+  return (
+    <>
+      <Navbar />
+      {isLoading ? (
+        <div>Loading...</div>
+      ) : (
         <>
-            <Navbar />
-            <ImageSection productImage={productDetails.image} />
-            <Detailssection productDetails={productDetails} />
+          <ImageSection productImage={productDetails.image} />
+          <Detailssection productDetails={productDetails} />
         </>
-    )
+      )}
+    </>
+  )
 }
 
 export default ProductDetails
