@@ -17,11 +17,11 @@ const PaymentOptions = ({ slideNumber, clickPrevFunc, clickNextFunc }) => {
         <div className="mt-4 p-4 border rounded-lg border-black">
           <div className="flex justify-between">
             <div className="flex gap-2">
-              <label class="flex items-center space-x-2">
+              <label className="flex items-center space-x-2">
                 <input
                   type="radio"
-                  checked
-                  class="w-5 h-5 border-gray-300 checked:bg-gray-500 checked:ring-gray-500 focus:ring-gray-500"
+                  defaultChecked
+                  className="w-5 h-5 border-gray-300 checked:bg-gray-500 checked:ring-gray-500 focus:ring-gray-500"
                 />
               </label>
               <h3 className="font-mont font-semibold flex flex-col">
@@ -51,7 +51,10 @@ const PaymentOptions = ({ slideNumber, clickPrevFunc, clickNextFunc }) => {
           </div>
         </div>
         <div className="flex w-full justify-end mt-6">
-          <button onClick={clickNextFunc} className="flex gap-5 justify-center px-4 py-2.5 w-full max-w-[325px] bg-black rounded-xl leading-[33.28px] text-white transition-transform duration-200 transform hover:scale-105 hover:bg-gray-700">
+          <button
+            onClick={clickNextFunc}
+            className="flex gap-5 justify-center px-4 py-2.5 w-full max-w-[325px] bg-black rounded-xl leading-[33.28px] text-white transition-transform duration-200 transform hover:scale-105 hover:bg-gray-700"
+          >
             <span className="font-mont font-medium text-base">
               Order Summary
             </span>
