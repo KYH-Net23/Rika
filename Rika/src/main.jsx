@@ -29,6 +29,7 @@ import Register from "./views/Register.jsx";
 import AllInvoices from "./views/Invoice/AllInvoices.jsx";
 import ProductReturnPage from "./views/customerpages/Orders/Returns/ReturnPage.jsx";
 import ShippingOptions from "./views/shipping/ShippingOptions.jsx";
+import ReportPage from "./views/adminpages/ReportPage.jsx";
 
 createRoot(document.getElementById("root")).render(
 
@@ -75,6 +76,14 @@ createRoot(document.getElementById("root")).render(
                     element={
                       <ProtectedRoute requiredRole="admin">
                         <AllInvoices />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/reports"
+                    element={
+                      <ProtectedRoute requiredRole="admin">
+                        <ReportPage />
                       </ProtectedRoute>
                     }
                   />

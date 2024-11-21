@@ -6,19 +6,19 @@ import { useProductContext } from "../../../../lib/ProductProvider";
 import HeartIcon from "../../../../assets/icons/HeartIcon";
 import BagWhite from "../../../../assets/icons/BagWhite";
 
-<<<<<<< HEAD
+
 import ReviewForm from "../../../../components/Product/ReviewForm";
 import ReviewList from "../../../../components/Product/ReviewList";
+import SuccessAlert from "../../../../common/SuccessAlert";
+import log from "eslint-plugin-react/lib/util/log.js";
 
 
 
 const Detailssection = (isVerifiedPurchaser) => {
-=======
-import SuccessAlert from "../../../../common/SuccessAlert";
-import log from "eslint-plugin-react/lib/util/log.js";
 
-const Detailssection = () => {
->>>>>>> 352bb519112d330d167e0ab2c159d97d6a9afc7b
+
+// const Detailssection = () => {
+
   const { id } = useParams();
   const { getProductData } = useProductContext();
   const [productDetails, setProductDetails] = useState({

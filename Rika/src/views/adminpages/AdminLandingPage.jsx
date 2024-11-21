@@ -42,11 +42,16 @@ const AdminLandingPage = () => {
                     className="w-[130px] bg-green-500 text-white p-2 rounded hover:bg-green-800 mt-4">
                     Create Product
                 </button>
+
                 <button onClick={() => navigate('/all-invoices')}
-    className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
->
-    All Invoices
-</button>
+                    className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
+                    All Invoices
+                </button>
+
+                <button onClick={() => navigate('/reports')}
+                    className="bg-yellow-500 text-white px-4 py-2 rounded-md hover:bg-red-600">
+                    Reports
+                </button>
         </div>
     );
 };
