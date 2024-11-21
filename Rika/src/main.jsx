@@ -7,6 +7,7 @@ import ProtectedRoute from "./lib/ProtectedRoute.jsx";
 import { ProductProvider } from "./lib/ProductProvider.jsx";
 import { ShippingProvider } from "./lib/ShippingOptionsProvider.jsx";
 import { PaymentProvider } from "./lib/PaymentProvider.jsx";
+import { InvoiceProvider } from "./lib/InvoiceProvider";
 
 import "./assets/css/main.css";
 
@@ -30,6 +31,7 @@ import ShippingOptions from "./views/shipping/ShippingOptions.jsx";
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter>
+    <InvoiceProvider>
       <AuthProvider>
         <ProductProvider>
           <ShippingProvider>
@@ -79,6 +81,7 @@ createRoot(document.getElementById("root")).render(
           </ShippingProvider>
         </ProductProvider>
       </AuthProvider>
+      </InvoiceProvider>
     </BrowserRouter>
   </StrictMode>
 );
