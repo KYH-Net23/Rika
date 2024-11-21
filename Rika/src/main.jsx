@@ -7,6 +7,7 @@ import ProtectedRoute from "./lib/ProtectedRoute.jsx";
 import { ProductProvider } from "./lib/ProductProvider.jsx";
 import { ShippingProvider } from "./lib/ShippingOptionsProvider.jsx";
 import { PaymentProvider } from "./lib/PaymentProvider.jsx";
+import { InvoiceProvider } from "./lib/InvoiceProvider";
 
 import "./assets/css/main.css";
 
@@ -23,14 +24,16 @@ import CreateProduct from "./views/CreateProduct";
 import Users from "./views/Users";
 import RedirectToPaymentForm from "./views/payment/RedirectToPaymentForm.jsx";
 import Register from "./views/Register.jsx";
-import AllInvoices from "./views/AllInvoices";
+import AllInvoices from "./views/Invoice/AllInvoices.jsx";
 import ShippingOptions from "./views/shipping/ShippingOptions.jsx";
 import Checkout from "./views/Checkout.jsx";
 import ProductReturnPage from "./views/customerpages/Orders/Returns/ReturnPage.jsx";
 
 createRoot(document.getElementById("root")).render(
+
   <StrictMode>
     <BrowserRouter>
+    <InvoiceProvider>
       <AuthProvider>
         <ProductProvider>
           <ShippingProvider>
@@ -38,53 +41,22 @@ createRoot(document.getElementById("root")).render(
               <Header />
               <div className="px-4 pt-10 pb-[86px]">
                 <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/products" element={<Products />} />
+                  <Route path="/productdetails/:id" element={<ProductDetails />} />
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/productscreate" element={<CreateProduct />} />
+                  <Route path="/admin/edit-product/:id" element={<EditProduct />} />
+                  <Route path="/users" element={<Users />} />
+                  <Route path="/register" element={<Register />} />
+                  <Route path="/paymentformtest" element={<RedirectToPaymentForm />} />
                   <Route
                     path="/productReturn"
                     element={<ProductReturnPage />}
                   />
-                  <Route path="/" element={<Home />} />
-                  <Route path="/products" element={<Products />} />
-                  <Route
-                    path="/productdetails/:id"
-                    element={<ProductDetails />}
-                  />
-                  <Route path="/login" element={<Login />} />
-                  <Route path="/productscreate" element={<CreateProduct />} />
-                  <Route
-                    path="/admin/edit-product/:id"
-                    element={<EditProduct />}
-                  />
-                  <Route path="/users" element={<Users />} />
-                  <Route path="/register" element={<Register />} />
-                  <Route
-                    path="/paymentformtest"
-                    element={<RedirectToPaymentForm />}
-                  />
                   <Route path="/shipping" element={<ShippingOptions />} />
                   <Route path="/return" element={<ReturnFromPayment />} />
                   <Route path="/checkout" element={<Checkout />} />
-                  <Route
-                    path="/customer"
-                    element={
-                      <ProtectedRoute requiredRole="customer">
-                        <CustomerLandingPage />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route path="/login" element={<Login />} />
-                  <Route path="/productscreate" element={<CreateProduct />} />
-                  <Route
-                    path="/admin/edit-product/:id"
-                    element={<EditProduct />}
-                  />
-                  <Route path="/users" element={<Users />} />
-                  <Route path="/register" element={<Register />} />
-                  <Route
-                    path="/paymentformtest"
-                    element={<RedirectToPaymentForm />}
-                  />
-                  <Route path="/shipping" element={<ShippingOptions />} />
-                  <Route path="/return" element={<ReturnFromPayment />} />
                   <Route
                     path="/customer"
                     element={
@@ -115,6 +87,8 @@ createRoot(document.getElementById("root")).render(
           </ShippingProvider>
         </ProductProvider>
       </AuthProvider>
+      </InvoiceProvider>
     </BrowserRouter>
   </StrictMode>
+
 );

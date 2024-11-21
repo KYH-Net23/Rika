@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-import { AuthContext } from "../../../../lib/AuthProvider";
+import { UserContext } from "../../../../lib/AuthProvider";
 import { useProductContext } from "../../../../lib/ProductProvider";
 
 import ArrowBack from "../../../../common/ArrowBack";
@@ -16,7 +16,7 @@ const Navbar = () => {
   const { deleteProduct } = useProductContext();
   const [isModalOpen, setIsModalOpen] = useState(false);
   let admin = false;
-  const { userRole, isAuthenticated, checkAuth } = useContext(AuthContext);
+  const { userRole, isAuthenticated, checkAuth } = useContext(UserContext);
 
   useEffect(() => {
     const authorizeUser = async () => {

@@ -1,9 +1,9 @@
 import React, { useContext, useEffect } from "react";
-import { AuthContext } from "../../lib/AuthProvider.jsx";
+import { UserContext } from "../../lib/AuthProvider.jsx";
 import LogoutButton from "../../common/LogoutButton.jsx";
 
 const CustomerLandingPage = () => {
-  const { userRole, isAuthenticated, checkAuth } = useContext(AuthContext);
+  const { userRole, isAuthenticated, checkAuth } = useContext(UserContext);
 
   useEffect(() => {
     const authorizeUser = async () => {
