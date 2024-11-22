@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
 import ArrowBack from "../../../../common/ArrowBack";
+import { usePaymentContext } from "../../../../lib/PaymentProvider";
 
 const OrderSummary = ({ slideNumber, clickNextFunc, clickPrevFunc }) => {
   const [cartData, setCartData] = useState([]);
   const [customerData, setCustomerData] = useState([]);
   const [shippingData, setShippingData] = useState(null);
   const [paymentData, setPaymentData] = useState([{ paymentType: "Stripe" }]);
+  const [orderData, setOrderData] = useState({});
+  const { createStripeSession } = usePaymentContext();
 
   const fetchLocalStorage = () => {
     const cartItems = JSON.parse(localStorage.getItem("cartItems"));
@@ -17,13 +20,79 @@ const OrderSummary = ({ slideNumber, clickNextFunc, clickPrevFunc }) => {
     setCartData(cartItems);
     setCustomerData(customerInfo);
     setShippingData(shippingInfo);
+    updateOrderData(cartItems, customerInfo, shippingInfo);
+  };
+
+  const updateOrderData = (cart, customer, shipping) => {
+    // Update Products
+    const transformedProducts = cart.map(product => ({
+      name: `${product.model} - ${product.brand}`,
+      productId: product.id,
+      description: product.description,
+      amount: product.quantity,
+      price: product.price,
+      imageUrl: product.image,
+      size: product.size,
+      category: product.category,
+    }));
+
+    // Update Customer Info
+    const customerDeliveryInfo = customer
+      ? {
+        streetAddress: customer.streetAddress || "",
+        city: customer.city || "",
+        postalCode: customer.zipCode || "",
+        country: customer.country || "",
+        phoneNumber: `+46${customer.telephone?.slice(1) || ""}`,
+        fullName: `${customer.firstName || ""} ${customer.lastName || ""}`,
+      }
+      : null;
+
+    // Update Shipping Info
+    const postalAgentInfo = shipping?.servicePoint
+      ? {
+        streetAddress: `${shipping.servicePoint.visitingAddress.streetName || ""} ${shipping.servicePoint.visitingAddress.streetNumber || ""}`,
+        city: shipping.servicePoint.visitingAddress.city || "",
+        postalCode: shipping.servicePoint.visitingAddress.postalCode || "",
+        country: shipping.servicePoint.visitingAddress.countryCode || "",
+        phoneNumber: "",
+        postalAgentName: shipping.servicePoint.name || "",
+      }
+      : null;
+
+    const orderArrival = shipping?.deliveryOption?.timeOfArrival
+      ? new Date(shipping.deliveryOption.timeOfArrival).toISOString().split('T')[0]
+      : null;
+
+    const shippingPrice = shipping?.deliveryOption?.price || 0;
+
+    setOrderData(prevData => ({
+      ...prevData,
+      products: transformedProducts,
+      date: new Date().toISOString(),
+      receivingEmail: customer?.email || "",
+      shipping: {
+        ...prevData.shipping,
+        customerDeliveryInformation: customerDeliveryInfo,
+        postalAgentDeliveryInformation: postalAgentInfo,
+        orderArrival,
+      },
+      shippingPrice,
+      orderTotal: (cart.reduce(
+        (total, product) => total + product.price * product.quantity,
+        0
+      ) + cart.reduce(
+        (total, product) =>
+          total + product.price * product.quantity * 0.25,
+        0
+      )),
+    }));
   };
 
   useEffect(() => {
     fetchLocalStorage();
   }, []);
 
-  console.log();
   return (
     <>
       <ArrowBack clickFunc={clickPrevFunc} />
@@ -48,9 +117,8 @@ const OrderSummary = ({ slideNumber, clickNextFunc, clickPrevFunc }) => {
               {cartData.map((product, index) => (
                 <tr
                   key={index}
-                  className={`border-b border-gray-200 ${
-                    index % 2 === 0 ? "bg-gray-50" : ""
-                  }`}
+                  className={`border-b border-gray-200 ${index % 2 === 0 ? "bg-gray-50" : ""
+                    }`}
                 >
                   <td className="px-4 py-2">
                     <h2 className="font-mont font-semibold">{product.brand}</h2>
@@ -186,11 +254,11 @@ const OrderSummary = ({ slideNumber, clickNextFunc, clickPrevFunc }) => {
             Payment Information
           </h2>
           <h3 className="font-mont">
-            Paument method: {paymentData[0].paymentType}
+            Payment method: {paymentData[0].paymentType}
           </h3>
         </div>
         <div className="w-full flex justify-end">
-          <button className="flex gap-5 justify-center px-4 py-2.5 w-full max-w-[325px] bg-black rounded-xl leading-[33.28px] text-white transition-transform duration-200 transform hover:scale-105 hover:bg-gray-700">
+          <button onClick={() => createStripeSession(orderData)} className="flex gap-5 justify-center px-4 py-2.5 w-full max-w-[325px] bg-black rounded-xl leading-[33.28px] text-white transition-transform duration-200 transform hover:scale-105 hover:bg-gray-700">
             <span className="font-mont font-medium text-base">
               Confirm Order
             </span>

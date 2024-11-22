@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useRef, useState, useEffect } from 'react';
 import { loadStripe } from '@stripe/stripe-js';
+import { useNavigate } from 'react-router-dom';
 
 const stripePromise = loadStripe('pk_test_51QJtOIKTnkBH3a68Mw5LucP5WEubaAfvjGdySsq0rjdisrYHxwDmbrPEzmnrSA7JjaziZdIS5ed8GP0yJ3HCu50s00sCkbfLVt');
 
@@ -11,6 +12,7 @@ export const PaymentProvider = ({ children }) => {
     const [status, setStatus] = useState(null);
     const [customerEmail, setCustomerEmail] = useState('');
     const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
 
     const fetchSessionStatus = async (sessionId) => {
         if (!sessionId) {
@@ -21,6 +23,7 @@ export const PaymentProvider = ({ children }) => {
 
         if (sessionStorage.getItem(`emailSent-${sessionId}`)) {
             console.log("Email already sent");
+            navigate('/');
             setLoading(false);
             return null;
         }
@@ -44,6 +47,8 @@ export const PaymentProvider = ({ children }) => {
             }
         } catch (error) {
             console.error("Error fetching session status:", error);
+            fetchSessionStatus(); // failsafe s
+            // window.location.reload();
         } finally {
             setLoading(false);
         }
@@ -52,14 +57,14 @@ export const PaymentProvider = ({ children }) => {
     };
 
 
-    const createStripeSession = async (orderDetails) => {
+    const createStripeSession = async (orderData) => {
         try {
             const response = await fetch(`https://rika-payment.azurewebsites.net/create-checkout-session`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(orderDetails),
+                body: JSON.stringify(orderData),
             });
             const data = await response.json();
             if (response.ok) {
