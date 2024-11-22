@@ -1,7 +1,6 @@
 import { useState } from "react";
 
 const ProductReturnPage = () => {
-  // Mock products for testing
   const mockProducts = [
     {
       id: 1,
@@ -31,13 +30,20 @@ const ProductReturnPage = () => {
       orderId: "33333333-3333-3333-3333-333333333333",
       date: "24-11-18",
     },
+    {
+      id: 5,
+      name: "Nike Spear",
+      price: 30,
+      orderId: "33333333-3333-3333-3333-333333333333",
+      date: "24-11-18",
+    },
   ];
 
-  const [products] = useState(mockProducts); // Initialize with mock products
+  const [products] = useState(mockProducts);
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
   const [returnReason, setReturnReason] = useState("");
-  const [resolutionType, setResolutionType] = useState(""); // New state for resolutionType
+  const [resolutionType, setResolutionType] = useState("");
   const [returnId, setReturnId] = useState(null);
 
   const handleProductSelection = (id) => {
@@ -50,9 +56,9 @@ const ProductReturnPage = () => {
 
   const handleSelectAll = () => {
     if (selectAll) {
-      setSelectedProducts([]); // Uncheck all
+      setSelectedProducts([]);
     } else {
-      setSelectedProducts(products.map((product) => product.id)); // Check all
+      setSelectedProducts(products.map((product) => product.id));
     }
     setSelectAll(!selectAll);
   };
@@ -81,11 +87,10 @@ const ProductReturnPage = () => {
       return;
     }
 
-    // Create a return request payload
     const returnRequest = {
       orderId: products.find((product) => product.id === selectedProducts[0])
-        .orderId, // Use the orderId of the first selected product
-      userId: "11111111-1111-1111-1111-111111111111", // Example UserId
+        .orderId,
+      userId: "11111111-1111-1111-1111-111111111111",
       returnReason: returnReason,
       resolutionType: resolutionType,
     };
@@ -114,7 +119,6 @@ const ProductReturnPage = () => {
       const data = await response.json();
       console.log("Return request submitted successfully. Response:", data);
 
-      // Set the real returnId from the API response
       setReturnId(data.returnId);
       console.log("Updated returnId state:", data.returnId);
       alert("Return submitted successfully!");
