@@ -28,6 +28,7 @@ import AllInvoices from "./views/Invoice/AllInvoices.jsx";
 import ShippingOptions from "./views/shipping/ShippingOptions.jsx";
 import Checkout from "./views/Checkout.jsx";
 import ProductReturnPage from "./views/customerpages/Orders/Returns/ReturnPage.jsx";
+import OrderConfirmation from "./views/OrderConfirmation.jsx";
 
 createRoot(document.getElementById("root")).render(
 
@@ -81,6 +82,7 @@ createRoot(document.getElementById("root")).render(
                       </ProtectedRoute>
                     }
                   />
+                  <Route path="/orderconfirmation" element={<OrderConfirmation/>}/>
                 </Routes>
               </div>
             </PaymentProvider>
