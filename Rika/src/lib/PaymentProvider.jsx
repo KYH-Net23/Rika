@@ -35,7 +35,7 @@ export const PaymentProvider = ({ children }) => {
         }
 
         try {
-            const response = await fetch(`https://localhost:7127/session-status?session_id=${sessionId}`);
+            const response = await fetch(`https://rika-payment.azurewebsites.net/session-status?session_id=${sessionId}`);
 
             const data = await response.json();
             console.log(data);
@@ -65,7 +65,7 @@ export const PaymentProvider = ({ children }) => {
 
     const createStripeSession = async (orderData) => {
         try {
-            const response = await fetch(`https://localhost:7127/create-checkout-session`, {
+            const response = await fetch(`https://rika-payment.azurewebsites.net/create-checkout-session`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
