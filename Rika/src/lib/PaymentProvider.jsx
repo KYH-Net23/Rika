@@ -17,6 +17,7 @@ export const PaymentProvider = ({ children }) => {
     const fetchSessionStatus = async (sessionId) => {
         if (!sessionId) {
             console.error("Session ID not found in the URL.");
+            fetchSessionStatus();
             setLoading(false);
             return null;
         }
@@ -70,6 +71,7 @@ export const PaymentProvider = ({ children }) => {
             if (response.ok) {
                 const stripe = await stripePromise;
                 stripe.redirectToCheckout({ sessionId: data.sessionId });
+                localStorage.setItem("OrderId", data.orderId);
             } else {
                 console.log('Data error:', data.error);
             }
