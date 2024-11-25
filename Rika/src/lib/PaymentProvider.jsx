@@ -12,34 +12,34 @@ export const PaymentProvider = ({ children }) => {
     const [status, setStatus] = useState(null);
     const [customerEmail, setCustomerEmail] = useState('');
     const [loading, setLoading] = useState(true);
-    const [orderId, setOrderId] = useState(0);
+    const [reloadAttempted, setReloadAttempted] = useState(false);
     const navigate = useNavigate();
 
     const fetchSessionStatus = async (sessionId) => {
         if (!sessionId) {
+            if (!reloadAttempted) {
+                setReloadAttempted(true);
+                window.location.reload();
+            }
             console.error("Session ID not found in the URL.");
-            fetchSessionStatus();
-            // setLoading(false);
+            setLoading(false);
             return null;
         }
 
         if (sessionStorage.getItem(`emailSent-${sessionId}`)) {
             console.log("Email already sent");
-            navigate('/');
+            // navigate('/');
+            setStatus('alreadySent');
             setLoading(false);
             return null;
         }
 
         try {
             const response = await fetch(`https://localhost:7127/session-status?session_id=${sessionId}`);
-            if (!response.ok) {
-                throw new Error(`Failed to fetch session status. HTTP Status: ${response.status}`);
-            }
 
             const data = await response.json();
             console.log(data);
-            setOrderId(data.orderId);
-            if (data.status === 'complete') {
+            if (data.status === 'complete' && response.ok) {
                 sessionStorage.setItem(`emailSent-${sessionId}`, 'true');
                 console.log(`Email sent successfully! to ${data.customer_email}`);
                 setStatus(data.status);
@@ -51,8 +51,10 @@ export const PaymentProvider = ({ children }) => {
             }
         } catch (error) {
             console.error("Error fetching session status:", error);
-            fetchSessionStatus(); // failsafe
-            // window.location.reload();
+            if (!reloadAttempted) {
+                setReloadAttempted(true);
+                fetchSessionStatus(sessionId); // failsafe
+            }
         } finally {
             setLoading(false);
         }
@@ -71,9 +73,9 @@ export const PaymentProvider = ({ children }) => {
                 body: JSON.stringify(orderData),
             });
             const data = await response.json();
-            console.log(response);
-            console.log(data);
             if (response.ok) {
+                localStorage.setItem("OrderId", data.orderId);
+                localStorage.setItem("StripeSessionId", data.sessionId);
                 const stripe = await stripePromise;
                 stripe.redirectToCheckout({ sessionId: data.sessionId });
             } else {
@@ -82,10 +84,11 @@ export const PaymentProvider = ({ children }) => {
         } catch (err) {
             console.error('Error during checkout session creation:', err);
         }
+
     };
 
     return (
-        <PaymentContext.Provider value={{ status, customerEmail, loading, createStripeSession, fetchSessionStatus, orderId }}>
+        <PaymentContext.Provider value={{ status, customerEmail, loading, createStripeSession, fetchSessionStatus }}>
             {children}
         </PaymentContext.Provider>
     );
