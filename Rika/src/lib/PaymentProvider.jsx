@@ -13,10 +13,13 @@ export const PaymentProvider = ({ children }) => {
     const [customerEmail, setCustomerEmail] = useState('');
     const [loading, setLoading] = useState(true);
     const [stripeSessionId, setStripeSessionId] = useState(null);
+    const [orderId, setOrderId] = useState(0);
     const navigate = useNavigate();
 
     const fetchSessionStatus = async (sessionId) => {
-        setStripeSessionId(sessionId);
+        if (stripeSessionId == null || stripeSessionId !== sessionId) {
+            setStripeSessionId(sessionId);
+        }
         if (!sessionId) {
             console.error("Session ID not found in the URL.");
             fetchSessionStatus();
@@ -76,6 +79,7 @@ export const PaymentProvider = ({ children }) => {
                 localStorage.setItem("OrderId", data.orderId);
                 localStorage.setItem("StripeSessionId", data.sessionId);
                 setStripeSessionId(data.sessionId);
+                setOrderId(data.orderId);
             } else {
                 console.log('Data error:', data.error);
             }
@@ -85,7 +89,7 @@ export const PaymentProvider = ({ children }) => {
     };
 
     return (
-        <PaymentContext.Provider value={{ status, customerEmail, loading, createStripeSession, fetchSessionStatus }}>
+        <PaymentContext.Provider value={{ status, customerEmail, loading, stripeSessionId, orderId, createStripeSession, fetchSessionStatus }}>
             {children}
         </PaymentContext.Provider>
     );
