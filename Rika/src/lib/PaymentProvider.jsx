@@ -12,12 +12,14 @@ export const PaymentProvider = ({ children }) => {
     const [status, setStatus] = useState(null);
     const [customerEmail, setCustomerEmail] = useState('');
     const [loading, setLoading] = useState(true);
+    const [orderId, setOrderId] = useState(0);
     const navigate = useNavigate();
 
     const fetchSessionStatus = async (sessionId) => {
         if (!sessionId) {
             console.error("Session ID not found in the URL.");
-            setLoading(false);
+            fetchSessionStatus();
+            // setLoading(false);
             return null;
         }
 
@@ -29,12 +31,14 @@ export const PaymentProvider = ({ children }) => {
         }
 
         try {
-            const response = await fetch(`https://rika-payment.azurewebsites.net/session-status?session_id=${sessionId}`);
+            const response = await fetch(`https://localhost:7127/session-status?session_id=${sessionId}`);
             if (!response.ok) {
                 throw new Error(`Failed to fetch session status. HTTP Status: ${response.status}`);
             }
 
             const data = await response.json();
+            console.log(data);
+            setOrderId(data.orderId);
             if (data.status === 'complete') {
                 sessionStorage.setItem(`emailSent-${sessionId}`, 'true');
                 console.log(`Email sent successfully! to ${data.customer_email}`);
@@ -47,7 +51,7 @@ export const PaymentProvider = ({ children }) => {
             }
         } catch (error) {
             console.error("Error fetching session status:", error);
-            fetchSessionStatus(); // failsafe s
+            fetchSessionStatus(); // failsafe
             // window.location.reload();
         } finally {
             setLoading(false);
@@ -59,7 +63,7 @@ export const PaymentProvider = ({ children }) => {
 
     const createStripeSession = async (orderData) => {
         try {
-            const response = await fetch(`https://rika-payment.azurewebsites.net/create-checkout-session`, {
+            const response = await fetch(`https://localhost:7127/create-checkout-session`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -67,6 +71,8 @@ export const PaymentProvider = ({ children }) => {
                 body: JSON.stringify(orderData),
             });
             const data = await response.json();
+            console.log(response);
+            console.log(data);
             if (response.ok) {
                 const stripe = await stripePromise;
                 stripe.redirectToCheckout({ sessionId: data.sessionId });
@@ -79,7 +85,7 @@ export const PaymentProvider = ({ children }) => {
     };
 
     return (
-        <PaymentContext.Provider value={{ status, customerEmail, loading, createStripeSession, fetchSessionStatus }}>
+        <PaymentContext.Provider value={{ status, customerEmail, loading, createStripeSession, fetchSessionStatus, orderId }}>
             {children}
         </PaymentContext.Provider>
     );
