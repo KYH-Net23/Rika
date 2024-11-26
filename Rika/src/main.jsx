@@ -2,13 +2,14 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
+import ProtectedRoute from "./lib/ProtectedRoute.jsx";
 import { OrderProvider } from "./lib/OrderProvider.jsx";
 import { AuthProvider } from "./lib/AuthProvider.jsx";
-import ProtectedRoute from "./lib/ProtectedRoute.jsx";
 import { ProductProvider } from "./lib/ProductProvider.jsx";
 import { ShippingProvider } from "./lib/ShippingOptionsProvider.jsx";
 import { PaymentProvider } from "./lib/PaymentProvider.jsx";
 import { InvoiceProvider } from "./lib/InvoiceProvider";
+import { LoggingProvider } from "./lib/LoggingProvider.jsx";
 
 import "./assets/css/main.css";
 
@@ -34,79 +35,81 @@ import OrderConfirmation from "./views/OrderConfirmation.jsx";
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter>
-      <OrderProvider>
-        <InvoiceProvider>
-          <AuthProvider>
-            <ProductProvider>
-              <ShippingProvider>
-                <PaymentProvider>
-                  <Header />
-                  <div className="px-4 pt-10 pb-[86px]">
-                    <Routes>
-                      <Route path="/" element={<Home />} />
-                      <Route path="/products" element={<Products />} />
-                      <Route
-                        path="/productdetails/:id"
-                        element={<ProductDetails />}
-                      />
-                      <Route path="/login" element={<Login />} />
-                      <Route
-                        path="/productscreate"
-                        element={<CreateProduct />}
-                      />
-                      <Route
-                        path="/admin/edit-product/:id"
-                        element={<EditProduct />}
-                      />
-                      <Route path="/users" element={<Users />} />
-                      <Route path="/register" element={<Register />} />
-                      <Route
-                        path="/paymentformtest"
-                        element={<RedirectToPaymentForm />}
-                      />
-                      <Route
-                        path="/productReturn"
-                        element={<ProductReturnPage />}
-                      />
-                      <Route path="/shipping" element={<ShippingOptions />} />
-                      <Route path="/return" element={<ReturnFromPayment />} />
-                      <Route path="/checkout" element={<Checkout />} />
-                      <Route
-                        path="/customer"
-                        element={
-                          <ProtectedRoute requiredRole="customer">
-                            <CustomerLandingPage />
-                          </ProtectedRoute>
-                        }
-                      />
-                      <Route
-                        path="/admin"
-                        element={
-                          <ProtectedRoute requiredRole="admin">
-                            <AdminLandingPage />
-                          </ProtectedRoute>
-                        }
-                      />
-                      <Route
-                        path="/all-invoices"
-                        element={
-                          <ProtectedRoute requiredRole="admin">
-                            <AllInvoices />
-                          </ProtectedRoute>
-                        }
-                      />
-                      <Route
-                        path="/orderconfirmation"
-                        element={<OrderConfirmation />}
-                      />
-                    </Routes>
-                  </div>
-                </PaymentProvider>
-              </ShippingProvider>
-            </ProductProvider>
-          </AuthProvider>
-        </InvoiceProvider>
-      </OrderProvider>
+      <LoggingProvider>
+        <OrderProvider>
+          <InvoiceProvider>
+            <AuthProvider>
+              <ProductProvider>
+                <ShippingProvider>
+                  <PaymentProvider>
+                    <Header />
+                    <div className="px-4 pt-10 pb-[86px]">
+                      <Routes>
+                        <Route path="/" element={<Home />} />
+                        <Route path="/products" element={<Products />} />
+                        <Route
+                          path="/productdetails/:id"
+                          element={<ProductDetails />}
+                        />
+                        <Route path="/login" element={<Login />} />
+                        <Route
+                          path="/productscreate"
+                          element={<CreateProduct />}
+                        />
+                        <Route
+                          path="/admin/edit-product/:id"
+                          element={<EditProduct />}
+                        />
+                        <Route path="/users" element={<Users />} />
+                        <Route path="/register" element={<Register />} />
+                        <Route
+                          path="/paymentformtest"
+                          element={<RedirectToPaymentForm />}
+                        />
+                        <Route
+                          path="/productReturn"
+                          element={<ProductReturnPage />}
+                        />
+                        <Route path="/shipping" element={<ShippingOptions />} />
+                        <Route path="/return" element={<ReturnFromPayment />} />
+                        <Route path="/checkout" element={<Checkout />} />
+                        <Route
+                          path="/customer"
+                          element={
+                            <ProtectedRoute requiredRole="customer">
+                              <CustomerLandingPage />
+                            </ProtectedRoute>
+                          }
+                        />
+                        <Route
+                          path="/admin"
+                          element={
+                            <ProtectedRoute requiredRole="admin">
+                              <AdminLandingPage />
+                            </ProtectedRoute>
+                          }
+                        />
+                        <Route
+                          path="/all-invoices"
+                          element={
+                            <ProtectedRoute requiredRole="admin">
+                              <AllInvoices />
+                            </ProtectedRoute>
+                          }
+                        />
+                        <Route
+                          path="/orderconfirmation"
+                          element={<OrderConfirmation />}
+                        />
+                      </Routes>
+                    </div>
+                  </PaymentProvider>
+                </ShippingProvider>
+              </ProductProvider>
+            </AuthProvider>
+          </InvoiceProvider>
+        </OrderProvider>
+      </LoggingProvider>
     </BrowserRouter>
   </StrictMode>
 );

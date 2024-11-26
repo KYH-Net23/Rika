@@ -3,12 +3,13 @@ import YourCart from "./sections/products/checkout/OrderDetails";
 import Shipping from "./sections/products/checkout/Shipping";
 import PaymentOptions from "./sections/products/checkout/PaymentOptions";
 import OrderSummary from "./sections/products/checkout/OrderSummary";
+import { useLoggingContext } from "../lib/LoggingProvider";
 
 const Checkout = () => {
   const [data, setData] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
-  const [slide, setSlide] = useState(1);
-
+  const [slide, setSlide] = useState(3);
+  const { logButtonClickEvent } = useLoggingContext();
   const getCartData = () => {
     const cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
     const totalPrice = cartItems.reduce(
@@ -33,12 +34,14 @@ const Checkout = () => {
   const handleNext = () => {
     if (slide < 4) {
       setSlide(slide + 1);
+      // logButtonClickEvent();
     }
   };
 
   const handlePrev = () => {
     if (slide > 1) {
       setSlide(slide - 1);
+      // logButtonClickEvent();
     }
   };
 
