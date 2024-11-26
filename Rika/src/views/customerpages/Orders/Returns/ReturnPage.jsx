@@ -42,9 +42,10 @@ const ProductReturnPage = () => {
   const [products] = useState(mockProducts);
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
-  const [returnReason, setReturnReason] = useState("");
-  const [resolutionType, setResolutionType] = useState("");
+  const [returnReason, setReturnReason] = useState("Damaged/defective item");
+  const [resolutionType, setResolutionType] = useState("Refund");
   const [returnId, setReturnId] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleProductSelection = (id) => {
     setSelectedProducts((prev) =>
@@ -73,18 +74,11 @@ const ProductReturnPage = () => {
 
   const handleSubmit = async () => {
     if (!selectedProducts.length) {
-      alert("Please select at least one product to return.");
-      return;
-    }
-
-    if (!returnReason) {
-      alert("Please select a reason for the return.");
-      return;
-    }
-
-    if (!resolutionType) {
-      alert("Please select a resolution type (Refund or Exchange).");
-      return;
+      alert("Please select at least one product to initiate a return.");
+    } else if (!returnReason) {
+      alert("Please specify a reason for the return.");
+    } else if (!resolutionType) {
+      alert("Please select a resolution type: Refund or Exchange.");
     }
 
     const returnRequest = {
@@ -99,6 +93,7 @@ const ProductReturnPage = () => {
 
     console.log("Submitting return request:", returnRequest);
 
+    setIsLoading(true);
     try {
       const response = await fetch(
         `https://returnprovider.azurewebsites.net/api/returns`,
@@ -126,6 +121,8 @@ const ProductReturnPage = () => {
     } catch (error) {
       console.error("Error while submitting return request:", error);
       alert("An error occurred while submitting the return request.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -161,6 +158,7 @@ const ProductReturnPage = () => {
       document.body.appendChild(link);
       link.click();
       link.remove();
+      alert("Return label downloaded successfully!");
     } catch (error) {
       console.error("Error downloading return label:", error);
       alert("An error occurred while downloading the return label.");
@@ -207,7 +205,7 @@ const ProductReturnPage = () => {
                   {product.name}
                 </td>
                 <td className="border border-gray-200 px-4 py-2">
-                  {product.date}
+                  {new Date(product.date).toLocaleDateString()}
                 </td>
                 <td className="border border-gray-200 px-4 py-2 text-right">
                   {product.price}kr
@@ -219,12 +217,12 @@ const ProductReturnPage = () => {
       </div>
 
       <div className="mt-4">
-        <p>
+        <p className="font-bold">
           Total:{" "}
           {selectedProducts.reduce((total, id) => {
             const product = products.find((p) => p.id === id);
             return total + (product ? product.price : 0);
-          }, 0)}
+          }, 0)}{" "}
           kr
         </p>
       </div>
@@ -266,11 +264,13 @@ const ProductReturnPage = () => {
 
       <div className="w-full max-w-md">
         <button
-          type="button"
-          className="w-full bg-black text-white p-2 rounded hover:bg-gray-800 mt-4"
+          disabled={isLoading}
+          className={`w-full p-2 rounded mt-4 ${
+            isLoading ? "bg-gray-400" : "bg-black text-white hover:bg-gray-800"
+          }`}
           onClick={handleSubmit}
         >
-          Confirm Return
+          {isLoading ? "Submitting..." : "Confirm Return"}
         </button>
       </div>
 
