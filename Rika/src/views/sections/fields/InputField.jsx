@@ -2,7 +2,7 @@ import React from 'react';
 
 const InputField = ({ label, name, value, onChange, type = 'text', error }) => (
     <div className="mb-2 sm:mb-4">
-        <label className="block text-gray-700 text-sm sm:text-base">{label}</label>
+        {/* <label className="block text-gray-700 text-sm sm:text-base">{label}</label> */}
         <input
             type={type}
             name={name}
