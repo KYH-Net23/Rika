@@ -10,6 +10,8 @@ const AllInvoices = () => {
   const [searchTerm, setSearchTerm] = useState(""); // Search term
   const [searchFilter, setSearchFilter] = useState("invoiceId"); // Filter option
   const [filteredInvoices, setFilteredInvoices] = useState([]); // Filtered invoices
+  const [currentPage, setCurrentPage] = useState(1); // Pagination current page
+  const itemsPerPage = 5; // Number of items per page
 
   useEffect(() => {
     fetchInvoices(); // Fetch invoices when component mounts
@@ -44,7 +46,21 @@ const AllInvoices = () => {
   const handleReset = () => {
     setSearchTerm("");
     setSearchFilter("invoiceId");
+    setCurrentPage(1);
   };
+
+  const handleNextPage = () => {
+    setCurrentPage((prev) => prev + 1);
+  };
+
+  const handlePreviousPage = () => {
+    setCurrentPage((prev) => Math.max(prev - 1, 1));
+  };
+
+  const paginatedInvoices = filteredInvoices.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
   if (error) {
     return <p className="text-red-500 text-center mt-4">{error}</p>;
@@ -119,7 +135,7 @@ const AllInvoices = () => {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
-            {filteredInvoices.map((invoice) => (
+            {paginatedInvoices.map((invoice) => (
               <tr key={invoice.invoiceId} className="hover:bg-gray-50">
                 <td className="px-6 py-4 text-sm text-gray-700">{invoice.invoiceId}</td>
                 <td className="px-6 py-4 text-sm text-gray-700">{invoice.customerId}</td>
@@ -137,6 +153,31 @@ const AllInvoices = () => {
             ))}
           </tbody>
         </table>
+      </div>
+
+      {/* Pagination */}
+      <div className="flex justify-between items-center mt-4">
+        <button
+          onClick={handlePreviousPage}
+          disabled={currentPage === 1}
+          className={`px-4 py-2 rounded-md ${
+            currentPage === 1 ? "bg-gray-300 text-gray-500" : "bg-gray-500 text-white hover:bg-gray-600"
+          }`}
+        >
+          Previous
+        </button>
+        <p className="text-gray-700">Page {currentPage}</p>
+        <button
+          onClick={handleNextPage}
+          disabled={currentPage * itemsPerPage >= filteredInvoices.length}
+          className={`px-4 py-2 rounded-md ${
+            currentPage * itemsPerPage >= filteredInvoices.length
+              ? "bg-gray-300 text-gray-500"
+              : "bg-blue-500 text-white hover:bg-blue-600"
+          }`}
+        >
+          Next
+        </button>
       </div>
     </div>
   );
