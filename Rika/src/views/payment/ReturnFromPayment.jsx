@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { usePaymentContext } from '../../lib/PaymentProvider';
 const ReturnFromPayment = () => {
-    const { fetchSessionStatus, status, customerEmail, loading } = usePaymentContext();
+    const { fetchSessionStatus, status, loading } = usePaymentContext();
     const hasFetched = useRef(false);
     const navigate = useNavigate();
 
@@ -39,7 +39,7 @@ const ReturnFromPayment = () => {
         return (
             <section id="success" className="flex flex-col min-h-screen justify-center items-center space-y-4" >
                 <p>
-                    We appreciate your business! A confirmation email has been sent to {customerEmail}.
+                    We appreciate your business! A confirmation email has been sent to .
                     If you have any questions, please email <a href="mailto:orders@rika.com">orders@rika.com</a>.
                 </p>
                 <button

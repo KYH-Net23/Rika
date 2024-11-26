@@ -37,6 +37,13 @@ const OrderConfirmation = () => {
       </div>
     );
   }
+  if (status === 'error') {
+    return (
+      <div className="flex min-h-screen justify-center items-center">
+        <span className="ml-3 text-black">Something went wrong, refresh the page. Contact our support if that does not fix it.</span>
+      </div>
+    );
+  }
   if (status === 'complete' || status === 'alreadySent') {
 
     return (

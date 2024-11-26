@@ -76,6 +76,7 @@ const OrderSummary = ({ slideNumber, clickNextFunc, clickPrevFunc }) => {
         customerDeliveryInformation: customerDeliveryInfo,
         postalAgentDeliveryInformation: postalAgentInfo,
         orderArrival,
+        shippingCost: shippingPrice
       },
       shippingPrice,
       orderTotal: (cart.reduce(
