@@ -7,7 +7,7 @@ import OrderSummary from "./sections/products/checkout/OrderSummary";
 const Checkout = () => {
   const [data, setData] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
-  const [slide, setSlide] = useState(3);
+  const [slide, setSlide] = useState(1);
 
   const getCartData = () => {
     const cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
