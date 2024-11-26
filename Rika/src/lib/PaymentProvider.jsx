@@ -1,6 +1,5 @@
-import React, { createContext, useContext, useRef, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 import { loadStripe } from '@stripe/stripe-js';
-import { useNavigate } from 'react-router-dom';
 
 const stripePromise = loadStripe('pk_test_51QJtOIKTnkBH3a68Mw5LucP5WEubaAfvjGdySsq0rjdisrYHxwDmbrPEzmnrSA7JjaziZdIS5ed8GP0yJ3HCu50s00sCkbfLVt');
 
@@ -10,10 +9,8 @@ export const usePaymentContext = () => useContext(PaymentContext);
 
 export const PaymentProvider = ({ children }) => {
     const [status, setStatus] = useState(null);
-    const [customerEmail, setCustomerEmail] = useState('');
     const [loading, setLoading] = useState(true);
     const [reloadAttempted, setReloadAttempted] = useState(false);
-    const navigate = useNavigate();
 
     const fetchSessionStatus = async (sessionId) => {
         if (!sessionId) {
@@ -22,13 +19,13 @@ export const PaymentProvider = ({ children }) => {
                 window.location.reload();
             }
             console.error("Session ID not found in the URL.");
+            setStatus('error');
             setLoading(false);
             return null;
         }
 
         if (sessionStorage.getItem(`emailSent-${sessionId}`)) {
             console.log("Email already sent");
-            // navigate('/');
             setStatus('alreadySent');
             setLoading(false);
             return null;
@@ -39,11 +36,11 @@ export const PaymentProvider = ({ children }) => {
 
             const data = await response.json();
             console.log(data);
-            if (data.status === 'complete' && response.ok) {
+            if (data.status === 'complete') {
                 sessionStorage.setItem(`emailSent-${sessionId}`, 'true');
-                console.log(`Email sent successfully! to ${data.customer_email}`);
+                if (response.ok)
+                    console.log(`Email sent successfully!`);
                 setStatus(data.status);
-                setCustomerEmail(data.customer_email);
                 return data;
             } else {
                 console.warn("Session status not complete:", data.status);
@@ -55,10 +52,11 @@ export const PaymentProvider = ({ children }) => {
                 setReloadAttempted(true);
                 fetchSessionStatus(sessionId); // failsafe
             }
+            setStatus('error');
         } finally {
             setLoading(false);
         }
-        setStatus("fail");
+        setStatus('error');
         return null;
     };
 
@@ -84,11 +82,10 @@ export const PaymentProvider = ({ children }) => {
         } catch (err) {
             console.error('Error during checkout session creation:', err);
         }
-
     };
 
     return (
-        <PaymentContext.Provider value={{ status, customerEmail, loading, createStripeSession, fetchSessionStatus }}>
+        <PaymentContext.Provider value={{ status, loading, createStripeSession, fetchSessionStatus }}>
             {children}
         </PaymentContext.Provider>
     );
