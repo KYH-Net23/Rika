@@ -141,6 +141,12 @@ const Login = () => {
 
       <div className="mb-8 text-gray-400">───────────── or ─────────────</div>
       <div className="sm:w-6/12 w-11/12 flex flex-col items-center">
+      <LoginButton
+          color="#00cf34"
+          label={"Register new user"}
+          disabled={loading}
+          onClick={() => navigate("/register")}
+        />
         <LoginButton
           color="#3b5998"
           label={"Continue with Facebook"}
