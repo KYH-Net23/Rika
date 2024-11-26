@@ -7,10 +7,11 @@ export const useLoggingContext = () => useContext(LoggingContext);
 
 export const LoggingProvider = ({ children }) => {
     const navigate = useNavigate();
-    const eventQueue = useRef([]);
+    const userEventQueue = useRef([]);
     const hasLoaded = useRef(false);
     const location = useLocation();
-    const trackEvent = (eventName, eventType) => {
+
+    const registerUserEvent = (eventName, eventType) => {
         const event = {
             eventName,
             userId: "123",
@@ -18,26 +19,45 @@ export const LoggingProvider = ({ children }) => {
             pageUrl: window.location.href,
             eventTimeStamp: new Date().toISOString()
         };
-        eventQueue.current.push(event);
-        if (eventQueue.current.length >= 5) {
-            // flushEventQueue();
+        userEventQueue.current.push(event);
+        if (userEventQueue.current.length >= 5) {
+            flushUserEventQueue();
         }
     }
 
-    const flushEventQueue = async () => {
-        const queueToFlush = [...eventQueue.current];
+    const registerAdminEvent = async (adminEvent) => {
+        try {
+            const response = await fetch('https://localhost:7037/createadminevent/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(adminEvent),
+            });
+            console.log(response.json());
+            if (!response.ok) {
+                console.error('Failed to send event to API');
+            } else {
+                console.log('Event sent successfully to API');
+            }
+        } catch (error) {
+            console.error('Error sending event to API:', error);
+        }
+    }
+
+    const flushUserEventQueue = async () => {
+        const queueToFlush = [...userEventQueue.current];
 
         if (queueToFlush.length === 0) return;
 
         try {
-            const response = await fetch('https://localhost:7037/api/Logging', {
+            const response = await fetch('https://localhost:7037/createuserevent/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(queueToFlush),
             });
-
             if (!response.ok) {
                 console.error('Failed to send event to API');
             } else {
@@ -47,7 +67,7 @@ export const LoggingProvider = ({ children }) => {
             console.error('Error sending event to API:', error);
         } finally {
             console.log('Flushed queue!');
-            eventQueue.current = [];
+            userEventQueue.current = [];
         }
     }
 
@@ -58,10 +78,10 @@ export const LoggingProvider = ({ children }) => {
             }
         }
         if (!hasLoaded.current) {
-            hasLoaded.current = setInterval(flushEventQueue, 10000);
+            hasLoaded.current = setInterval(flushUserEventQueue, 10000);
             document.body.addEventListener('click', handleButtonClick);
         }
-        trackEvent('Page Loaded', 'PageView')
+        registerUserEvent('Page Loaded', 'PageView')
         return () => {
             if (hasLoaded.current) {
                 clearInterval(hasLoaded.current);
@@ -72,25 +92,25 @@ export const LoggingProvider = ({ children }) => {
     }, [location]);
 
     const logEvent = (eventName, eventType) => {
-        trackEvent(eventName, eventType);
+        registerUserEvent(eventName, eventType);
     };
 
     const logButtonClickEvent = () => {
-        trackEvent("Button Click", "ButtonClick")
+        registerUserEvent("Button Click", "ButtonClick")
     }
 
     const handlePageLeave = () => {
-        trackEvent('Page Left', 'PageLeave')
+        registerUserEvent('Page Left', 'PageLeave')
     };
 
     const navigateWithPageLeave = (destination) => {
         handlePageLeave();
-        flushEventQueue().then(() => {
+        flushUserEventQueue().then(() => {
             navigate(destination)
         })
     }
     return (
-        <LoggingContext.Provider value={{ trackEvent, navigateWithPageLeave, logEvent, logButtonClickEvent }}>
+        <LoggingContext.Provider value={{ registerAdminEvent, registerUserEvent, navigateWithPageLeave, logEvent, logButtonClickEvent }}>
             {children}
         </LoggingContext.Provider>
     )
