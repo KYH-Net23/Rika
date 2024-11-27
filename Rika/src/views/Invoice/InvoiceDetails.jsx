@@ -9,7 +9,7 @@ const InvoiceDetails = () => {
     useEffect(() => {
         const fetchInvoice = async () => {
             try {
-                const response = await fetch(`http://localhost:5000/api/getoneinvoice/${id}`);
+                const response = await fetch(`https://bankdbserver.database.windows.net/api/getoneinvoice/${id}`);
                 if (!response.ok) {
                     throw new Error(`Invoice with ID ${id} not found.`);
                 }
