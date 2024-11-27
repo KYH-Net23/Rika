@@ -31,6 +31,7 @@ import Checkout from "./views/Checkout.jsx";
 import ProductReturnPage from "./views/customerpages/Orders/Returns/ReturnPage.jsx";
 import OrderConfirmation from "./views/OrderConfirmation.jsx";
 import AllInventories from "./views/inventory/AllInventories.jsx";
+import CreateInventory from "./views/inventory/CreateInventory.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -103,6 +104,10 @@ createRoot(document.getElementById("root")).render(
                       <Route
                         path="/all-inventories"
                         element={<AllInventories />}
+                      />
+                      <Route
+                        path="/create-inventory"
+                        element={<CreateInventory />}
                       />
                     </Routes>
                   </div>
