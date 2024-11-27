@@ -30,6 +30,7 @@ import ShippingOptions from "./views/shipping/ShippingOptions.jsx";
 import Checkout from "./views/Checkout.jsx";
 import ProductReturnPage from "./views/customerpages/Orders/Returns/ReturnPage.jsx";
 import OrderConfirmation from "./views/OrderConfirmation.jsx";
+import AllInventories from "./views/inventory/AllInventories.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -98,6 +99,10 @@ createRoot(document.getElementById("root")).render(
                       <Route
                         path="/orderconfirmation"
                         element={<OrderConfirmation />}
+                      />
+                      <Route
+                        path="/all-inventories"
+                        element={<AllInventories />}
                       />
                     </Routes>
                   </div>
