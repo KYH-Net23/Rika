@@ -74,7 +74,7 @@ createRoot(document.getElementById("root")).render(
                       <Route
                         path="/customer"
                         element={
-                          <ProtectedRoute requiredRole="customer">
+                          <ProtectedRoute requiredRole="Customer">
                             <CustomerLandingPage />
                           </ProtectedRoute>
                         }
@@ -82,7 +82,7 @@ createRoot(document.getElementById("root")).render(
                       <Route
                         path="/admin"
                         element={
-                          <ProtectedRoute requiredRole="admin">
+                          <ProtectedRoute requiredRole="Admin">
                             <AdminLandingPage />
                           </ProtectedRoute>
                         }
@@ -90,7 +90,7 @@ createRoot(document.getElementById("root")).render(
                       <Route
                         path="/all-invoices"
                         element={
-                          <ProtectedRoute requiredRole="admin">
+                          <ProtectedRoute requiredRole="Admin">
                             <AllInvoices />
                           </ProtectedRoute>
                         }
