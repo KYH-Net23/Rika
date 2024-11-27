@@ -6,6 +6,7 @@ import CartIcon from "../../../assets/icons/CartIcon";
 import HomeIcon from "../../../assets/icons/HomeIcon";
 import NotificationIcon from "../../../assets/icons/NotificationIcon";
 import ProfileIcon from "../../../assets/icons/ProfileIcon";
+import ProductIcon from "../../../assets/icons/ProductIcon";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -31,6 +32,10 @@ const Header = () => {
     }
   };
 
+  const handleProductClick = () => {
+    navigate("/products");
+  };
+
   return (
     <header className="fixed bottom-0 flex bg-white w-full min-h-[70px] rounded-[30px_30px_0px_0px] shadow-[0px_-2px_7px_rgba(0,0,0,0.1)] z-50">
       <div className="flex gap-14 w-full items-center justify-center">
@@ -47,9 +52,11 @@ const Header = () => {
               <CartIcon />
             </a>
           </button>
-          <a className="cursor-pointer">
-            <NotificationIcon />
-          </a>
+          <button onClick={handleProductClick}>
+            <a className="cursor-pointer">
+              <ProductIcon />
+            </a>
+          </button>
           <button onClick={handleProfileClick}>
             <a className="cursor-pointer">
               <ProfileIcon />

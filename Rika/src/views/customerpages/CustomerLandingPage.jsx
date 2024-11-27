@@ -43,7 +43,7 @@ const CustomerLandingPage = () => {
         <div className="w-16 h-16 bg-gray-300 rounded-full mr-4"></div>
         <div>
           <h2 className="text-lg font-semibold">Welcome to your profile</h2>
-          <p className="text-gray-500">{user.user.email}</p>
+          <p className="text-gray-500">{user?.user?.email}</p>
         </div>
       </div>
 

@@ -9,7 +9,7 @@ export const useInvoices = () => {
 export const InvoiceProvider = ({ children }) => {
   const [invoices, setInvoices] = useState([]);
   const [error, setError] = useState("");
-  const API_BASE_URL = "https://bankdbserver.database.windows.net/api";
+  const API_BASE_URL = "https://rika-payment.azurewebsites.net/";
 
   const fetchInvoices = async () => {
     try {

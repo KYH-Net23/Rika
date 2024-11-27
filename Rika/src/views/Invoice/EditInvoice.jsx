@@ -8,7 +8,7 @@ const EditInvoice = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
   const [confirmationPrompt, setConfirmationPrompt] = useState(false);
-  const API_BASE_URL = "https://bankdbserver.database.windows.net/api";
+  const API_BASE_URL = "https://localhost:5160/api";
 
   useEffect(() => {
     const fetchInvoice = async () => {
