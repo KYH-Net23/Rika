@@ -12,7 +12,7 @@ export const InvoiceProvider = ({ children }) => {
 
   const fetchInvoices = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/getallinvoices");
+      const response = await fetch("https://bankdbserver.database.windows.net/api/getinvoice");
       if (!response.ok) {
         throw new Error("Failed to fetch invoices.");
       }
@@ -25,7 +25,7 @@ export const InvoiceProvider = ({ children }) => {
 
   const updateInvoice = async (id, updatedInvoice) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/updateinvoice/${id}`, {
+      const response = await fetch(`https://bankdbserver.database.windows.net/api/updateinvoice/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updatedInvoice),
@@ -35,7 +35,7 @@ export const InvoiceProvider = ({ children }) => {
       }
       const updatedData = await response.json();
       setInvoices((prev) =>
-        prev.map((invoice) => (invoice.id === id ? updatedData : invoice))
+        prev.map((invoice) => (invoice.invoiceId === id ? updatedData : invoice))
       );
     } catch (err) {
       setError(err.message);

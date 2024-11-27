@@ -12,7 +12,7 @@ const EditInvoice = () => {
   useEffect(() => {
     const fetchInvoice = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/getoneinvoice/${id}`);
+        const response = await fetch(`https://bankdbserver.database.windows.net/api/getoneinvoice/${id}`);
         if (!response.ok) {
           throw new Error(`Invoice with ID ${id} not found.`);
         }
@@ -38,7 +38,7 @@ const EditInvoice = () => {
       return;
     }
     try {
-      const response = await fetch(`http://localhost:5000/api/updateinvoice/${id}`, {
+      const response = await fetch(`https://bankdbserver.database.windows.net/api/updateinvoice/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(invoice),
