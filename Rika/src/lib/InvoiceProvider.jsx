@@ -9,10 +9,11 @@ export const useInvoices = () => {
 export const InvoiceProvider = ({ children }) => {
   const [invoices, setInvoices] = useState([]);
   const [error, setError] = useState("");
+  const API_BASE_URL = "https://bankdbserver.database.windows.net/api";
 
   const fetchInvoices = async () => {
     try {
-      const response = await fetch("https://bankdbserver.database.windows.net/api/getinvoice");
+      const response = await fetch(`${API_BASE_URL}/getinvoice`);
       if (!response.ok) {
         throw new Error("Failed to fetch invoices.");
       }
@@ -25,7 +26,7 @@ export const InvoiceProvider = ({ children }) => {
 
   const updateInvoice = async (id, updatedInvoice) => {
     try {
-      const response = await fetch(`https://bankdbserver.database.windows.net/api/updateinvoice/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/updateinvoice/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updatedInvoice),
