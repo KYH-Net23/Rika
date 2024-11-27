@@ -1,4 +1,6 @@
+import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { UserContext } from "../../../lib/AuthProvider";
 
 import CartIcon from "../../../assets/icons/CartIcon";
 import HomeIcon from "../../../assets/icons/HomeIcon";
@@ -7,6 +9,7 @@ import ProfileIcon from "../../../assets/icons/ProfileIcon";
 
 const Header = () => {
   const navigate = useNavigate();
+  const { userRole, isAuthenticated } = useContext(UserContext);
 
   const handleClick = () => {
     navigate("/");
@@ -14,6 +17,18 @@ const Header = () => {
 
   const handleCartClick = () => {
     navigate("/checkout");
+  };
+
+  const handleProfileClick = () => {
+    if (!isAuthenticated) {
+      navigate("/login");
+    } else if (userRole === "Customer") {
+      navigate("/customer");
+    } else if (userRole === "Admin") {
+      navigate("/admin");
+    } else {
+      navigate("/login");
+    }
   };
 
   return (
@@ -35,9 +50,11 @@ const Header = () => {
           <a className="cursor-pointer">
             <NotificationIcon />
           </a>
-          <a className="cursor-pointer">
-            <ProfileIcon />
-          </a>
+          <button onClick={handleProfileClick}>
+            <a className="cursor-pointer">
+              <ProfileIcon />
+            </a>
+          </button>
         </nav>
       </div>
     </header>
