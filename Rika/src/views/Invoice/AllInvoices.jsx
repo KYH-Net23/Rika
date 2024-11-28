@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useInvoices } from "../../lib/InvoiceProvider";
 import { useNavigate } from "react-router-dom";
+import { UserContext } from "../../lib/AuthProvider"; // UserContext импортлох
 
 const AllInvoices = () => {
   const { invoices, fetchInvoices, error } = useInvoices();
+  const { userRole } = useContext(UserContext); // UserContext-оос userRole авах
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredInvoices, setFilteredInvoices] = useState([]);
@@ -23,6 +25,11 @@ const AllInvoices = () => {
       );
     }
   }, [searchTerm, invoices]);
+
+  // userRole-ийг шалгах useEffect нэмэх
+  useEffect(() => {
+    console.log("Current User Role:", userRole); // Консолд userRole-ийг хэвлэх
+  }, [userRole]);
 
   const handleSearch = (e) => {
     e.preventDefault();
