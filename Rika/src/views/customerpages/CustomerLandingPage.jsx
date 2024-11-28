@@ -120,10 +120,9 @@ const CustomerLandingPage = () => {
               </span>
               <i className="text-gray-500">➔</i>
             </li>
+            {/* Logout Button */}
+            <LogoutButton />
           </ul>
-        </div>
-        <div className="flex justify-center">
-          <LogoutButton />
         </div>
       </div>
     </div>
