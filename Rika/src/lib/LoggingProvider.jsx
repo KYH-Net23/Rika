@@ -1,5 +1,6 @@
 import React, { createContext, useRef, useEffect, useContext } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom';
+import { v4 as uuidv4 } from 'uuid';
 
 const LoggingContext = createContext();
 
@@ -11,12 +12,41 @@ export const LoggingProvider = ({ children }) => {
     const hasLoaded = useRef(false);
     const location = useLocation();
 
+    const sessionId = useRef(sessionStorage.getItem('sessionId') || uuidv4());
+    useEffect(() => {
+        if(!sessionStorage.getItem('sessionId')){
+            sessionStorage.setItem('sessionId', sessionId.current);
+        }
+    }, [])
+
+
+    useEffect(() => {
+        const sessionTimeoutMinutes = 30;
+        const lastActivity = sessionStorage.getItem('lastActivity');
+        const now = Date.now();
+
+        if(lastActivity && now - lastActivity > sessionTimeoutMinutes * 60 * 1000){
+            const newSessionId = uuidv4();
+            sessionStorage.setItem('sessionId', newSessionId);
+            sessionId.current = newSessionId;
+        }
+
+        const updateLastActivity = () => {
+            sessionStorage.setItem('lastActivity', Date.now());
+        };
+
+        document.body.addEventListener('click', updateLastActivity);
+        return () => document.body.removeEventListener('click', updateLastActivity);
+    }, [])
+
+
     const registerUserEvent = (eventName, eventType) => {
         const event = {
             eventName,
             userId: "123",
             eventType,
             pageUrl: window.location.href,
+            sessionId: sessionId.current,
             eventTimeStamp: new Date().toISOString()
         };
         userEventQueue.current.push(event);
