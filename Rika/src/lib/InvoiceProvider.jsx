@@ -9,8 +9,9 @@ export const useInvoices = () => {
 export const InvoiceProvider = ({ children }) => {
   const [invoices, setInvoices] = useState([]);
   const [error, setError] = useState("");
-  const API_BASE_URL = "https://rika-payment.azurewebsites.net/";
+  const API_BASE_URL = "https://localhost:5160/api";
 
+  // Fetch All Invoices
   const fetchInvoices = async () => {
     try {
       const response = await fetch(`${API_BASE_URL}/getinvoice`);
@@ -24,27 +25,24 @@ export const InvoiceProvider = ({ children }) => {
     }
   };
 
-  const updateInvoice = async (id, updatedInvoice) => {
+  // Fetch One Invoice by ID
+  const fetchInvoiceById = async (id) => {
     try {
-      const response = await fetch(`${API_BASE_URL}/updateinvoice/${id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(updatedInvoice),
-      });
+      const response = await fetch(`${API_BASE_URL}/getoneinvoice/${id}`);
       if (!response.ok) {
-        throw new Error("Failed to update invoice.");
+        throw new Error(`Invoice with ID ${id} not found.`);
       }
-      const updatedData = await response.json();
-      setInvoices((prev) =>
-        prev.map((invoice) => (invoice.invoiceId === id ? updatedData : invoice))
-      );
+      return await response.json();
     } catch (err) {
       setError(err.message);
+      return null;
     }
   };
 
   return (
-    <InvoiceContext.Provider value={{ invoices, fetchInvoices, updateInvoice, error }}>
+    <InvoiceContext.Provider
+      value={{ invoices, fetchInvoices, fetchInvoiceById, error }}
+    >
       {children}
     </InvoiceContext.Provider>
   );

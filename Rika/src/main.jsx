@@ -33,6 +33,8 @@ import OrderConfirmation from "./views/OrderConfirmation.jsx";
 import AllInventories from "./views/inventory/AllInventories.jsx";
 import CreateInventory from "./views/inventory/CreateInventory.jsx";
 import ReadInventories from "./views/inventory/ReadInventories.jsx";
+import ErrorNotExisting from "./views/ErrorNotExisting.jsx";
+
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -46,6 +48,10 @@ createRoot(document.getElementById("root")).render(
                   <Header />
                   <div className="px-4 pt-10 pb-[86px]">
                     <Routes>
+                      <Route
+                        path="/error-not-existing"
+                        element={<ErrorNotExisting />}
+                      />
                       <Route path="/" element={<Home />} />
                       <Route path="/products" element={<Products />} />
                       <Route
