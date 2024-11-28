@@ -1,11 +1,13 @@
 import { useContext, useEffect } from "react";
 import { UserContext } from "../../lib/AuthProvider.jsx";
+import { useNavigate } from "react-router-dom";
 import LogoutButton from "../../common/LogoutButton.jsx";
 import ArrowBack from "../../common/ArrowBack.jsx";
 
 const CustomerLandingPage = () => {
   const { userRole, isAuthenticated, checkAuth, user } =
     useContext(UserContext);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const authorizeUser = async () => {
@@ -35,7 +37,12 @@ const CustomerLandingPage = () => {
       <div className="flex justify-between items-center mb-6">
         <ArrowBack />
         <h1 className="text-xl font-bold">Profile</h1>
-        <button className="text-2xl">⚙</button>
+        <button
+          className="text-2xl"
+          onClick={() => navigate("/shipping")} // Navigation to shipping page for now
+        >
+          ⚙
+        </button>
       </div>
 
       {/* Profile Info */}
@@ -49,44 +56,74 @@ const CustomerLandingPage = () => {
 
       {/* Navigation Options */}
       <div className="space-y-4">
+        {/* Main Links */}
         <div className="bg-white rounded-lg shadow-md p-4">
           <ul className="space-y-2">
-            <li className="flex items-center justify-between">
+            {/* Personal Details - Navigating to ErrorNotExisting */}
+            <li
+              className="flex items-center justify-between cursor-pointer"
+              onClick={() => navigate("/error-not-existing")}
+            >
               <span className="flex items-center">
                 <i className="text-xl mr-4">👤</i>
                 Personal Details
               </span>
               <i className="text-gray-500">➔</i>
             </li>
-            <li className="flex items-center justify-between">
+
+            {/* My Orders - Navigating to ProductReturn */}
+            <li
+              className="flex items-center justify-between cursor-pointer"
+              onClick={() => navigate("/productReturn")}
+            >
               <span className="flex items-center">
                 <i className="text-xl mr-4">👜</i>
                 My Order
               </span>
               <i className="text-gray-500">➔</i>
             </li>
-            <li className="flex items-center justify-between">
+
+            {/* My Favourites - Navigating to ErrorNotExisting */}
+            <li
+              className="flex items-center justify-between cursor-pointer"
+              onClick={() => navigate("/error-not-existing")}
+            >
               <span className="flex items-center">
                 <i className="text-xl mr-4">❤️</i>
                 My Favourites
               </span>
               <i className="text-gray-500">➔</i>
             </li>
-            <li className="flex items-center justify-between">
+
+            {/* Shipping Address - Navigating to /shipping */}
+            <li
+              className="flex items-center justify-between cursor-pointer"
+              onClick={() => navigate("/error-not-existing")}
+            >
               <span className="flex items-center">
                 <i className="text-xl mr-4">🚚</i>
                 Shipping Address
               </span>
               <i className="text-gray-500">➔</i>
             </li>
-            <li className="flex items-center justify-between">
+
+            {/* My Card - Navigating to ErrorNotExisting */}
+            <li
+              className="flex items-center justify-between cursor-pointer"
+              onClick={() => navigate("/error-not-existing")}
+            >
               <span className="flex items-center">
                 <i className="text-xl mr-4">💳</i>
                 My Card
               </span>
               <i className="text-gray-500">➔</i>
             </li>
-            <li className="flex items-center justify-between">
+
+            {/* Settings - Navigating to ErrorNotExisting */}
+            <li
+              className="flex items-center justify-between cursor-pointer"
+              onClick={() => navigate("/error-not-existing")}
+            >
               <span className="flex items-center">
                 <i className="text-xl mr-4">⚙</i>
                 Settings
@@ -99,27 +136,42 @@ const CustomerLandingPage = () => {
         {/* Secondary Links */}
         <div className="bg-white rounded-lg shadow-md p-4">
           <ul className="space-y-2">
-            <li className="flex items-center justify-between">
+            {/* FAQs - Navigating to ErrorNotExisting */}
+            <li
+              className="flex items-center justify-between cursor-pointer"
+              onClick={() => navigate("/error-not-existing")}
+            >
               <span className="flex items-center">
                 <i className="text-xl mr-4">❓</i>
                 FAQs
               </span>
               <i className="text-gray-500">➔</i>
             </li>
-            <li className="flex items-center justify-between">
+
+            {/* Privacy Policy - Navigating to ErrorNotExisting */}
+            <li
+              className="flex items-center justify-between cursor-pointer"
+              onClick={() => navigate("/error-not-existing")}
+            >
               <span className="flex items-center">
                 <i className="text-xl mr-4">🛡</i>
                 Privacy Policy
               </span>
               <i className="text-gray-500">➔</i>
             </li>
-            <li className="flex items-center justify-between">
+
+            {/* Contact Us - Navigating to ErrorNotExisting */}
+            <li
+              className="flex items-center justify-between cursor-pointer"
+              onClick={() => navigate("/error-not-existing")}
+            >
               <span className="flex items-center">
                 <i className="text-xl mr-4">📞</i>
                 Contact Us
               </span>
               <i className="text-gray-500">➔</i>
             </li>
+
             {/* Logout Button */}
             <LogoutButton />
           </ul>

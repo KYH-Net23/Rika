@@ -51,6 +51,7 @@ const AdminLandingPage = () => {
         {/* Primary Actions */}
         <div className="bg-white rounded-lg shadow-md p-4">
           <ul className="space-y-2">
+            {/* Create Product */}
             <li
               className="flex items-center justify-between cursor-pointer"
               onClick={() => navigate("/productscreate")}
@@ -61,6 +62,8 @@ const AdminLandingPage = () => {
               </span>
               <i className="text-gray-500">➔</i>
             </li>
+
+            {/* View All Invoices */}
             <li
               className="flex items-center justify-between cursor-pointer"
               onClick={() => navigate("/all-invoices")}
@@ -71,9 +74,11 @@ const AdminLandingPage = () => {
               </span>
               <i className="text-gray-500">➔</i>
             </li>
+
+            {/* Manage Users */}
             <li
               className="flex items-center justify-between cursor-pointer"
-              onClick={() => navigate("/manage-users")}
+              onClick={() => navigate("/users")}
             >
               <span className="flex items-center">
                 <i className="text-xl mr-4">👥</i>
@@ -81,9 +86,11 @@ const AdminLandingPage = () => {
               </span>
               <i className="text-gray-500">➔</i>
             </li>
+
+            {/* Reports & Analytics */}
             <li
               className="flex items-center justify-between cursor-pointer"
-              onClick={() => navigate("/reports")}
+              onClick={() => navigate("/error-not-existing")}
             >
               <span className="flex items-center">
                 <i className="text-xl mr-4">📊</i>
@@ -97,9 +104,10 @@ const AdminLandingPage = () => {
         {/* Secondary Links */}
         <div className="bg-white rounded-lg shadow-md p-4">
           <ul className="space-y-2">
+            {/* System Settings */}
             <li
               className="flex items-center justify-between cursor-pointer"
-              onClick={() => navigate("/settings")}
+              onClick={() => navigate("/error-not-existing")}
             >
               <span className="flex items-center">
                 <i className="text-xl mr-4">⚙</i>
@@ -107,9 +115,11 @@ const AdminLandingPage = () => {
               </span>
               <i className="text-gray-500">➔</i>
             </li>
+
+            {/* Help & Support */}
             <li
               className="flex items-center justify-between cursor-pointer"
-              onClick={() => navigate("/help")}
+              onClick={() => navigate("/error-not-existing")}
             >
               <span className="flex items-center">
                 <i className="text-xl mr-4">❓</i>
@@ -117,6 +127,7 @@ const AdminLandingPage = () => {
               </span>
               <i className="text-gray-500">➔</i>
             </li>
+
             {/* Logout Button */}
             <LogoutButton />
           </ul>

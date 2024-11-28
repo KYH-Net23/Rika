@@ -30,6 +30,7 @@ import ShippingOptions from "./views/shipping/ShippingOptions.jsx";
 import Checkout from "./views/Checkout.jsx";
 import ProductReturnPage from "./views/customerpages/Orders/Returns/ReturnPage.jsx";
 import OrderConfirmation from "./views/OrderConfirmation.jsx";
+import ErrorNotExisting from "./views/ErrorNotExisting.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -43,6 +44,10 @@ createRoot(document.getElementById("root")).render(
                   <Header />
                   <div className="px-4 pt-10 pb-[86px]">
                     <Routes>
+                      <Route
+                        path="/error-not-existing"
+                        element={<ErrorNotExisting />}
+                      />
                       <Route path="/" element={<Home />} />
                       <Route path="/products" element={<Products />} />
                       <Route
