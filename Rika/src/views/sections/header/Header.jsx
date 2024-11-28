@@ -1,15 +1,39 @@
+import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { UserContext } from "../../../lib/AuthProvider";
 
 import CartIcon from "../../../assets/icons/CartIcon";
 import HomeIcon from "../../../assets/icons/HomeIcon";
 import NotificationIcon from "../../../assets/icons/NotificationIcon";
 import ProfileIcon from "../../../assets/icons/ProfileIcon";
+import ProductIcon from "../../../assets/icons/ProductIcon";
 
 const Header = () => {
   const navigate = useNavigate();
+  const { userRole, isAuthenticated } = useContext(UserContext);
 
   const handleClick = () => {
     navigate("/");
+  };
+
+  const handleCartClick = () => {
+    navigate("/checkout");
+  };
+
+  const handleProfileClick = () => {
+    if (!isAuthenticated) {
+      navigate("/login");
+    } else if (userRole === "Customer") {
+      navigate("/customer");
+    } else if (userRole === "Admin") {
+      navigate("/admin");
+    } else {
+      navigate("/login");
+    }
+  };
+
+  const handleProductClick = () => {
+    navigate("/products");
   };
 
   return (
@@ -23,15 +47,21 @@ const Header = () => {
           <p className="font-mont text-[11px] font-semibold">Home</p>
         </button>
         <nav className="flex items-center gap-14">
-          <a className="cursor-pointer">
-            <CartIcon />
-          </a>
-          <a className="cursor-pointer">
-            <NotificationIcon />
-          </a>
-          <a className="cursor-pointer">
-            <ProfileIcon />
-          </a>
+          <button onClick={handleCartClick}>
+            <a className="cursor-pointer">
+              <CartIcon />
+            </a>
+          </button>
+          <button onClick={handleProductClick}>
+            <a className="cursor-pointer">
+              <ProductIcon />
+            </a>
+          </button>
+          <button onClick={handleProfileClick}>
+            <a className="cursor-pointer">
+              <ProfileIcon />
+            </a>
+          </button>
         </nav>
       </div>
     </header>
