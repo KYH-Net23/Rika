@@ -1,4 +1,4 @@
-import useState from 'react';
+import React, { useState } from 'react';
 import SelectField from './sections/AdminCreateProduct/SelectField.jsx';
 import ArrowBack from './../common/ArrowBack.jsx';
 import InputField from './sections/AdminCreateProduct/InputField.jsx';
@@ -15,8 +15,6 @@ const CreateProduct = () => {
         price: '',
         category: '',
         image: '',
-        stock: '',
-        size: '',
     });
   
 
@@ -37,8 +35,6 @@ const CreateProduct = () => {
         if (!formData.model) errors.model = "Model is required.";
         if (!formData.price) errors.price = "Price is required.";
         if (isNaN(formData.price) || formData.price <= 0) errors.price = "Price must be a positive number.";
-        if (!formData.stock) errors.stock = "Stock is required.";
-        if (isNaN(formData.stock) || formData.stock < 0) errors.stock = "Stock cannot be negative.";
         if (!formData.image) {
             errors.image = "Image URL is required.";
         } else if (!isValidImageURL(formData.image)) {
@@ -127,14 +123,6 @@ const CreateProduct = () => {
                     onChange={handleChange}
                     options={categories}
                 />
-                {/* Product Size */}
-                <SelectField
-                    label="Size"
-                    name="size"
-                    value={formData.size}
-                    onChange={handleChange}
-                    options={sizes}
-                />
                 {/* Image URL */}
                 <InputField
                     label="Image URL*"
@@ -142,15 +130,6 @@ const CreateProduct = () => {
                     value={formData.image}
                     onChange={handleChange}
                     error={errors.image}
-                />
-                {/* Product Stock */}
-                <InputField
-                    label="Stock*"
-                    name="stock"
-                    value={formData.stock}
-                    onChange={handleChange}
-                    type="number"
-                    error={errors.stock}
                 />
                 {/* Submit Button */}
                 <button 

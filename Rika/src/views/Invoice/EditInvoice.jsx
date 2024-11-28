@@ -8,11 +8,12 @@ const EditInvoice = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
   const [confirmationPrompt, setConfirmationPrompt] = useState(false);
+  const API_BASE_URL = "https://localhost:5160/api";
 
   useEffect(() => {
     const fetchInvoice = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/getoneinvoice/${id}`);
+        const response = await fetch(`${API_BASE_URL}/getoneinvoice/${id}`);
         if (!response.ok) {
           throw new Error(`Invoice with ID ${id} not found.`);
         }
@@ -38,7 +39,7 @@ const EditInvoice = () => {
       return;
     }
     try {
-      const response = await fetch(`http://localhost:5000/api/updateinvoice/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/updateinvoice/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(invoice),

@@ -1,0 +1,363 @@
+import React, { useState } from 'react';
+import InputField from "../sections/fields/InputField";
+import ArrowBack from "../../common/ArrowBack";
+import { useState } from "react";
+import { useShippingContext } from "../../lib/ShippingOptionsProvider";
+
+const ShippingOptions = () => {
+  const navigate = useNavigate();
+  const { getServicePoints, getTransitTimes, setSelectedShippingDetails } =
+    useShippingContext();
+  const [errors, setErrors] = useState({});
+  const [formData, setFormData] = useState({
+    postalCode: "",
+  });
+  const [servicePoints, setServicePoints] = useState([]);
+  const [selectedLocation, setSelectedLocation] = useState(null);
+  const [selectedDeliveryOption, setSelectedDeliveryOption] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [isConfirmed, setIsConfirmed] = useState(false);
+  const [transitTime, setTransitTime] = useState([]);
+  const [filterIndex, setFilterIndex] = useState("");
+
+  const validate = () => {
+    const errors = {};
+    if (!formData.postalCode) errors.postalCode = "Postal code is required.";
+    return errors;
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    if (/^\d*$/.test(value)) {
+      setFormData({ ...formData, [name]: value });
+      setIsConfirmed(false);
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const validationErrors = validate();
+
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+    } else {
+      console.log("Shipping options submitted", formData);
+      setLoading(true);
+      try {
+        const result = await getServicePoints(formData);
+        if (result) {
+          console.log("Service points successfully shown:", result);
+          setServicePoints(result);
+          setErrors({});
+        } else {
+          setServicePoints([]);
+          setErrors({ postalCode: "No service points found." });
+        }
+      } catch (error) {
+        console.error("Error showing service points:", error);
+        setErrors({
+          postalCode: "Failed to load service points. Please try again.",
+        });
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
+
+  const handleCardClick = async (servicePoint, filterIndex) => {
+    setSelectedLocation(servicePoint);
+    setFilterIndex(filterIndex);
+    console.log("Selected service point:", servicePoint);
+
+    try {
+      const transitData = await getTransitTimes(
+        servicePoint.visitingAddress.postalCode
+      );
+      console.log("Transit time data:", transitData);
+      setTransitTime(transitData || []);
+      // setSelectedDeliveryOption(transitData || []); Ska vi ha detta?
+    } catch (error) {
+      console.error("Error fetching transit times:", error);
+      setTransitTime([]);
+    }
+  };
+
+  const handleDeliveryOption = (option) => {
+    setSelectedDeliveryOption(option);
+  };
+
+  const handleConfirm = () => {
+    if (selectedDeliveryOption && selectedLocation) {
+      const shippingDetails = {
+        servicePoint: selectedLocation,
+        deliveryOption: selectedDeliveryOption,
+      };
+      setSelectedShippingDetails(shippingDetails);
+      console.log("saved shipping details to context", shippingDetails);
+      setSelectedLocation(null);
+      setSelectedDeliveryOption(null);
+      setIsConfirmed(true);
+    }
+  };
+
+  //Implement real navigation here
+  const navigateToPayment = () => {
+    navigate("/Home");
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-300 p-4 flex flex-col items-center">
+      {/* Form Section */}
+      <form onSubmit={handleSubmit} className="w-full max-w-md mb-6">
+        <div className="flex items-center justify-between mb-6">
+          <ArrowBack goBackTo="/admin" />
+          <h2 className="text-xl sm:text-2xl text-center flex-grow text-gray-800">
+            Shipping Options
+          </h2>
+          <div className="sm:w-6"></div>
+        </div>
+        {/* Postal Code Input */}
+        <InputField
+          label="Postal Code"
+          name="postalCode"
+          value={formData.postalCode}
+          onChange={handleChange}
+          type="text"
+          error={errors.postalCode}
+        />
+
+        {/* Submit Button */}
+        <button
+          id="createButton"
+          type="submit"
+          className="w-full bg-black text-white p-2 rounded hover:bg-gray-800 mt-4"
+          disabled={loading}
+        >
+          {loading ? "Loading..." : "Show Service Points"}
+        </button>
+      </form>
+
+      {/* Service Points PostNord Section */}
+      {servicePoints.length > 0 && (
+        <div className="w-full max-w-md mb-6">
+          <div className="flex justify-center">
+            <img
+              src="https://cdn4.iconfinder.com/data/icons/logos-brands-in-colors/688/PostNord-logo-1024.png"
+              alt="Postnord"
+              className="w-40 -mb-16 -mt-6"
+            />
+          </div>
+          <div className="mt-6">
+            <label
+              htmlFor="postnord-select"
+              className="block font-bold text-gray-700 mb-2"
+            >
+              Select a PostNord Service Point:
+            </label>
+            <select
+              id="postnord-select"
+              className="w-full p-2 border rounded shadow bg-white cursor-pointer"
+              onChange={(e) =>
+                handleCardClick(
+                  servicePoints.find(
+                    (point) => point.servicePointId === e.target.value
+                  ),
+                  "PostNord"
+                )
+              }
+              value={selectedLocation?.servicePointId || ""}
+            >
+              <option value="" disabled>
+                -- Select a service point --
+              </option>
+              {servicePoints.map((point) => (
+                <option key={point.servicePointId} value={point.servicePointId}>
+                  {`${point.name} - ${point.visitingAddress?.streetName}, ${point.visitingAddress?.city}`}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+      )}
+
+      {/* Service Points DHL Section */}
+      {servicePoints.length > 0 && (
+        <div className="w-full max-w-md mb-12">
+          <div className="flex justify-center">
+            <img
+              src="https://logos-world.net/wp-content/uploads/2020/08/DHL-Emblem.png"
+              alt="DHL"
+              className="w-40 -mb-8"
+            />
+          </div>
+          <div className="mt-6">
+            <label
+              htmlFor="dhl-select"
+              className="block font-bold text-gray-700 mb-2"
+            >
+              Select a DHL Service Point:
+            </label>
+            <select
+              id="dhl-select"
+              className="w-full p-2 border rounded shadow bg-white cursor-pointer"
+              onChange={(e) =>
+                handleCardClick(
+                  servicePoints.find(
+                    (point) => point.servicePointId === e.target.value
+                  ),
+                  "DHL"
+                )
+              }
+              value={selectedLocation?.servicePointId || ""}
+            >
+              <option value="" disabled>
+                -- Select a service point --
+              </option>
+              {servicePoints.map((point) => (
+                <option key={point.servicePointId} value={point.servicePointId}>
+                  {`${point.name} - ${point.visitingAddress?.streetName}, ${point.visitingAddress?.city}`}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+      )}
+
+      {/* Service Points Instabox Section */}
+      {servicePoints.length > 0 && (
+        <div className="w-full max-w-md mb-6">
+          <div className="flex justify-center">
+            <img
+              src="https://www.handelstrender.se/app/uploads/2020/10/instabox-logotyp.jpg"
+              alt="Instabox"
+              className="w-40 -mb-4 mb-1"
+            />
+          </div>
+          <div className="mt-6">
+            <label
+              htmlFor="instabox-select"
+              className="block font-bold text-gray-700 mb-2"
+            >
+              Select an Instabox Service Point:
+            </label>
+            <select
+              id="instabox-select"
+              className="w-full p-2 border rounded shadow bg-white cursor-pointer"
+              onChange={(e) =>
+                handleCardClick(
+                  servicePoints.find(
+                    (point) => point.servicePointId === e.target.value
+                  ),
+                  "Instabox"
+                )
+              }
+              value={selectedLocation?.servicePointId || ""}
+            >
+              <option value="" disabled>
+                -- Select a service point --
+              </option>
+              {servicePoints.map((point) => (
+                <option key={point.servicePointId} value={point.servicePointId}>
+                  {`${point.name} - ${point.visitingAddress?.streetName}, ${point.visitingAddress?.city}`}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+      )}
+
+      {/* Modal for Selected Location */}
+      {selectedLocation && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white p-6 rounded shadow-md w-11/12 max-w-md">
+            <h3 className="font-bold text-gray-800 mb-4">
+              Selected Pickup Location
+            </h3>
+            <p>
+              <strong>Name:</strong> {selectedLocation.name}
+            </p>
+            <p>
+              <strong>Address:</strong>{" "}
+              {`${selectedLocation.visitingAddress?.streetName}, ${selectedLocation.visitingAddress?.streetNumber} ${selectedLocation.visitingAddress?.city}`}
+            </p>
+            <p>
+              <strong>Service Point ID:</strong>{" "}
+              {selectedLocation.servicePointId}
+            </p>
+
+            {/* Transit Time Information */}
+            {transitTime && transitTime.length > 0 ? (
+              <div className="mt-4">
+                <p className="mb-1 text-gray-800">
+                  <strong>Delivery Options:</strong>
+                </p>
+                <ul className="space-y-2">
+                  {transitTime
+                    .filter((_, index) => {
+                      if (filterIndex === "PostNord") {
+                        return [3, 5, 9].includes(index);
+                      } else if (filterIndex === "DHL") {
+                        return index === 8;
+                      } else if (filterIndex === "Instabox") {
+                        return index === 8;
+                      }
+                      return false;
+                    })
+                    .map((time, index) => (
+                      <li
+                        key={index}
+                        onClick={() => handleDeliveryOption(time)}
+                        className={`p-2 border rounded cursor-pointer shadow hover:bg-green-200 ${
+                          selectedDeliveryOption === time
+                            ? "bg-green-200 border-green-500"
+                            : "bg-gray-100"
+                        }`}
+                      >
+                        <p>
+                          <strong>Type:</strong>{" "}
+                          {time.serviceInformation?.name || "N/A"}
+                        </p>
+                        <p>
+                          <strong>Arrival:</strong>{" "}
+                          {new Date(time.timeOfArrival).toLocaleDateString()}
+                        </p>
+                      </li>
+                    ))}
+                </ul>
+              </div>
+            ) : (
+              <p className="mt-4 text-red-500">
+                Transit time information is unavailable.
+              </p>
+            )}
+
+            <button
+              onClick={handleConfirm}
+              className={`mt-4 w-full bg-green-800 text-white p-2 rounded hover:bg-gray-800`}
+              hidden={!selectedLocation || !selectedDeliveryOption}
+            >
+              Confirm Delivery
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Proceed to Payment Button */}
+      <div className="w-full max-w-md mt-3">
+        {isConfirmed && (
+          <button
+            id="proceedToPaymentButton"
+            onClick={navigateToPayment}
+            className="w-full bg-black text-white p-2 rounded hover:bg-gray-800 mt-4"
+            disabled={!isConfirmed || loading}
+          >
+            {loading ? "Loading..." : "Proceed to Payment"}
+          </button>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default ShippingOptions;

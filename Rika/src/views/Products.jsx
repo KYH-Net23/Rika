@@ -7,7 +7,7 @@ import ArrowBack from "../common/ArrowBack";
 import ProductCard from "./sections/products/ProductCard";
 import SearchIcon from "../assets/icons/SearchIcon";
 import SuccessAlert from "../common/SuccessAlert";
-import SortIcon from "../assets/icons/SortIcon"
+import SortIcon from "../assets/icons/SortIcon";
 
 const Products = () => {
   const { getProductsData } = useProductContext();
@@ -57,7 +57,7 @@ const Products = () => {
       setFilteredProducts(products);
       setNoResults(false);
     } else {
-      const results = products.filter(product =>
+      const results = products.filter((product) =>
         product.brand?.toLowerCase().includes(trimmedInput.toLowerCase())
       );
       setFilteredProducts(results);
@@ -77,7 +77,7 @@ const Products = () => {
 
   const handleLoadMore = () => {
     setLoadedCount((prevCount) => prevCount + 10);
-  }
+  };
 
   const handleSearchKeyDown = (e) => {
     if (e.key === "Enter") {
@@ -135,7 +135,6 @@ const Products = () => {
             </div>
             {isSortDropdownOpen && (
               <div className="absolute right-0 mt-15 w-25 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-10">
-
                 <button
                   className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                   onClick={() => handleSortChange("priceDesc")}
@@ -173,7 +172,6 @@ const Products = () => {
               </div>
             )}
           </div>
-
         </div>
       </nav>
 
@@ -204,7 +202,7 @@ const Products = () => {
               <p className="font-mont">No products are available</p>
               <button
                 onClick={getProducts}
-                className="font-mont px-4 py-2 bg-black text-white rounded"
+                className="font-mont px-4 py-2 bg-black text-white rounded hover:bg-gray-600"
               >
                 Retry to load products
               </button>
@@ -218,8 +216,9 @@ const Products = () => {
           )}
 
           {filteredProducts.length > 0 && (
-            <div className="text-center text-gray-600 font-mont mt-2" >
-              {Math.min(loadedCount, filteredProducts.length)} of {filteredProducts.length} products showing
+            <div className="text-center text-gray-600 font-mont mt-2">
+              {Math.min(loadedCount, filteredProducts.length)} of{" "}
+              {filteredProducts.length} products showing
             </div>
           )}
 
@@ -233,7 +232,6 @@ const Products = () => {
               </button>
             </div>
           )}
-
         </div>
       </div>
     </section>

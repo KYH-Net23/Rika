@@ -24,9 +24,9 @@ const Login = () => {
   useEffect(() => {
     if (isAuthenticated) {
       if (userRole === "Customer") {
-        navigate("/customer");
+        navigate("/products");
       } else if (userRole === "Admin") {
-        navigate("/admin");
+        navigate("/products");
       }
     }
   }, [isAuthenticated, userRole, navigate]);
@@ -132,7 +132,7 @@ const Login = () => {
         </div>
         <button
           type="submit"
-          className="w-11/12 bg-black text-white py-2 rounded-md"
+          className="w-11/12 bg-black text-white py-2 rounded-md hover:bg-gray-600"
           disabled={loading}
         >
           {loading ? "Processing..." : "Login"}
@@ -141,28 +141,38 @@ const Login = () => {
 
       <div className="mb-8 text-gray-400">───────────── or ─────────────</div>
       <div className="sm:w-6/12 w-11/12 flex flex-col items-center">
-      <LoginButton
+        {/* Register New User */}
+        <LoginButton
           color="#00cf34"
           label={"Register new user"}
           disabled={loading}
           onClick={() => navigate("/register")}
         />
+
+        {/* Facebook Login - Navigating to ErrorNotExisting */}
         <LoginButton
           color="#3b5998"
           label={"Continue with Facebook"}
           disabled={loading}
+          onClick={() => navigate("/error-not-existing")}
         />
+
+        {/* Google Login - Navigating to ErrorNotExisting */}
         <LoginButton
           color="#FFF"
           textColor="#666"
           label={"Continue with Google"}
           disabled={loading}
+          onClick={() => navigate("/error-not-existing")}
         />
+
+        {/* Apple Login - Navigating to ErrorNotExisting */}
         <LoginButton
           color="#FFF"
           textColor="#666"
           label={"Continue with Apple"}
           disabled={loading}
+          onClick={() => navigate("/error-not-existing")}
         />
       </div>
     </div>
