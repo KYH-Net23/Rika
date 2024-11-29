@@ -90,7 +90,7 @@ const AdminLandingPage = () => {
             {/* Reports & Analytics */}
             <li
               className="flex items-center justify-between cursor-pointer"
-              onClick={() => navigate("/error-not-existing")}
+              onClick={() => navigate("/reportsandanalytics")}
             >
               <span className="flex items-center">
                 <i className="text-xl mr-4">📊</i>

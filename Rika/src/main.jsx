@@ -32,6 +32,7 @@ import Checkout from "./views/Checkout.jsx";
 import ProductReturnPage from "./views/customerpages/Orders/Returns/ReturnPage.jsx";
 import OrderConfirmation from "./views/OrderConfirmation.jsx";
 import ErrorNotExisting from "./views/ErrorNotExisting.jsx";
+import ReportsAndAnalytics from "./views/adminpages/ReportsAndAnalytics.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -94,6 +95,7 @@ createRoot(document.getElementById("root")).render(
                             </ProtectedRoute>
                           }
                         />
+                        <Route path="/reportsandanalytics" element={<ReportsAndAnalytics />} />
                         <Route
                           path="/all-invoices"
                           element={
