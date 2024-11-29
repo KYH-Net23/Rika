@@ -26,7 +26,9 @@ function AllInventories() {
          className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-700">
           Read Inventory
         </button>
-        <button className="bg-yellow-500 text-white px-4 py-2 rounded-md hover:bg-yellow-700">
+        <button
+        onClick={() => navigate('/update-inventories')}
+        className="bg-yellow-500 text-white px-4 py-2 rounded-md hover:bg-yellow-700">
           Update Inventory
         </button>
         <button className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-700">
