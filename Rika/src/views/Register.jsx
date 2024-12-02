@@ -1,12 +1,13 @@
-import { useState } from 'react';
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import ArrowBack from './../common/ArrowBack.jsx';
-import InputField from './sections/AdminCreateProduct/InputField.jsx';
+import ArrowBack from "./../common/ArrowBack.jsx";
+import InputField from "./sections/AdminCreateProduct/InputField.jsx";
 
 const Register = () => {
-    const [errors, setErrors] = useState({});
-    const navigate = useNavigate();
-    const apiUrl = 'https://rika-identity-user-f5e3fddxg4bve2eg.swedencentral-01.azurewebsites.net/Customer/Register'
+  const [errors, setErrors] = useState({});
+  const navigate = useNavigate();
+  const apiUrl =
+    "https://rika-identity-user-f5e3fddxg4bve2eg.swedencentral-01.azurewebsites.net/Customer/Register";
 
     const [formData, setFormData] = useState({
         username: '',
@@ -31,37 +32,39 @@ const Register = () => {
         dateOfBirth: 'DateOfBirth',
     };
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
-    };
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
 
-    const validateEmail = (email) => {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailRegex.test(email);
-    };
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
 
-    const validate = () => {
-        const errors = {};
-        if (!formData.username) errors.username = "User Name is required.";
-        if (!formData.email) errors.email = "Email is required.";
-        else if (!validateEmail(formData.email)) {
-            errors.email = "Please enter a valid email.";
-        }
-        if (!formData.password) {
-            errors.password = "Password is required.";
-        } else if (formData.password !== formData.confirmpassword) {
-            errors.password = "Passwords do not match.";
-        } else if (formData.password.length < 6) {
-            errors.password = "Password must be at least 6 characters.";
-        }
-        if (!formData.phoneNumber) errors.phoneNumber = "Phone Number is required.";
-        if (!formData.streetAddress) errors.streetAddress = "Street Address is required.";
-        if (!formData.postalCode) errors.postalCode = "Postal Code is required.";
-        if (!formData.city) errors.city = "City is required.";
-        if (!formData.dateOfBirth) errors.dateOfBirth = "Date of Birth is required.";
-        return errors;
-    };
+  const validate = () => {
+    const errors = {};
+    if (!formData.username) errors.username = "User Name is required.";
+    if (!formData.email) errors.email = "Email is required.";
+    else if (!validateEmail(formData.email)) {
+      errors.email = "Please enter a valid email.";
+    }
+    if (!formData.password) {
+      errors.password = "Password is required.";
+    } else if (formData.password !== formData.confirmpassword) {
+      errors.password = "Passwords do not match.";
+    } else if (formData.password.length < 6) {
+      errors.password = "Password must be at least 6 characters.";
+    }
+    if (!formData.phoneNumber) errors.phoneNumber = "Phone Number is required.";
+    if (!formData.postalCode) errors.postalCode = "Postal Code is required.";
+    if (!formData.streetAddress)
+      errors.streetAddress = "Street Address is required.";
+    if (!formData.city) errors.city = "City is required.";
+    if (!formData.dateOfBirth)
+      errors.dateOfBirth = "Date of Birth is required.";
+    return errors;
+  };
 
     const handleRegistration = async (e) => {
         e.preventDefault();
@@ -107,6 +110,7 @@ const Register = () => {
                 console.error('Error during registration:', error);
             }
         }
+   
     };
 
     return (
@@ -213,17 +217,17 @@ const Register = () => {
                 </button>
                 <div className="w-full text-green-500 p-2 rounded mt-4 text-center">
                     <p id="successMessage" hidden>
-                        Product was successfully created!
+                        User was successfully created!
                     </p>
                 </div>
                 <div className="w-full text-red-500 p-2 rounded mt-4 text-center">
                     <p id="failMessage" hidden>
-                        Failed to create product.
+                        Failed to create user.
                     </p>
                 </div>
             </form>
         </div>
-    );
-};
+    )
+    }
 
 export default Register;

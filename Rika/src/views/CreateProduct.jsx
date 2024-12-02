@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import SelectField from './sections/AdminCreateProduct/SelectField.jsx';
 import ArrowBack from './../common/ArrowBack.jsx';
 import InputField from './sections/AdminCreateProduct/InputField.jsx';
@@ -20,7 +20,6 @@ const CreateProduct = () => {
 
 
     const categories = ['T-Shirt', 'Underwear', 'Pants'];
-    const sizes = ['XS', 'S', 'M', 'L', 'XL'];
 
     const isValidImageURL = (url) => {
         const onlineImagePattern = /^(https?:\/\/.*\.(?:png|jpg|jpeg|gif|bmp|webp|tiff|svg))$/i;

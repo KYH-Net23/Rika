@@ -52,7 +52,7 @@ const Login = () => {
       const response = await authApi.post(
         endPoint,
         { email, password },
-        { withCredentials: true }
+        { withCredentials: true },
       );
       if (response.status === 200) {
         const userData = response.data;
@@ -68,20 +68,17 @@ const Login = () => {
     }
   };
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-screen bg-gray-100">
-        <div className="text-center">
-          <div className="w-16 h-16 border-4 border-blue-500 border-dotted rounded-full animate-spin mx-auto"></div>
-          <p className="text-lg font-semibold mt-4">Logging you in...</p>
-          <p className="text-sm text-gray-500">Please wait a moment</p>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="flex font-mont flex-col items-center justify-center">
+      {loading ? (
+        <div className="flex items-center justify-center h-screen bg-gray-100">
+          <div className="text-center">
+            <div className="w-16 h-16 border-4 border-blue-500 border-dotted rounded-full animate-spin mx-auto"></div>
+            <p className="text-lg font-semibold mt-4">Logging you in...</p>
+            <p className="text-sm text-gray-500">Please wait a moment</p>
+          </div>
+        </div>
+      ) : null}
       <div className="mb-10 mt-16">
         <h1 className="text-5xl text-left">RIKA</h1>
         <h2>Online Shopping</h2>
@@ -138,7 +135,7 @@ const Login = () => {
         >
           {loading ? "Processing..." : "Login"}
         </LoginButton>
-         <LoginButton
+        <LoginButton
           color="slategrey"
           label={"Forgot your password?"}
           disabled={loading}
@@ -148,7 +145,6 @@ const Login = () => {
 
       <div className="mb-8 text-gray-400">───────────── or ─────────────</div>
       <div className="sm:w-11/12 w-11/12 flex flex-col items-center md:w-8/12 2xl:w-4/12">
-       
         <LoginButton
           color="#00cf34"
           label={"Register new user"}
