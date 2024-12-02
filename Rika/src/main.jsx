@@ -31,6 +31,7 @@ import Checkout from "./views/Checkout.jsx";
 import ProductReturnPage from "./views/customerpages/Orders/Returns/ReturnPage.jsx";
 import OrderConfirmation from "./views/OrderConfirmation.jsx";
 import ErrorNotExisting from "./views/ErrorNotExisting.jsx";
+import ForgotYourPassword from "./views/ForgotYourPassword.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -90,6 +91,12 @@ createRoot(document.getElementById("root")).render(
                           <ProtectedRoute requiredRole="Admin">
                             <AdminLandingPage />
                           </ProtectedRoute>
+                        }
+                        />
+                        <Route
+                        path="/forgotpassword"
+                        element={
+                            <ForgotYourPassword />
                         }
                       />
                       <Route
