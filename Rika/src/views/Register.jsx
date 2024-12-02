@@ -15,6 +15,7 @@ const Register = () => {
         confirmpassword: '',
         phoneNumber: '',
         streetAddress: '',
+        postalCode: '',
         city: '',
         dateOfBirth: ''
     });
@@ -25,6 +26,7 @@ const Register = () => {
         password: 'Password',
         phoneNumber: 'PhoneNumber',
         streetAddress: 'StreetAddress',
+        postalCode: 'PostalCode',
         city: 'City',
         dateOfBirth: 'DateOfBirth',
     };
@@ -55,6 +57,7 @@ const Register = () => {
         }
         if (!formData.phoneNumber) errors.phoneNumber = "Phone Number is required.";
         if (!formData.streetAddress) errors.streetAddress = "Street Address is required.";
+        if (!formData.postalCode) errors.postalCode = "Postal Code is required.";
         if (!formData.city) errors.city = "City is required.";
         if (!formData.dateOfBirth) errors.dateOfBirth = "Date of Birth is required.";
         return errors;
@@ -79,6 +82,7 @@ const Register = () => {
                     navigate('/');
                 } else if (response.status === 400) {
                     const data = await response.json();
+                    console.log(data)
                     const apiErrors = {};
 
                     if (data.errors) {
@@ -173,6 +177,14 @@ const Register = () => {
                     value={formData.streetAddress}
                     onChange={handleChange}
                     error={errors.streetAddress}
+                />
+                   {/* Postal Code */}
+                   <InputField
+                    label="Postal Code"
+                    name="postalCode"
+                    value={formData.postalCode}
+                    onChange={handleChange}
+                    error={errors.postalCode}
                 />
                 {/* City */}
                 <InputField
