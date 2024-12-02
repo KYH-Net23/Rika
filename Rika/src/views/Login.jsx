@@ -93,7 +93,7 @@ const Login = () => {
         </p>
       </div>
       <form
-        className="sm:w-6/12 w-11/12 flex flex-col items-center mb-4"
+        className="sm:w-11/12 w-11/12 flex flex-col items-center mb-4 md:w-8/12 2xl:w-4/12"
         onSubmit={handleLogin}
       >
         <label className="font-semibold w-11/12" htmlFor="email">
@@ -130,18 +130,25 @@ const Login = () => {
           <p className="mb-1">Remember me</p>
           <input type="checkbox" disabled={loading} />
         </div>
-        <button
+        <LoginButton
           type="submit"
-          className="w-11/12 bg-black text-white py-2 rounded-md hover:bg-gray-600"
           disabled={loading}
+          color="black"
+          label={"Log in"}
         >
           {loading ? "Processing..." : "Login"}
-        </button>
+        </LoginButton>
+         <LoginButton
+          color="slategrey"
+          label={"Forgot your password?"}
+          disabled={loading}
+          onClick={() => navigate("/forgotpassword")}
+        />
       </form>
 
       <div className="mb-8 text-gray-400">───────────── or ─────────────</div>
-      <div className="sm:w-6/12 w-11/12 flex flex-col items-center">
-        {/* Register New User */}
+      <div className="sm:w-11/12 w-11/12 flex flex-col items-center md:w-8/12 2xl:w-4/12">
+       
         <LoginButton
           color="#00cf34"
           label={"Register new user"}
