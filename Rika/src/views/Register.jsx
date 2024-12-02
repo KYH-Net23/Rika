@@ -5,6 +5,7 @@ import InputField from "./sections/AdminCreateProduct/InputField.jsx";
 
 const Register = () => {
   const [errors, setErrors] = useState({});
+  const [specialError, setSpecialError] = useState(null)
   const navigate = useNavigate();
   const apiUrl =
     "https://rika-identity-user-f5e3fddxg4bve2eg.swedencentral-01.azurewebsites.net/Customer/Register";
@@ -105,6 +106,10 @@ const Register = () => {
                         })
                     }
                     setErrors(apiErrors);
+                    if(data.message != null)
+                    {
+                        setSpecialError(data.message);
+                    }
                 }
             } catch (error) {
                 console.error('Error during registration:', error);
@@ -215,6 +220,11 @@ const Register = () => {
                 >
                     Register
                 </button>
+
+                {specialError && 
+                    (<p className="w-full text-red-500 text-center mt-2">{specialError}</p>)
+                } 
+
                 <div className="w-full text-green-500 p-2 rounded mt-4 text-center">
                     <p id="successMessage" hidden>
                         User was successfully created!
