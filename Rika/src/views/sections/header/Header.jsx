@@ -4,16 +4,20 @@ import { UserContext } from "../../../lib/AuthProvider";
 
 import CartIcon from "../../../assets/icons/CartIcon";
 import HomeIcon from "../../../assets/icons/HomeIcon";
-import NotificationIcon from "../../../assets/icons/NotificationIcon";
 import ProfileIcon from "../../../assets/icons/ProfileIcon";
 import ProductIcon from "../../../assets/icons/ProductIcon";
+import ShoppingCart from "../products/checkout/cart/ShoppingCart";
 
 const Header = () => {
   const navigate = useNavigate();
   const { userRole, isAuthenticated } = useContext(UserContext);
 
+  const cartItems = localStorage.getItem("cartItems");
+
   const handleClick = () => {
-    navigate("/");
+    if (cartItems && cartItems.length > 0) navigate("/");
+
+    navigate("/products");
   };
 
   const handleCartClick = () => {
@@ -49,7 +53,7 @@ const Header = () => {
         <nav className="flex items-center gap-14">
           <button onClick={handleCartClick}>
             <a className="cursor-pointer">
-              <CartIcon />
+              <ShoppingCart typeOfIcon="cart"/>
             </a>
           </button>
           <button onClick={handleProductClick}>

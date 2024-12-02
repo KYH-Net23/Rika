@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import ShoppingCartIcon from "../../../../../assets/icons/ShoppingCartIcon";
 import ShoppingCartModal from "./ShoppingCartModal";
+import ShoppingCartIcon from "../../../../../assets/icons/ShoppingCartIcon";
+import CartIcon from "../../../../../assets/icons/CartIcon";
 
-const ShoppingCart = () => {
+const ShoppingCart = ({ typeOfIcon = "" }) => {
   const [addedItems, setAddedItems] = useState(0);
   const [data, setData] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -33,7 +34,13 @@ const ShoppingCart = () => {
           </div>
         ) : null}
         <button onClick={() => setIsModalOpen(true)}>
-          <ShoppingCartIcon />
+          {typeOfIcon === "cart" ? (
+            <div className="w-6 h-4">
+              <CartIcon />
+            </div>
+          ) : (
+            <ShoppingCartIcon />
+          )}
         </button>
       </div>
       <ShoppingCartModal
