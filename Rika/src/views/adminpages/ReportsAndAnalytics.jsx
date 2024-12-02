@@ -1,8 +1,25 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import ArrowBack from '../../common/ArrowBack';
+import Highcharts from 'highcharts';
+import HighchartsReact from 'highcharts-react-official';
 
 const ReportsAndAnalytics = () => {
 
+    const options = {
+        chart: {
+          type: 'spline'
+        },
+        title: {
+          text: 'Active Users'
+        },
+        series: [
+          {
+            data: [1, 2, 1, 4, 3, 6]
+          }
+        ]
+      };
+    
     const navigate = useNavigate();
     const [sessionIds, setSessionIds] = useState([]);
     const [selectedSessionId, setSelectedSessionId] = useState("");
@@ -42,13 +59,31 @@ const ReportsAndAnalytics = () => {
     return (
 
         <div className="bg-gray-100 min-h-screen p-4">
-
+      
             {/* Header */}
-            <div className="flex justify-between items-center mb-6">
+            <div className="flex justify-start items-center gap-4 mb-6">
+                <ArrowBack goBackTo={"/admin"} />
                 <h1 className="text-xl font-bold">📊 Reports & Analytics</h1>
             </div>
 
-            <div className='space-y-4'>
+            <div className='flex flex-col gap-4'>
+
+            <div className='bg-white rounded-lg shadow-md p-4'>
+                    <div className='space-y-5'>
+                        <h1 className='font-bold'>Overview</h1>
+                        <div className='flex justify-evenly items-center'>
+                            
+                            <div className='bg-gray rounded-lg shadow-md p-4'>
+                                <HighchartsReact highcharts={Highcharts} options={options} />
+                            </div>
+                            <div className='bg-gray rounded-lg shadow-md p-4'>Test</div>
+                            <div className='bg-gray rounded-lg shadow-md p-4'>Test</div>
+                            <div className='bg-gray rounded-lg shadow-md p-4'>Test</div>
+
+                        </div>
+                    </div>
+                </div>
+
                 <div className='bg-white rounded-lg shadow-md p-4'>
                     <div className='space-y-2'>
                         <h1 className='font-bold'>Get user session</h1>
@@ -68,27 +103,27 @@ const ReportsAndAnalytics = () => {
                             </button>
                         </div>
 
-                    <div className='flex justify-center'>
-                        <div className='space-y-4'>
-                            {events.map((event, index) => (
-                                <div key={index} className='flex items-center'>
+                        <div className='flex justify-center'>
+                            <div className='space-y-4'>
+                                {events.map((event, index) => (
+                                    <div key={index} className='flex items-center'>
 
-                                    <div className='relative flex flex-col items-center'>
-                                        <div className='w-6 h-6 bg-blue-500 rounded-full'></div>
+                                        <div className='relative flex flex-col items-center'>
+                                            <div className='w-6 h-6 bg-blue-500 rounded-full'></div>
 
-                                        {index < events.length - 1 && (
-                                            <div className='absolute top-6 h-16 border-2 border-blue-500'></div>
-                                        )}
+                                            {index < events.length - 1 && (
+                                                <div className='absolute top-6 h-16 border-2 border-blue-500'></div>
+                                            )}
+                                        </div>
+
+                                        <div className='ml-4'>
+                                            <p className='text-sm text-gray-500'>{event.eventTimeStamp}</p>
+                                            <p className='text-base font-semibold text-gray-800'>{event.eventType}</p>
+                                        </div>
                                     </div>
-
-                                    <div className='ml-4'>
-                                        <p className='text-sm text-gray-500'>{event.eventTimeStamp}</p>
-                                        <p className='text-base font-semibold text-gray-800'>{event.eventType}</p>
-                                    </div>
-                                </div>
-                            ))}
+                                ))}
+                            </div>
                         </div>
-                    </div>
 
                     </div>
                 </div>
