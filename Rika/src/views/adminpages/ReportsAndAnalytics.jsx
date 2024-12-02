@@ -5,27 +5,58 @@ import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 
 const ReportsAndAnalytics = () => {
+ 
+    const navigate = useNavigate();
+    const [userEventsCount, setUserEventsCount] = useState(0);
+    const [sessionIds, setSessionIds] = useState([]);
+    const [sessionIdsCount, setSessionIdsCount] = useState(0);
+    const [selectedSessionId, setSelectedSessionId] = useState("");
+    const [events, setEvents] = useState([]);
 
-    const options = {
+    const sessionsSplineOptions = {
         chart: {
           type: 'spline'
         },
         title: {
-          text: 'Active Users'
+          text: 'Sessions'
         },
         series: [
           {
-            data: [1, 2, 1, 4, 3, 6]
+            data: [sessionIdsCount]
           }
         ]
-      };
-    
-    const navigate = useNavigate();
-    const [sessionIds, setSessionIds] = useState([]);
-    const [selectedSessionId, setSelectedSessionId] = useState("");
-    const [events, setEvents] = useState([]);
+    };
+
+    const sessionsPieOptions = {
+        chart: {
+          type: 'pie'
+        },
+        title: {
+          text: 'Sessions'
+        },
+        series: [
+          {
+            data: [sessionIdsCount]
+          }
+        ]
+    };
 
     useEffect(() => {
+
+        const fetchUserEventsCount = async () => {
+            try{
+                const response = await fetch(`https://localhost:7037/getUserEvents/count`);
+                if(!response.ok){
+                    throw new Error("Failed to fetch user events count.");
+                }
+                const data = await response.json();
+                console.log(data);
+                setUserEventsCount(data);
+            } catch (error) {
+                console.error("Error fetching user events count", error)
+            }
+        }
+
         const fetchSessionIds = async () => {
             try {
                 const response = await fetch(`https://localhost:7037/getUserEvents/sessionIds`);
@@ -34,10 +65,13 @@ const ReportsAndAnalytics = () => {
                 }
                 const data = await response.json();
                 setSessionIds(data);
+                setSessionIdsCount(data.length);
             } catch (error) {
                 console.error("Error fetching session IDs:", error)
             }
         };
+
+        fetchUserEventsCount();
         fetchSessionIds();
     }, [])
 
@@ -71,15 +105,44 @@ const ReportsAndAnalytics = () => {
             <div className='bg-white rounded-lg shadow-md p-4'>
                     <div className='space-y-5'>
                         <h1 className='font-bold'>Overview</h1>
-                        <div className='flex justify-evenly items-center'>
-                            
-                            <div className='bg-gray rounded-lg shadow-md p-4'>
-                                <HighchartsReact highcharts={Highcharts} options={options} />
+                        <div className='grid grid-cols-2 gap-4'>      
+                            <div className='bg-white border-2 rounded-lg shadow-md p-4'>
+                                {sessionIdsCount > 0 ? (
+                                    <HighchartsReact highcharts={Highcharts} options={sessionsSplineOptions} />
+                                ) : (
+                                    <div className='bg-red-100  text-red-700 px-4 py-3 rounded'>
+                                        <p>Couldn't fetch chart</p>
+                                    </div>
+                                )}       
                             </div>
-                            <div className='bg-gray rounded-lg shadow-md p-4'>Test</div>
-                            <div className='bg-gray rounded-lg shadow-md p-4'>Test</div>
-                            <div className='bg-gray rounded-lg shadow-md p-4'>Test</div>
-
+                            <div className='bg-white border-2 rounded-lg shadow-md p-4'>
+                                {sessionIdsCount > 0 ? (
+                                    <HighchartsReact highcharts={Highcharts} options={sessionsPieOptions} />
+                                ) : (
+                                    <div className='bg-red-100  text-red-700 px-4 py-3 rounded'>
+                                        <p>Couldn't fetch chart</p>
+                                    </div>
+                                )}       
+                            </div>
+                            
+                        </div>
+                        <div className='grid grid-cols-4 gap-4'>
+                            <div className='bg-white border-2 rounded-lg shadow-md p-4'>
+                                Sessions
+                                <h1 className='text-center font-bold my-5'>{sessionIdsCount}</h1>
+                            </div>
+                            <div className='bg-white border-2 rounded-lg shadow-md p-4'>
+                                Event Count
+                                <h1 className='text-center font-bold my-5'>{userEventsCount}</h1>
+                            </div>
+                            <div className='bg-white border-2 rounded-lg shadow-md p-4'>
+                                Total Users
+                                <h1 className='text-center font-bold my-5'>800</h1>
+                            </div>
+                            <div className='bg-white border-2 rounded-lg shadow-md p-4'>
+                                User Engagement
+                                <h1 className='text-center font-bold my-5'>7m 33s</h1>
+                            </div>
                         </div>
                     </div>
                 </div>
