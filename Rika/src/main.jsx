@@ -26,12 +26,12 @@ import Users from "./views/Users";
 import RedirectToPaymentForm from "./views/payment/RedirectToPaymentForm.jsx";
 import Register from "./views/Register.jsx";
 import AllInvoices from "./views/Invoice/AllInvoices.jsx";
-import ShippingOptions from "./views/shipping/ShippingOptions.jsx";
 import Checkout from "./views/Checkout.jsx";
 import ProductReturnPage from "./views/customerpages/Orders/Returns/ReturnPage.jsx";
 import OrderConfirmation from "./views/OrderConfirmation.jsx";
 import ErrorNotExisting from "./views/ErrorNotExisting.jsx";
 import ConfirmEmail from "./views/ConfirmEmail.jsx";
+import ForgotYourPassword from "./views/ForgotYourPassword.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -75,7 +75,6 @@ createRoot(document.getElementById("root")).render(
                         path="/productReturn"
                         element={<ProductReturnPage />}
                       />
-                      <Route path="/shipping" element={<ShippingOptions />} />
                       <Route path="/return" element={<ReturnFromPayment />} />
                       <Route path="/checkout" element={<Checkout />} />
                       <Route
@@ -92,6 +91,12 @@ createRoot(document.getElementById("root")).render(
                           <ProtectedRoute requiredRole="Admin">
                             <AdminLandingPage />
                           </ProtectedRoute>
+                        }
+                        />
+                        <Route
+                        path="/forgotpassword"
+                        element={
+                            <ForgotYourPassword />
                         }
                       />
                       <Route

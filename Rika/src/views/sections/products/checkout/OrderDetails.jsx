@@ -19,8 +19,9 @@ const YourCart = ({ data, totalPrice, slideNumber, clickFunc }) => {
   const validate = () => {
     let validationErrors = {};
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const phoneRegex = /^\+?\d{7,15}$/;
-    const zipCodeRegex = /^[0-9]{5}$/;
+    const phoneRegex =
+      /^\+?(\d{2,3})?\s?(\d{2,3})\s?(\d{3})\s?(\d{2})?\s?(\d{2})?$/;
+    const zipCodeRegex = /^[0-9]{3}\s?[0-9]{2}$/;
     const nameRegex = /^[a-zA-Z]+(?: [a-zA-Z]+)*$/;
 
     if (!formData.firstName.trim()) {
