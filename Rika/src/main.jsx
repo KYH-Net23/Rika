@@ -32,6 +32,7 @@ import OrderConfirmation from "./views/OrderConfirmation.jsx";
 import ErrorNotExisting from "./views/ErrorNotExisting.jsx";
 import ConfirmEmail from "./views/ConfirmEmail.jsx";
 import ForgotYourPassword from "./views/ForgotYourPassword.jsx";
+import ResetPassword from "./views/ResetPassword.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -92,13 +93,17 @@ createRoot(document.getElementById("root")).render(
                             <AdminLandingPage />
                           </ProtectedRoute>
                         }
-                        />
-                        <Route
-                        path="/forgotpassword"
-                        element={
-                            <ForgotYourPassword />
-                        }
                       />
+                      <Route
+                        path="/forgotpassword"
+                        element={<ForgotYourPassword />}
+                      />
+
+                      <Route
+                        path="/resetpassword/:id"
+                        element={<ResetPassword />}
+                      />
+
                       <Route
                         path="/all-invoices"
                         element={
@@ -120,5 +125,5 @@ createRoot(document.getElementById("root")).render(
         </InvoiceProvider>
       </OrderProvider>
     </BrowserRouter>
-  </StrictMode>
+  </StrictMode>,
 );
