@@ -86,7 +86,7 @@ const CustomerLandingPage = () => {
             {/* My Favourites - Navigating to ErrorNotExisting */}
             <li
               className="flex items-center justify-between cursor-pointer"
-              onClick={() => navigate("/error-not-existing")}
+              onClick={() => navigate("/favorites")}
             >
               <span className="flex items-center">
                 <i className="text-xl mr-4">❤️</i>

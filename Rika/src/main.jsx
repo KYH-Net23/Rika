@@ -33,7 +33,7 @@ import ErrorNotExisting from "./views/ErrorNotExisting.jsx";
 import ConfirmEmail from "./views/ConfirmEmail.jsx";
 import ForgotYourPassword from "./views/ForgotYourPassword.jsx";
 import ResetPassword from "./views/ResetPassword.jsx";
-import Favorites from "./views/customerpages/Favorites/Favorites.jsx";
+import FavoritesPage from "./views/customerpages/Favorites/FavoritesPage.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -117,10 +117,7 @@ createRoot(document.getElementById("root")).render(
                         path="/orderconfirmation"
                         element={<OrderConfirmation />}
                       />
-                      <Route
-                        path="/favorite"
-                        element={<Favorites />}
-                      />
+                      <Route path="/favorites" element={<FavoritesPage />} />
                     </Routes>
                   </div>
                 </PaymentProvider>

@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { useProductContext } from "../../../../lib/ProductProvider";
 
 import HeartIcon from "../../../../assets/icons/HeartIcon";
+import FilledHeartIcon from "../../../../assets/icons/FilledHeartIcon";
 import BagWhite from "../../../../assets/icons/BagWhite";
 import SuccessAlert from "../../../../common/SuccessAlert";
 
@@ -23,6 +24,8 @@ const Detailssection = () => {
   const [size, setSize] = useState("");
   const [sizeError, setSizeError] = useState("");
   const [showAlert, setShowAlert] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(false);
+  const [favoriteAlert, setFavoriteAlert] = useState(false);
 
   useEffect(() => {
     const fetchProductDetails = async () => {
@@ -43,6 +46,9 @@ const Detailssection = () => {
 
         const validatedImageUrl = await checkImageUrl(data.image);
         setProductDetails({ ...data, image: validatedImageUrl });
+        const existingFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
+        const alreadyFavorite = existingFavorites.some((item) => item.id === id);
+        setIsFavorite(alreadyFavorite);
       } catch (error) {
         console.error("Error fetching product details:", error);
       }
@@ -98,9 +104,34 @@ const Detailssection = () => {
     }, 2500);
   };
 
+  const toggleFavorite = () => {
+    const favoriteItem = {
+      id,
+      brand: productDetails.brand,
+      model: productDetails.model,
+      price: productDetails.price,
+      image: productDetails.image,
+    };
+
+    let existingFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
+
+    if (isFavorite) {
+      existingFavorites = existingFavorites.filter((item) => item.id !== id);
+      setIsFavorite(false);
+    } else {
+      existingFavorites.push(favoriteItem);
+      setIsFavorite(true);
+      setFavoriteAlert(true);
+      setTimeout(() => setFavoriteAlert(false), 2500);
+    }
+
+    localStorage.setItem("favorites", JSON.stringify(existingFavorites));
+  };
+
   return (
     <section>
       {showAlert && <SuccessAlert message="Item added to cart!" />}
+      {favoriteAlert && <SuccessAlert message="Added to favorites!" />}
       <div className="flex gap-4 px-4 py-8">
         <div className="flex-none">
           <h1 className="text-black font-mont text-[18px] font-extrabold leading-[150%]">
@@ -160,8 +191,11 @@ const Detailssection = () => {
       </div>
       <div>{sizeError && <p className="text-red-500">{sizeError}</p>}</div>
       <div className="flex gap-4 px-4 py-6">
-        <button className="bg-[#ebebeb] rounded-xl px-3 py-3">
-          <HeartIcon />
+        <button
+          className="bg-[#ebebeb] rounded-xl px-3 py-3"
+          onClick={toggleFavorite}
+        >
+          {isFavorite ? <FilledHeartIcon /> : <HeartIcon />}
         </button>
         <div className="grow"></div>
         <button
