@@ -47,6 +47,7 @@ const Login = () => {
     }
 
     setLoading(true);
+    await new Promise(x => setTimeout(x, 1000))
     const endPoint = "/TokenGenerator/login";
     try {
       const response = await authApi.post(
@@ -61,8 +62,13 @@ const Login = () => {
         });
         await checkAuth();
       }
+      else if(response.status === 401) {
+        setPasswordError("Invalid credentials. Please check your email / password.")
+        console.log(response)
+      }
     } catch (error) {
       console.error("Error during login:", error);
+      setPasswordError("Invalid credentials. Please check your email / password.")
     } finally {
       setLoading(false);
     }
@@ -71,7 +77,7 @@ const Login = () => {
   return (
     <div className="flex font-mont flex-col items-center justify-center">
       {loading ? (
-        <div className="flex items-center justify-center h-screen bg-gray-100">
+        <div className="w-full flex items-center justify-center h-screen bg-gray-100">
           <div className="text-center">
             <div className="w-16 h-16 border-4 border-blue-500 border-dotted rounded-full animate-spin mx-auto"></div>
             <p className="text-lg font-semibold mt-4">Logging you in...</p>
