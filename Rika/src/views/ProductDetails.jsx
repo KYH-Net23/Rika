@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react'
-import ImageSection from './sections/products/productdetails/ImageSection'
-import Navbar from './sections/products/productdetails/NavBar'
-import Detailssection from './sections/products/productdetails/Detailssection'
+import { useEffect, useState } from "react";
+import ImageSection from "./sections/products/productdetails/ImageSection";
+import Navbar from "./sections/products/productdetails/NavBar";
+import Detailssection from "./sections/products/productdetails/Detailssection";
 import { useProductContext } from "../lib/ProductProvider";
 import { useParams } from "react-router-dom";
-
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -15,7 +14,7 @@ const ProductDetails = () => {
     description: "",
     price: 0,
     image: "",
-    size: []
+    size: [],
   });
 
   const [isLoading, setIsLoading] = useState(true);
@@ -44,7 +43,7 @@ const ProductDetails = () => {
         </>
       )}
     </>
-  )
-}
+  );
+};
 
-export default ProductDetails
+export default ProductDetails;

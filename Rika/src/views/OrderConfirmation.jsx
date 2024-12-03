@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import ArrowBack from "../common/ArrowBack";
 import { useOrderContext } from "../lib/OrderProvider";
 import { usePaymentContext } from "../lib/PaymentProvider";
