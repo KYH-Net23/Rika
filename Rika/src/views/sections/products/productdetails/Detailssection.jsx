@@ -108,7 +108,7 @@ const Detailssection = () => {
     }, 2500);
   };
 
-  const toggleFavorite = () => {
+  const toggleFavorite = async () => {
     const favoriteItem = {
       id,
       brand: productDetails.brand,
@@ -117,24 +117,47 @@ const Detailssection = () => {
       image: productDetails.image,
     };
 
-    let existingFavorites =
-      JSON.parse(localStorage.getItem("favorites")) || [];
-
-    if (isFavorite) {
-      existingFavorites = existingFavorites.filter(
-        (item) => item.id !== id
-      );
-      setIsFavorite(false);
-      setFavoriteMessage("Favorite removed");
-    } else {
-      existingFavorites.push(favoriteItem);
-      setIsFavorite(true);
-      setFavoriteMessage("Favorite added!");
+    try {
+      const isOnline = await checkNetworkStatus();
+      if (!isOnline) {
+        throw new Error("Network error");
+      }
+  
+      let existingFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
+  
+      if (isFavorite) {
+        existingFavorites = existingFavorites.filter((item) => item.id !== id);
+        setIsFavorite(false);
+        setFavoriteMessage("Favorite removed!");
+      } else {
+        existingFavorites.push(favoriteItem);
+        setIsFavorite(true);
+        setFavoriteMessage("Favorite added!");
+      }
+  
+      localStorage.setItem("favorites", JSON.stringify(existingFavorites));
+    } catch (error) {
+      console.error("Error handling favorites:", error);
+      if (isFavorite) {
+        setFavoriteMessage("Failed to remove favorite.");
+      } else {
+        setFavoriteMessage("Failed to add to favorites.");
+      }
     }
-
-    localStorage.setItem("favorites", JSON.stringify(existingFavorites));
-    setTimeout(() => setFavoriteMessage(""), 2000);
+    setTimeout(() => setFavoriteMessage(""), 3000);
   };
+  
+  const checkNetworkStatus = async () => {
+    try {
+      const response = await fetch("https://jsonplaceholder.typicode.com/posts/1", {
+        method: "HEAD",
+        cache: "no-cache",
+      });
+      return response.ok;
+    } catch (error) {
+      return false;
+    }
+  };  
 
   return (
     <section>
