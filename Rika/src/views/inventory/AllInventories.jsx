@@ -13,7 +13,7 @@ function AllInventories() {
           <ArrowBack goBackTo="/admin" /> 
         </div>
       </nav>
-      <h1 className="text-2xl font-bold mb-6">All Inventories</h1>
+      <h1 className="text-2xl font-bold mb-6">Inventory Actions</h1>
       <div className="flex flex-col space-y-4">
         
         <button
@@ -24,7 +24,7 @@ function AllInventories() {
         <button
         onClick={() => navigate('/read-inventories')}
          className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-700">
-          Read Inventory
+          Show all inventories
         </button>
         <button
         onClick={() => navigate('/update-inventories')}
