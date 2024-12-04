@@ -83,8 +83,22 @@ export const deleteInventory = async (id) => {
     const response = await fetch(`${BASE_URL}/deleteinventory/${id}`, {
       method: "DELETE",
     });
-    if (!response.ok) throw new Error("Failed to delete inventory.");
-    return await response.json();
+  //   if (!response.ok) throw new Error("Failed to delete inventory.");
+  //   return await response.json();
+  // } catch (error) {
+  //   console.error("Error deleting inventory:", error);
+  //   throw error;
+  // }
+    if (!response.ok) {
+      throw new Error("Failed to delete inventory.");
+    }
+
+    if (response.status !== 204) {  // HTTP 204 means No Content, no need to parse
+      return await response.json();
+    } else {
+      return { message: "Inventory deleted successfully", success: true };
+    }
+    
   } catch (error) {
     console.error("Error deleting inventory:", error);
     throw error;
