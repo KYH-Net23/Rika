@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import { useProductContext } from "../../../../lib/ProductProvider";
+import useFavorites from "../../../../lib/FavoritesProvider";
 
 import HeartIcon from "../../../../assets/icons/HeartIcon";
 import FilledHeartIcon from "../../../../assets/icons/FilledHeartIcon";
@@ -11,6 +12,7 @@ import SuccessAlert from "../../../../common/SuccessAlert";
 const Detailssection = () => {
   const { id } = useParams();
   const { getProductData } = useProductContext();
+  const { addToFavorites, removeFromFavorites, isFavorite } = useFavorites();
   const [productDetails, setProductDetails] = useState({
     brand: "",
     model: "",
@@ -24,8 +26,8 @@ const Detailssection = () => {
   const [size, setSize] = useState("");
   const [sizeError, setSizeError] = useState("");
   const [showAlert, setShowAlert] = useState(false);
-  const [isFavorite, setIsFavorite] = useState(false);
-  const [favoriteAlert, setFavoriteAlert] = useState(false);
+  const [favoriteMessage, setFavoriteMessage] = useState(""); 
+  const [showFavoriteMessage, setShowFavoriteMessage] = useState(false); 
 
   useEffect(() => {
     const fetchProductDetails = async () => {
@@ -46,16 +48,13 @@ const Detailssection = () => {
 
         const validatedImageUrl = await checkImageUrl(data.image);
         setProductDetails({ ...data, image: validatedImageUrl });
-        const existingFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
-        const alreadyFavorite = existingFavorites.some((item) => item.id === id);
-        setIsFavorite(alreadyFavorite);
       } catch (error) {
         console.error("Error fetching product details:", error);
       }
     };
 
     fetchProductDetails();
-  }, [id]);
+  }, [id, getProductData]);
 
   const handleSub = () => {
     if (quantity > 1) {
@@ -113,25 +112,21 @@ const Detailssection = () => {
       image: productDetails.image,
     };
 
-    let existingFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
-
-    if (isFavorite) {
-      existingFavorites = existingFavorites.filter((item) => item.id !== id);
-      setIsFavorite(false);
+    if (isFavorite(id)) {
+      removeFromFavorites(id);
+      setFavoriteMessage("Favorite removed");
     } else {
-      existingFavorites.push(favoriteItem);
-      setIsFavorite(true);
-      setFavoriteAlert(true);
-      setTimeout(() => setFavoriteAlert(false), 2500);
+      addToFavorites(favoriteItem);
+      setFavoriteMessage("Favorite added!");
     }
 
-    localStorage.setItem("favorites", JSON.stringify(existingFavorites));
+    setShowFavoriteMessage(true);
+    setTimeout(() => setShowFavoriteMessage(false), 2000);
   };
 
   return (
     <section>
       {showAlert && <SuccessAlert message="Item added to cart!" />}
-      {favoriteAlert && <SuccessAlert message="Added to favorites!" />}
       <div className="flex gap-4 px-4 py-8">
         <div className="flex-none">
           <h1 className="text-black font-mont text-[18px] font-extrabold leading-[150%]">
@@ -195,8 +190,13 @@ const Detailssection = () => {
           className="bg-[#ebebeb] rounded-xl px-3 py-3"
           onClick={toggleFavorite}
         >
-          {isFavorite ? <FilledHeartIcon /> : <HeartIcon />}
+          {isFavorite(id) ? <FilledHeartIcon /> : <HeartIcon />}
         </button>
+        {showFavoriteMessage && (
+          <div className="absolute top-[-10px] left-[50px] bg-black text-white text-sm p-2 rounded">
+            {favoriteMessage}
+          </div>
+        )}
         <div className="grow"></div>
         <button
           onClick={addToCart}

@@ -36,16 +36,18 @@ const FavoritesPage = () => {
   };
 
   return (
-    <section className="px-4 pt-10 flex flex-col gap-4">
-      <ArrowBack goBackTo="/customer" className="mb-4" />
+    <section className="px-4 pt-10 flex flex-col items-center gap-4"> 
+        <div className="absolute top-6 left-6"> 
+        <ArrowBack goBackTo="/customer" />
+        </div>
       <h1 className="text-black font-mont text-[18px] font-extrabold leading-[150%]">
         My Favorites
       </h1>
-
+  
       {favorites.length === 0 ? (
         <p>You have no favorites yet!</p>
       ) : (
-        <div className="flex gap-4 flex-wrap">
+        <div className="flex flex-wrap gap-6 justify-center max-w-[1200px]"> 
           {favorites.map((favorite) => (
             <article
               key={favorite.id}

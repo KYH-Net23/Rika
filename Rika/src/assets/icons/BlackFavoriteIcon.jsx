@@ -1,4 +1,11 @@
-const BlackFavoriteIcon = () => {
+import React from "react";
+import WhiteFavoriteIcon from "./WhiteFavoriteIcon"; 
+
+const BlackFavoriteIcon = ({ isFilled }) => {
+  if (isFilled) {
+    return <WhiteFavoriteIcon />; 
+  }
+
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
