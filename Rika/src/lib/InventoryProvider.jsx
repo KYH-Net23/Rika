@@ -5,7 +5,7 @@ const BASE_URL = "https://rika-inventory-api.azurewebsites.net/api";
 // Funktion för att hämta alla inventarier
 export const getAllInventories = async () => {
   try {
-    const response = await fetch(`${BASE_URL}/getallinventories`);
+    const response = await fetch(`${BASE_URL}/getinventories`);
     if (!response.ok) throw new Error("Failed to fetch inventories.");
     return await response.json();
   } catch (error) {
@@ -36,8 +36,23 @@ export const createInventory = async (inventoryData) => {
       },
       body: JSON.stringify(inventoryData),
     });
-    if (!response.ok) throw new Error("Failed to create inventory.");
-    return await response.json();
+
+  if (!response.ok) {
+    const errorText = await response.text();  
+    console.error("Server responded with error:", errorText);
+    throw new Error(`Failed to create inventory. Server responded with: ${errorText}`);
+  }
+
+  const contentType = response.headers.get("content-type");
+  if (contentType && contentType.includes("application/json")) {
+    const data = await response.json(); 
+    console.log("Inventory created:", data);
+    return data;
+  } else {
+    const responseText = await response.text();
+    console.error("Non-JSON response:", responseText);
+    throw new Error("Server did not return valid JSON.");
+  }
   } catch (error) {
     console.error("Error creating inventory:", error);
     throw error;

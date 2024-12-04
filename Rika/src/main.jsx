@@ -35,6 +35,7 @@ import CreateInventory from "./views/inventory/CreateInventory.jsx";
 import ReadInventories from "./views/inventory/ReadInventories.jsx";
 import ErrorNotExisting from "./views/ErrorNotExisting.jsx";
 import UpdateInventories from "./views/inventory/UpdateInventories.jsx";
+import DeleteInventory from "./views/inventory/DeleteInventory.jsx";
 
 
 createRoot(document.getElementById("root")).render(
@@ -124,6 +125,10 @@ createRoot(document.getElementById("root")).render(
                       <Route
                         path="/update-inventories"
                         element={<UpdateInventories />}
+                      />
+                      <Route
+                        path="/delete-inventory"
+                        element={<DeleteInventory />}
                       />
                     </Routes>
                   </div>

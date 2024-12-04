@@ -98,7 +98,6 @@ const CreateInventory = () => {
 
     try {
       await createInventory(formData); 
-      setSuccessMessage("Inventory created successfully!");
       setFormData({
         inventoryName: "",
         storeName: "",
@@ -111,6 +110,7 @@ const CreateInventory = () => {
         description: "",
         capacity: 0,
       });
+      setSuccessMessage("Inventory created successfully!");
       setErrors({});
       setTimeout(() => navigate("/all-inventories"), 1500);
     } catch (error) {
