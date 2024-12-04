@@ -92,7 +92,10 @@ const ShippingForm = ({ clickFunc }) => {
       setSelectedShippingDetails(shippingDetails);
       console.log("saved shipping details to context", shippingDetails);
 
-      localStorage.setItem("shippingInformation", JSON.stringify(shippingDetails))
+      localStorage.setItem(
+        "shippingInformation",
+        JSON.stringify(shippingDetails)
+      );
 
       const dropdownIds = ["postnord-select", "dhl-select", "instabox-select"];
       dropdownIds.forEach((id) => {
@@ -343,7 +346,7 @@ const ShippingForm = ({ clickFunc }) => {
                             {new Date(time.timeOfArrival).toLocaleDateString()}
                           </p>
                           <p>
-                            <strong>Price:</strong> {price} kr
+                            <strong>Price:</strong> {price} $
                           </p>
                         </li>
                       );
