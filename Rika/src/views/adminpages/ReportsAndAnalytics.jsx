@@ -63,7 +63,7 @@ const ReportsAndAnalytics = () => {
         const fetchDailyEvents = async () => {
             try{
                 const formattedDate = format(date, 'yyyy-MM-dd');
-                const response = await fetch(`https://localhost:7037/getUserEvents/daily-events?date=${formattedDate}`)
+                const response = await fetch(`https://rika-loggingprovider.azurewebsites.net/getUserEvents/daily-events?date=${formattedDate}`)
                 if(!response.ok){
                     throw new Error("Failed to fetch user events count.");
                 }
@@ -101,7 +101,7 @@ const ReportsAndAnalytics = () => {
 
         const fetchEventTypeDistribution = async () => {
             try{
-                const response = await fetch(`https://localhost:7037/getUserEvents/event-type-distribution`);
+                const response = await fetch(`https://rika-loggingprovider.azurewebsites.net/getUserEvents/event-type-distribution`);
                 if(!response.ok){
                     throw new Error("Failed to fetch event type distribution.");
                 }
@@ -127,7 +127,7 @@ const ReportsAndAnalytics = () => {
 
         const fetchUserEventsCount = async () => {
             try{
-                const response = await fetch(`https://localhost:7037/getUserEvents/count`);
+                const response = await fetch(`https://rika-loggingprovider.azurewebsites.net/getUserEvents/count`);
                 if(!response.ok){
                     throw new Error("Failed to fetch user events count.");
                 }
@@ -140,7 +140,7 @@ const ReportsAndAnalytics = () => {
 
         const fetchSessionIds = async () => {
             try {
-                const response = await fetch(`https://localhost:7037/getUserEvents/sessionIds`);
+                const response = await fetch(`https://rika-loggingprovider.azurewebsites.net/getUserEvents/sessionIds`);
                 if (!response.ok) {
                     throw new Error("Failed to fetch session IDs.");
                 }
@@ -162,7 +162,7 @@ const ReportsAndAnalytics = () => {
         if (!selectedSessionId) return;
 
         try {
-            const response = await fetch(`https://localhost:7037/getUserEvents/${selectedSessionId}`)
+            const response = await fetch(`https://rika-loggingprovider.azurewebsites.net/getUserEvents/${selectedSessionId}`)
             if (!response.ok) {
                 throw new Error("Failed to fetch events.");
             }

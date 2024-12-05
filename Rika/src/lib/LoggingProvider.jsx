@@ -57,7 +57,7 @@ export const LoggingProvider = ({ children }) => {
 
     const registerAdminEvent = async (adminEvent) => {
         try {
-            const response = await fetch('https://localhost:7037/createadminevent/', {
+            const response = await fetch('https://rika-loggingprovider.azurewebsites.net/createadminevent/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -81,7 +81,7 @@ export const LoggingProvider = ({ children }) => {
         if (queueToFlush.length === 0) return;
 
         try {
-            const response = await fetch('https://localhost:7037/createuserevent/', {
+            const response = await fetch('https://rika-loggingprovider.azurewebsites.net//createuserevent/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
