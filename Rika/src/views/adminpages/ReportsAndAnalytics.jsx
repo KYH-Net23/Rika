@@ -3,9 +3,14 @@ import { useNavigate } from 'react-router-dom'
 import ArrowBack from '../../common/ArrowBack';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { format } from 'date-fns'; 
 
 const ReportsAndAnalytics = () => {
- 
+
+    const [date, setDate] = useState(new Date());
+
     const navigate = useNavigate();
     const [userEventsCount, setUserEventsCount] = useState(0);
     const [sessionIds, setSessionIds] = useState([]);
@@ -39,31 +44,26 @@ const ReportsAndAnalytics = () => {
         ],
     });
 
-    const sessionsPieOptions = {
+    const [eventTypePieOptions, setEventTypePieOptions] = useState ({
         chart: {
-          type: 'pie'
-        },
-        title: {
-          text: 'Sessions'
-        },
-        series: [
-          {
-            data: [sessionIdsCount]
-          }
-        ]
-    };
+            type: 'pie'
+          },
+          title: {
+            text: 'Event Distribution by Event Type'
+          },
+          series: [
+            {
+                name: 'Event',
+                data: []
+            }
+          ]
+    });
 
     useEffect(() => {
-
-        Highcharts.setOptions({
-            time: {
-                timezone: 'Europe/Stockholm',
-            },
-        });
-
         const fetchDailyEvents = async () => {
             try{
-                const response = await fetch(`https://localhost:7037/getUserEvents/daily-events`)
+                const formattedDate = format(date, 'yyyy-MM-dd');
+                const response = await fetch(`https://localhost:7037/getUserEvents/daily-events?date=${formattedDate}`)
                 if(!response.ok){
                     throw new Error("Failed to fetch user events count.");
                 }
@@ -86,7 +86,44 @@ const ReportsAndAnalytics = () => {
             } catch (error) {
                 console.error("Error fetching daily events", error)
             }
-        }
+        };
+        fetchDailyEvents();
+    }, [date])
+
+    
+    useEffect(() => {
+
+        Highcharts.setOptions({
+            time: {
+                timezone: 'Europe/Stockholm',
+            },
+        });
+
+        const fetchEventTypeDistribution = async () => {
+            try{
+                const response = await fetch(`https://localhost:7037/getUserEvents/event-type-distribution`);
+                if(!response.ok){
+                    throw new Error("Failed to fetch event type distribution.");
+                }
+                const data = await response.json();
+
+                const formattedData = data.map(item => ({
+                    name: item.eventType,
+                    y: item.count
+                }));
+
+                setEventTypePieOptions(prev => ({
+                    ...prev,
+                    series: [{
+                        name: 'Events',
+                        data: formattedData
+                    }]
+                }));
+
+            } catch(error) {
+                console.error("Error fetching event type distribution", error)
+            }
+        };
 
         const fetchUserEventsCount = async () => {
             try{
@@ -99,7 +136,7 @@ const ReportsAndAnalytics = () => {
             } catch (error) {
                 console.error("Error fetching user events count", error)
             }
-        }
+        };
 
         const fetchSessionIds = async () => {
             try {
@@ -114,10 +151,12 @@ const ReportsAndAnalytics = () => {
                 console.error("Error fetching session IDs:", error)
             }
         };
-        fetchDailyEvents();
+        fetchEventTypeDistribution();
         fetchUserEventsCount();
         fetchSessionIds();
     }, [])
+
+    
 
     const fetchEvents = async () => {
         if (!selectedSessionId) return;
@@ -151,6 +190,10 @@ const ReportsAndAnalytics = () => {
                         <h1 className='font-bold'>Overview</h1>
                         <div className='grid grid-cols-2 gap-4'>      
                             <div className='bg-white border-2 rounded-lg shadow-md p-4'>
+
+                                <label for="start">Date:</label>
+                                <DatePicker selected={date} onChange={(date) => setDate(date)} />
+
                                 {sessionIdsCount > 0 ? (
                                     <HighchartsReact highcharts={Highcharts} options={dailyEventsSplineOptions} />
                                 ) : (
@@ -161,7 +204,7 @@ const ReportsAndAnalytics = () => {
                             </div>
                             <div className='bg-white border-2 rounded-lg shadow-md p-4'>
                                 {sessionIdsCount > 0 ? (
-                                    <HighchartsReact highcharts={Highcharts} options={sessionsPieOptions} />
+                                    <HighchartsReact highcharts={Highcharts} options={eventTypePieOptions} />
                                 ) : (
                                     <div className='bg-red-100  text-red-700 px-4 py-3 rounded'>
                                         <p>Couldn't fetch chart</p>
