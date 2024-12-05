@@ -38,7 +38,7 @@ const Products = () => {
 
   useEffect(() => {
     let sortedProducts = [...products];
-    if (sortOption === "priceAsc") {
+    if (sortOption === "priceAsc") {  
       sortedProducts.sort((a, b) => a.price - b.price);
     } else if (sortOption === "priceDesc") {
       sortedProducts.sort((a, b) => b.price - a.price);

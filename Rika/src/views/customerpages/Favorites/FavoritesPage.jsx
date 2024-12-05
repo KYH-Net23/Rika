@@ -7,31 +7,77 @@ import HeartIcon from "../../../assets/icons/HeartIcon";
 const FavoritesPage = () => {
   const [favorites, setFavorites] = useState([]);
   const [timeouts, setTimeouts] = useState({});
+  const [messages, setMessages] = useState({}); 
 
   useEffect(() => {
     const storedFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
     setFavorites(storedFavorites);
   }, []);
 
-  const toggleFavorite = (id) => {
-    const updatedFavorites = favorites.map((favorite) =>
-      favorite.id === id ? { ...favorite, isRemoving: !favorite.isRemoving } : favorite
-    );
-    setFavorites(updatedFavorites);
+  const checkNetworkStatus = async () => {
+    try {
+      const response = await fetch("https://jsonplaceholder.typicode.com/posts/1", {
+        method: "HEAD",
+        cache: "no-cache",
+      });
+      return response.ok;
+    } catch (error) {
+      return false;
+    }
+  };
 
-    if (timeouts[id]) {
-      clearTimeout(timeouts[id]);
-      const updatedTimeouts = { ...timeouts };
-      delete updatedTimeouts[id];
-      setTimeouts(updatedTimeouts);
-    } else {
-      const timeoutId = setTimeout(() => {
-        const filteredFavorites = updatedFavorites.filter((favorite) => favorite.id !== id);
-        setFavorites(filteredFavorites);
-        localStorage.setItem("favorites", JSON.stringify(filteredFavorites));
-      }, 1000);
+  const toggleFavorite = async (id) => {
+    try {
+      const isOnline = await checkNetworkStatus();
+      if (!isOnline) {
+        throw new Error("Network error");
+      }
+
+      const updatedFavorites = favorites.map((favorite) =>
+        favorite.id === id
+          ? { ...favorite, isRemoving: !favorite.isRemoving }
+          : favorite
+      );
+      setFavorites(updatedFavorites);
+
+      if (timeouts[id]) {
+        clearTimeout(timeouts[id]);
+        const updatedTimeouts = { ...timeouts };
+        delete updatedTimeouts[id];
+        setTimeouts(updatedTimeouts);
+      } else {
+        const timeoutId = setTimeout(() => {
+          const filteredFavorites = updatedFavorites.filter(
+            (favorite) => favorite.id !== id
+          );
+          setFavorites(filteredFavorites);
+          localStorage.setItem("favorites", JSON.stringify(filteredFavorites));
+          setMessages((prevMessages) => ({
+            ...prevMessages,
+            [id]: "Favorite removed!",
+          }));
+          setTimeout(() => {
+            setMessages((prevMessages) => ({
+              ...prevMessages,
+              [id]: "",
+            }));
+          }, 2000);
+        }, 1000);
 
       setTimeouts({ ...timeouts, [id]: timeoutId });
+      }
+    } catch (error) {
+      console.error("Failed to remove favorite:", error);
+      setMessages((prevMessages) => ({
+        ...prevMessages,
+        [id]: "Failed to remove. Try again later.",
+      }));
+      setTimeout(() => {
+        setMessages((prevMessages) => ({
+          ...prevMessages,
+          [id]: "",
+        }));
+      }, 3000);
     }
   };
 
@@ -69,6 +115,11 @@ const FavoritesPage = () => {
               >
                 {favorite.isRemoving ? <HeartIcon /> : <FilledHeartIcon />}
               </button>
+              {messages[favorite.id] && (
+                <div className="absolute top-[-30px] left-1/2 transform -translate-x-1/2 bg-black text-white text-sm p-2 rounded shadow">
+                  {messages[favorite.id]}
+                </div>
+              )}
             </article>
           ))}
         </div>
@@ -78,4 +129,3 @@ const FavoritesPage = () => {
 };
 
 export default FavoritesPage;
-   

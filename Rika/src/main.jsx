@@ -10,6 +10,7 @@ import { ShippingProvider } from "./lib/ShippingOptionsProvider.jsx";
 import { PaymentProvider } from "./lib/PaymentProvider.jsx";
 import { InvoiceProvider } from "./lib/InvoiceProvider";
 
+
 import "./assets/css/main.css";
 
 import Header from "./views/sections/header/Header";
@@ -31,11 +32,17 @@ import AllInvoices from "./views/Invoice/AllInvoices.jsx";
 import Checkout from "./views/Checkout.jsx";
 import ProductReturnPage from "./views/customerpages/Orders/Returns/ReturnPage.jsx";
 import OrderConfirmation from "./views/OrderConfirmation.jsx";
+import AllInventories from "./views/inventory/AllInventories.jsx";
+import CreateInventory from "./views/inventory/CreateInventory.jsx";
+import ReadInventories from "./views/inventory/ReadInventories.jsx";
 import ErrorNotExisting from "./views/ErrorNotExisting.jsx";
+import UpdateInventories from "./views/inventory/UpdateInventories.jsx";
+import DeleteInventory from "./views/inventory/DeleteInventory.jsx";
 import ConfirmEmail from "./views/ConfirmEmail.jsx";
 import ForgotYourPassword from "./views/ForgotYourPassword.jsx";
 import ResetPassword from "./views/ResetPassword.jsx";
 import FavoritesPage from "./views/customerpages/Favorites/FavoritesPage.jsx";
+
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -119,7 +126,28 @@ createRoot(document.getElementById("root")).render(
                         path="/orderconfirmation"
                         element={<OrderConfirmation />}
                       />
+                      <Route
+                        path="/all-inventories"
+                        element={<AllInventories />}
+                      />
+                      <Route
+                        path="/create-inventory"
+                        element={<CreateInventory />}
+                      />
+                      <Route
+                        path="/read-inventories"
+                        element={<ReadInventories />}
+                      />
+                      <Route
+                        path="/update-inventories"
+                        element={<UpdateInventories />}
+                      />
+                      <Route
+                        path="/delete-inventory"
+                        element={<DeleteInventory />}
+                      />
                       <Route path="/favorites" element={<FavoritesPage />} />
+
                     </Routes>
                   </div>
                 </PaymentProvider>
