@@ -20,6 +20,11 @@ import CustomerLandingPage from "./views/customerpages/CustomerLandingPage.jsx";
 import AdminLandingPage from "./views/adminpages/AdminLandingPage.jsx";
 import Products from "./views/Products";
 import ProductDetails from "./views/ProductDetails";
+import CreateInvoice from "./views/Invoice/CreateInvoice";
+import DeleteInvoice from "./views/Invoice/DeleteInvoice";
+import EditInvoice from "./views/Invoice/EditInvoice";
+import AllInvoices from "./views/Invoice/AllInvoices";
+
 import EditProduct from "./views/EditProduct";
 
 
@@ -27,7 +32,6 @@ import CreateProduct from "./views/CreateProduct";
 import Users from "./views/Users";
 import RedirectToPaymentForm from "./views/payment/RedirectToPaymentForm.jsx";
 import Register from "./views/Register.jsx";
-import AllInvoices from "./views/Invoice/AllInvoices.jsx";
 import Checkout from "./views/Checkout.jsx";
 import ProductReturnPage from "./views/customerpages/Orders/Returns/ReturnPage.jsx";
 import OrderConfirmation from "./views/OrderConfirmation.jsx";
@@ -59,6 +63,22 @@ createRoot(document.getElementById("root")).render(
                         path="/productdetails/:id"
                         element={<ProductDetails />}
                       />
+                       <Route path="/createinvoice" element={<ProtectedRoute requiredRole="Admin">
+                            <CreateInvoice />
+                          </ProtectedRoute>} />
+                       <Route path="/getoneinvoice" element={<ProtectedRoute requiredRole="Admin">
+                            <InvoiceDetails />
+                          </ProtectedRoute>} />
+                       <Route path="/getallinvoices" element={<ProtectedRoute requiredRole="Admin">
+                            <AllInvoices />
+                          </ProtectedRoute>} />
+                       <Route path="/deleteinvoice" element={<ProtectedRoute requiredRole="Admin">
+                            <DeleteInvoice />
+                          </ProtectedRoute>} />
+                       <Route path="/updateinvoice" element={<ProtectedRoute requiredRole="Admin">
+                            <EditInvoice />
+                          </ProtectedRoute>} />
+
                       <Route path="/login" element={<Login />} />
                       <Route
                         path="/productscreate"
@@ -106,14 +126,7 @@ createRoot(document.getElementById("root")).render(
                         element={<ResetPassword />}
                       />
 
-                      <Route
-                        path="/all-invoices"
-                        element={
-                          <ProtectedRoute requiredRole="Admin">
-                            <AllInvoices />
-                          </ProtectedRoute>
-                        }
-                      />
+                     
                       <Route
                         path="/orderconfirmation"
                         element={<OrderConfirmation />}

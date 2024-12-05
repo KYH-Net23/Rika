@@ -8,7 +8,7 @@ const EditInvoice = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
   const [confirmationPrompt, setConfirmationPrompt] = useState(false);
-  const API_BASE_URL = "https://localhost:5160/api";
+  const API_BASE_URL = "https://localhost:5160/api/updateinvoice";
 
   useEffect(() => {
     const fetchInvoice = async () => {

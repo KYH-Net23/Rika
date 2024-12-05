@@ -5,7 +5,7 @@ const InvoiceDetails = () => {
   const { id } = useParams();
   const [invoice, setInvoice] = useState(null);
   const [error, setError] = useState("");
-  const API_BASE_URL = "https://localhost:5160/api";
+  const API_BASE_URL = "https://localhost:5160/api/getoneinvoice";
 
   useEffect(() => {
     const fetchInvoice = async () => {

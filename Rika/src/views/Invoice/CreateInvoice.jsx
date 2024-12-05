@@ -10,18 +10,17 @@ const CreateInvoice = () => {
         dueDate: "",
         paidDate: "",
         amount: "",
-        status: "Pending", // Default status
+        status: "Pending",
     });
     const [error, setError] = useState("");
     const [confirmationPrompt, setConfirmationPrompt] = useState(false);
-    const API_BASE_URL = "https://localhost:5160/api";
+    const API_BASE_URL = "https://localhost:5160/api/createinvoice";
 
     const handleChange = (e) => {
         const { name, value } = e.target;
         setInvoice((prev) => ({ ...prev, [name]: value }));
     };
 
-    // Validation for the input fields
     const isValidInvoice = () => {
         if (!invoice.date || !invoice.dueDate || !invoice.customerId || !invoice.orderId) {
             setError("Date, Due Date, Customer ID, and Order ID cannot be empty.");
