@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { useProductContext } from "../../../../lib/ProductProvider";
 
 import HeartIcon from "../../../../assets/icons/HeartIcon";
+import FilledHeartIcon from "../../../../assets/icons/FilledHeartIcon";
 import BagWhite from "../../../../assets/icons/BagWhite";
 import SuccessAlert from "../../../../common/SuccessAlert";
 
@@ -23,6 +24,9 @@ const Detailssection = () => {
   const [size, setSize] = useState("");
   const [sizeError, setSizeError] = useState("");
   const [showAlert, setShowAlert] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(false);
+  const [favoriteMessage, setFavoriteMessage] = useState(""); 
+  const [showFavoriteMessage, setShowFavoriteMessage] = useState(false); 
 
   useEffect(() => {
     const fetchProductDetails = async () => {
@@ -43,6 +47,12 @@ const Detailssection = () => {
 
         const validatedImageUrl = await checkImageUrl(data.image);
         setProductDetails({ ...data, image: validatedImageUrl });
+        const existingFavorites =
+          JSON.parse(localStorage.getItem("favorites")) || [];
+        const alreadyFavorite = existingFavorites.some(
+          (item) => item.id === id
+        );
+        setIsFavorite(alreadyFavorite);
       } catch (error) {
         console.error("Error fetching product details:", error);
       }
@@ -97,6 +107,57 @@ const Detailssection = () => {
       setShowAlert(false);
     }, 2500);
   };
+
+  const toggleFavorite = async () => {
+    const favoriteItem = {
+      id,
+      brand: productDetails.brand,
+      model: productDetails.model,
+      price: productDetails.price,
+      image: productDetails.image,
+    };
+
+    try {
+      const isOnline = await checkNetworkStatus();
+      if (!isOnline) {
+        throw new Error("Network error");
+      }
+  
+      let existingFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
+  
+      if (isFavorite) {
+        existingFavorites = existingFavorites.filter((item) => item.id !== id);
+        setIsFavorite(false);
+        setFavoriteMessage("Favorite removed!");
+      } else {
+        existingFavorites.push(favoriteItem);
+        setIsFavorite(true);
+        setFavoriteMessage("Favorite added!");
+      }
+  
+      localStorage.setItem("favorites", JSON.stringify(existingFavorites));
+    } catch (error) {
+      console.error("Error handling favorites:", error);
+      if (isFavorite) {
+        setFavoriteMessage("Failed to remove favorite.");
+      } else {
+        setFavoriteMessage("Failed to add to favorites.");
+      }
+    }
+    setTimeout(() => setFavoriteMessage(""), 3000);
+  };
+  
+  const checkNetworkStatus = async () => {
+    try {
+      const response = await fetch("https://jsonplaceholder.typicode.com/posts/1", {
+        method: "HEAD",
+        cache: "no-cache",
+      });
+      return response.ok;
+    } catch (error) {
+      return false;
+    }
+  };  
 
   return (
     <section>
@@ -159,10 +220,18 @@ const Detailssection = () => {
         )}
       </div>
       <div>{sizeError && <p className="text-red-500">{sizeError}</p>}</div>
-      <div className="flex gap-4 px-4 py-6">
-        <button className="bg-[#ebebeb] rounded-xl px-3 py-3">
-          <HeartIcon />
+      <div className="flex items-center gap-4 px-4 py-6 relative">
+        <button
+          className="bg-[#ebebeb] rounded-xl px-3 py-3"
+          onClick={toggleFavorite}
+        >
+          {isFavorite ? <FilledHeartIcon /> : <HeartIcon />}
         </button>
+        {favoriteMessage && (
+          <div className="absolute top-[-30px] left-16 bg-black text-white text-sm p-2 rounded shadow">
+            {favoriteMessage}
+          </div>
+        )}
         <div className="grow"></div>
         <button
           onClick={addToCart}
