@@ -44,6 +44,8 @@ const ShoppingCartModal = ({ isOpen, onClose, cartData }) => {
 
   if (!isOpen) return null;
 
+  if (location.pathname === "/checkout") onClose();
+
   return (
     <>
       <div

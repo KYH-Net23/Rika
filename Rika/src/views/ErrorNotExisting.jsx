@@ -13,7 +13,7 @@ const ErrorNotExisting = () => {
         </p>
         <button
           onClick={() => navigate("/products")}
-          className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+          className="bg-black text-white px-4 py-2 rounded-md hover:bg-gray-600"
         >
           Back to Products
         </button>

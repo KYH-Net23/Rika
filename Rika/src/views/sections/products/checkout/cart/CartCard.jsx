@@ -46,20 +46,22 @@ const CartCard = ({ data }) => {
   };
 
   return (
-    <div className="flex gap-5 justify-between px-3.5 py-2.5 bg-white rounded-xl shadow-[0px_11px_24px_rgba(0,0,0,0.1)]">
+    <div className="flex gap-5 justify-between px-2.5 py-2.5 bg-white rounded-xl shadow-[0px_11px_24px_rgba(0,0,0,0.1)]">
       <div className="flex gap-1.5 text-xs leading-4">
-        <img
-          src={image}
-          alt={`${brand}, ${model}`}
-          className="object-contain shrink-0 w-20 rounded-xl aspect-square"
-        />
+        <div className="w-20 h-20 rounded-xl overflow-hidden">
+          <img
+            src={image}
+            alt={`${brand}, ${model}`}
+            className="aspect-square w-full h-full object-cover"
+          />
+        </div>
         <div className="my-auto">
           <span className="text-sm font-mont font-medium">{brand}</span>
           <br />
           <span className="text-[#666] font-mont font-medium">{model}</span>
           <br />
           <span className="text-[#666] font-mont font-medium">
-            Size: {size}
+            {size && `Size: ${size}`}
           </span>
           <br />
           <span className="text-sm font-bold font-mont">

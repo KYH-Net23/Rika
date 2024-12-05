@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
 const EditInvoice = () => {
@@ -28,9 +28,39 @@ const EditInvoice = () => {
     fetchInvoice();
   }, [id]);
 
+  // Validation for the input fields
+  const isValidInvoice = () => {
+    if (!invoice.date || !invoice.dueDate) {
+      setError("Date and Due Date cannot be empty.");
+      return false;
+    }
+    if (isNaN(invoice.amount) || invoice.amount <= 0) {
+      setError("Amount must be a positive number.");
+      return false;
+    }
+    if (!["Pending", "Paid", "Overdue"].includes(invoice.status)) {
+      setError("Status must be one of: Pending, Paid, Overdue.");
+      return false;
+    }
+    return true;
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setInvoice((prev) => ({ ...prev, [name]: value }));
+  };
+
+  // Log the change to an external API
+  const logChange = async (logDetails) => {
+    try {
+      await fetch(`${API_BASE_URL}/logchange`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(logDetails),
+      });
+    } catch (err) {
+      console.error("Failed to log change:", err);
+    }
   };
 
   const handleSave = async () => {
@@ -38,6 +68,11 @@ const EditInvoice = () => {
       setConfirmationPrompt("save");
       return;
     }
+
+    if (!isValidInvoice()) {
+      return;
+    }
+
     try {
       const response = await fetch(`${API_BASE_URL}/updateinvoice/${id}`, {
         method: "PUT",
@@ -47,6 +82,15 @@ const EditInvoice = () => {
       if (!response.ok) {
         throw new Error("Failed to update invoice.");
       }
+
+      // Log the change
+      await logChange({
+        action: "update",
+        invoiceId: id,
+        changes: invoice,
+        timestamp: new Date().toISOString(),
+      });
+
       navigate("/all-invoices");
     } catch (err) {
       setError(err.message);
@@ -129,7 +173,8 @@ const EditInvoice = () => {
         </div>
         {confirmationPrompt && (
           <div className="mt-4 bg-yellow-100 p-2 rounded text-yellow-600">
-            Are you sure you want to {confirmationPrompt === "save" ? "save changes" : "cancel"}?
+            Are you sure you want to{" "}
+            {confirmationPrompt === "save" ? "save changes" : "cancel"}?
             <button
               onClick={() => setConfirmationPrompt(false)}
               className="bg-blue-500 text-white px-2 py-1 ml-4 rounded hover:bg-blue-600"

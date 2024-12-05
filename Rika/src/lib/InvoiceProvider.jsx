@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState } from "react";
 
 const InvoiceContext = createContext();
 
@@ -14,7 +14,7 @@ export const InvoiceProvider = ({ children }) => {
   // Fetch All Invoices
   const fetchInvoices = async () => {
     try {
-      const response = await fetch(`${API_BASE_URL}/getinvoice`);
+      const response = await fetch(`${API_BASE_URL}/getallinvoices`);
       if (!response.ok) {
         throw new Error("Failed to fetch invoices.");
       }

@@ -47,12 +47,13 @@ const Login = () => {
     }
 
     setLoading(true);
+    await new Promise(x => setTimeout(x, 1000))
     const endPoint = "/TokenGenerator/login";
     try {
       const response = await authApi.post(
         endPoint,
         { email, password },
-        { withCredentials: true }
+        { withCredentials: true },
       );
       if (response.status === 200) {
         const userData = response.data;
@@ -61,27 +62,29 @@ const Login = () => {
         });
         await checkAuth();
       }
+      else if(response.status === 401) {
+        setPasswordError("Invalid credentials. Please check your email / password.")
+        console.log(response)
+      }
     } catch (error) {
       console.error("Error during login:", error);
+      setPasswordError("Invalid credentials. Please check your email / password.")
     } finally {
       setLoading(false);
     }
   };
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-screen bg-gray-100">
-        <div className="text-center">
-          <div className="w-16 h-16 border-4 border-blue-500 border-dotted rounded-full animate-spin mx-auto"></div>
-          <p className="text-lg font-semibold mt-4">Logging you in...</p>
-          <p className="text-sm text-gray-500">Please wait a moment</p>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="flex font-mont flex-col items-center justify-center">
+      {loading ? (
+        <div className="w-full flex items-center justify-center h-screen bg-gray-100">
+          <div className="text-center">
+            <div className="w-16 h-16 border-4 border-blue-500 border-dotted rounded-full animate-spin mx-auto"></div>
+            <p className="text-lg font-semibold mt-4">Logging you in...</p>
+            <p className="text-sm text-gray-500">Please wait a moment</p>
+          </div>
+        </div>
+      ) : null}
       <div className="mb-10 mt-16">
         <h1 className="text-5xl text-left">RIKA</h1>
         <h2>Online Shopping</h2>
@@ -93,7 +96,7 @@ const Login = () => {
         </p>
       </div>
       <form
-        className="sm:w-6/12 w-11/12 flex flex-col items-center mb-4"
+        className="sm:w-11/12 w-11/12 flex flex-col items-center mb-4 md:w-8/12 2xl:w-4/12"
         onSubmit={handleLogin}
       >
         <label className="font-semibold w-11/12" htmlFor="email">
@@ -130,39 +133,55 @@ const Login = () => {
           <p className="mb-1">Remember me</p>
           <input type="checkbox" disabled={loading} />
         </div>
-        <button
+        <LoginButton
           type="submit"
-          className="w-11/12 bg-black text-white py-2 rounded-md"
           disabled={loading}
+          color="black"
+          label={"Log in"}
         >
           {loading ? "Processing..." : "Login"}
-        </button>
+        </LoginButton>
+        <LoginButton
+          color="slategrey"
+          label={"Forgot your password?"}
+          disabled={loading}
+          onClick={() => navigate("/forgotpassword")}
+        />
       </form>
 
       <div className="mb-8 text-gray-400">───────────── or ─────────────</div>
-      <div className="sm:w-6/12 w-11/12 flex flex-col items-center">
+      <div className="sm:w-11/12 w-11/12 flex flex-col items-center md:w-8/12 2xl:w-4/12">
         <LoginButton
           color="#00cf34"
           label={"Register new user"}
           disabled={loading}
           onClick={() => navigate("/register")}
         />
+
+        {/* Facebook Login - Navigating to ErrorNotExisting */}
         <LoginButton
           color="#3b5998"
           label={"Continue with Facebook"}
           disabled={loading}
+          onClick={() => navigate("/error-not-existing")}
         />
+
+        {/* Google Login - Navigating to ErrorNotExisting */}
         <LoginButton
           color="#FFF"
           textColor="#666"
           label={"Continue with Google"}
           disabled={loading}
+          onClick={() => navigate("/error-not-existing")}
         />
+
+        {/* Apple Login - Navigating to ErrorNotExisting */}
         <LoginButton
           color="#FFF"
           textColor="#666"
           label={"Continue with Apple"}
           disabled={loading}
+          onClick={() => navigate("/error-not-existing")}
         />
       </div>
     </div>
