@@ -2,7 +2,7 @@ import React from "react";
 
 const BASE_URL = "https://rika-inventory-api.azurewebsites.net/api";
 
-// Funktion för att hämta alla inventarier
+// GET ALL
 export const getAllInventories = async () => {
   try {
     const response = await fetch(`${BASE_URL}/getinventories`);
@@ -14,7 +14,7 @@ export const getAllInventories = async () => {
   }
 };
 
-// Funktion för att hämta ett specifikt inventory
+// GET ONE
 export const getInventoryById = async (id) => {
   try {
     const response = await fetch(`${BASE_URL}/getinventory/${id}`);
@@ -26,7 +26,7 @@ export const getInventoryById = async (id) => {
   }
 };
 
-// Funktion för att skapa ett nytt inventory
+// CREATE
 export const createInventory = async (inventoryData) => {
   try {
     const response = await fetch(`${BASE_URL}/createinventory`, {
@@ -59,7 +59,7 @@ export const createInventory = async (inventoryData) => {
   }
 };
 
-// Funktion för att uppdatera ett befintligt inventory
+// UPDATE
 export const updateInventory = async (id, inventoryData) => {
   try {
     const response = await fetch(`${BASE_URL}/updateinventory/${id}`, {
@@ -77,7 +77,7 @@ export const updateInventory = async (id, inventoryData) => {
   }
 };
 
-// Funktion för att ta bort ett inventory
+// DELETE
 export const deleteInventory = async (id) => {
   try {
     const response = await fetch(`${BASE_URL}/deleteinventory/${id}`, {
@@ -100,7 +100,6 @@ export const deleteInventory = async (id) => {
   }
 };
 
-// React-komponent för framtida användning om nödvändigt
 const InventoryProvider = ({ children }) => {
   return <>{children}</>;
 };
