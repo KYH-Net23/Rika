@@ -75,6 +75,18 @@ const AdminLandingPage = () => {
               <i className="text-gray-500">➔</i>
             </li>
 
+            {/* View All Inventories */}
+            <li
+              className="flex items-center justify-between cursor-pointer"
+              onClick={() => navigate("/all-inventories")}
+            >
+              <span className="flex items-center">
+                <i className="text-xl mr-4">📦</i>
+                View All Inventories
+              </span>
+              <i className="text-gray-500">➔</i>
+            </li>
+
             {/* Manage Users */}
             <li
               className="flex items-center justify-between cursor-pointer"

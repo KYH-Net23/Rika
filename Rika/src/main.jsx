@@ -22,6 +22,8 @@ import AdminLandingPage from "./views/adminpages/AdminLandingPage.jsx";
 import Products from "./views/Products";
 import ProductDetails from "./views/ProductDetails";
 import EditProduct from "./views/EditProduct";
+
+
 import CreateProduct from "./views/CreateProduct";
 import Users from "./views/Users";
 import RedirectToPaymentForm from "./views/payment/RedirectToPaymentForm.jsx";
@@ -30,9 +32,16 @@ import AllInvoices from "./views/Invoice/AllInvoices.jsx";
 import Checkout from "./views/Checkout.jsx";
 import ProductReturnPage from "./views/customerpages/Orders/Returns/ReturnPage.jsx";
 import OrderConfirmation from "./views/OrderConfirmation.jsx";
+import AllInventories from "./views/inventory/AllInventories.jsx";
+import CreateInventory from "./views/inventory/CreateInventory.jsx";
+import ReadInventories from "./views/inventory/ReadInventories.jsx";
 import ErrorNotExisting from "./views/ErrorNotExisting.jsx";
+import UpdateInventories from "./views/inventory/UpdateInventories.jsx";
+import DeleteInventory from "./views/inventory/DeleteInventory.jsx";
 import ConfirmEmail from "./views/ConfirmEmail.jsx";
 import ForgotYourPassword from "./views/ForgotYourPassword.jsx";
+import ResetPassword from "./views/ResetPassword.jsx";
+
 import ReportsAndAnalytics from "./views/adminpages/ReportsAndAnalytics.jsx";
 
 createRoot(document.getElementById("root")).render(
@@ -95,13 +104,17 @@ createRoot(document.getElementById("root")).render(
                               <AdminLandingPage />
                             </ProtectedRoute>
                           }
-                        />
-                        <Route
+                      />
+                      <Route
                         path="/forgotpassword"
-                        element={
-                            <ForgotYourPassword />
-                        }
-                        />
+                        element={<ForgotYourPassword />}
+                      />
+
+                      <Route
+                        path="/resetpassword/:id"
+                        element={<ResetPassword />}
+                      />
+
                         <Route 
                           path="/reportsandanalytics" 
                           element={
@@ -110,6 +123,7 @@ createRoot(document.getElementById("root")).render(
                             </ProtectedRoute>
                           } 
                         />
+
                         <Route
                           path="/all-invoices"
                           element={
@@ -122,6 +136,26 @@ createRoot(document.getElementById("root")).render(
                           path="/orderconfirmation"
                           element={<OrderConfirmation />}
                         />
+                      <Route
+                        path="/all-inventories"
+                        element={<AllInventories />}
+                      />
+                      <Route
+                        path="/create-inventory"
+                        element={<CreateInventory />}
+                      />
+                      <Route
+                        path="/read-inventories"
+                        element={<ReadInventories />}
+                      />
+                      <Route
+                        path="/update-inventories"
+                        element={<UpdateInventories />}
+                      />
+                      <Route
+                        path="/delete-inventory"
+                        element={<DeleteInventory />}
+                      />
                       </Routes>
                     </div>
                   </PaymentProvider>
@@ -132,5 +166,5 @@ createRoot(document.getElementById("root")).render(
         </OrderProvider>
       </LoggingProvider>
     </BrowserRouter>
-  </StrictMode>
+  </StrictMode>,
 );
