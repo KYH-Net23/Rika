@@ -102,7 +102,14 @@ createRoot(document.getElementById("root")).render(
                             <ForgotYourPassword />
                         }
                         />
-                        <Route path="/reportsandanalytics" element={<ReportsAndAnalytics />} />
+                        <Route 
+                          path="/reportsandanalytics" 
+                          element={
+                            <ProtectedRoute requiredRole="Admin">
+                              <ReportsAndAnalytics />
+                            </ProtectedRoute>
+                          } 
+                        />
                         <Route
                           path="/all-invoices"
                           element={
